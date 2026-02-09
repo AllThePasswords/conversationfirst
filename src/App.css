@@ -558,6 +558,17 @@ kbd {
 }
 .cf-preview > *:last-child { margin-bottom: 0; }
 
+/* When cf-preview contains a document, strip the wrapper chrome */
+.cf-preview:has(.cf-doc) {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+}
+.cf-preview:has(.cf-doc)::before {
+  display: none;
+}
+
 /* Document / page layout — for A4 reports, printable sheets, visual designs */
 .cf-doc {
   background: #fff;
