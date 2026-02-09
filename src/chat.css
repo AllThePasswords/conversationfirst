@@ -35,7 +35,16 @@
 .chat-input-bar {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-8) var(--space-6);
-  background: linear-gradient(transparent, var(--bg) 30%);
+  background: transparent;
+  position: relative;
+}
+
+.chat-input-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, var(--bg) 50%);
+  pointer-events: none;
 }
 
 .chat-input-inner {
@@ -470,9 +479,6 @@
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   min-width: 0;
 }
 
@@ -551,6 +557,11 @@
   }
   .chat-welcome {
     padding: var(--space-6) var(--space-3) var(--space-4);
+  }
+  .chat-header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .welcome-header {
     margin-bottom: var(--space-6);
