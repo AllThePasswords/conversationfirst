@@ -59,6 +59,8 @@
   padding: var(--space-2);
   box-shadow: var(--shadow-lg);
   transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+  z-index: 1;
 }
 .chat-input-inner:focus-within {
   border-color: var(--accent);
@@ -282,6 +284,9 @@
   }
   .chat-sidebar-overlay {
     display: none;
+  }
+  .sidebar-open .chat-input-floating {
+    left: 280px;
   }
 }
 
@@ -518,6 +523,7 @@
   padding: var(--space-4) var(--space-8) var(--space-6);
   background: linear-gradient(transparent, var(--bg) 30%);
   z-index: 40;
+  transition: left 0.2s ease;
 }
 
 /* ===== Responsive ===== */
