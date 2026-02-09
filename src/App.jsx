@@ -11,6 +11,7 @@ import ChatPage from './components/ChatPage';
 function FloatingInput() {
   const [text, setText] = useState('');
   const textareaRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const resize = useCallback(() => {
     const el = textareaRef.current;
@@ -32,19 +33,53 @@ function FloatingInput() {
     }
   }, [handleSend]);
 
+  const handleFileChange = useCallback((e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      // Store file names, navigate to chat — files can't persist via sessionStorage
+      // so just navigate to chat with the + button ready
+      window.location.hash = '#/chat?new';
+    }
+    e.target.value = '';
+  }, []);
+
   return (
     <div className="chat-input-floating">
       <div className="chat-input-inner">
-        <textarea
-          ref={textareaRef}
-          className="chat-input-field"
-          placeholder="Ask a question..."
-          aria-label="Message input"
-          value={text}
-          onChange={(e) => { setText(e.target.value); resize(); }}
-          onKeyDown={handleKeyDown}
-          rows={1}
+        <button
+          className="chat-attach-btn"
+          onClick={() => fileInputRef.current?.click()}
+          title="Attach image"
+          aria-label="Attach image"
+          type="button"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          multiple
+          capture="environment"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          aria-hidden="true"
         />
+        <div className="chat-input-body">
+          <textarea
+            ref={textareaRef}
+            className="chat-input-field"
+            placeholder="Ask a question..."
+            aria-label="Message input"
+            value={text}
+            onChange={(e) => { setText(e.target.value); resize(); }}
+            onKeyDown={handleKeyDown}
+            rows={1}
+          />
+        </div>
         <button
           className="chat-send-btn"
           onClick={handleSend}
