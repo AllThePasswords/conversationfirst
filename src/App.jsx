@@ -163,7 +163,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <div className={`home-page ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <a href="#main-content" className="skip-link">Skip to content</a>
       <ChatSidebar
         isOpen={sidebarOpen}
@@ -188,6 +188,6 @@ export default function App() {
         <Footer />
       </main>
       <FloatingInput />
-    </>
+    </div>
   );
 }
