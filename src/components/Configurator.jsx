@@ -68,7 +68,7 @@ function generateTestPage(c) {
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
   --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-full:9999px;
   --bg:#faf9f7;--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
-  --text:#1a1a1a;--text-secondary:#595856;--text-muted:#767472;
+  --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
   --accent:#3d6b5e;--accent-hover:#2f5549;--accent-subtle:#eef4f1;
   --destructive:#c4453a;--destructive-subtle:#fef2f1;--warning:#b58a2b;--warning-subtle:#fef9ee;
   --code-bg:#f3f1ed;--cite-bg:#eef4f1;--cite-border:#3d6b5e;
