@@ -13,7 +13,26 @@ export default function ChatMessage({ message }) {
         {message.role === 'user' ? 'You' : 'Assistant'}
       </div>
       {message.role === 'user' ? (
-        <p style={{ marginBottom: 0 }}>{message.content}</p>
+        <div>
+          {Array.isArray(message.content) ? (
+            <>
+              {message.content.filter(b => b.type === 'image').map((img, i) => (
+                <img
+                  key={i}
+                  src={img.url}
+                  alt={`Uploaded image ${i + 1}`}
+                  className="chat-user-image"
+                  loading="lazy"
+                />
+              ))}
+              {message.content.filter(b => b.type === 'text').map((b, i) => (
+                <p key={i} style={{ marginBottom: 0 }}>{b.text}</p>
+              ))}
+            </>
+          ) : (
+            <p style={{ marginBottom: 0 }}>{message.content}</p>
+          )}
+        </div>
       ) : (
         <>
           <MarkdownRenderer content={displayContent} />

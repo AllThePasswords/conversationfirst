@@ -72,31 +72,167 @@
   align-items: flex-end;
 }
 
+/* Input body wrapper — provides border around thumbnails + textarea */
+.chat-input-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: border-color 0.15s;
+}
+.chat-input-body:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
 .chat-input-field {
   flex: 1;
   font-family: var(--font-body);
   font-size: var(--text-base);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: transparent;
   color: var(--text);
   resize: none;
   min-height: 44px;
   max-height: 200px;
   line-height: 1.5;
-  transition: border-color 0.15s;
   overflow-y: auto;
 }
 
 .chat-input-field:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
 .chat-input-field::placeholder {
   color: var(--text-muted);
+}
+
+/* Attach button (+ icon) */
+.chat-attach-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.chat-attach-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.chat-attach-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.chat-attach-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Thumbnail strip */
+.chat-thumbnails {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) 0;
+  overflow-x: auto;
+}
+.chat-thumb {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.chat-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.chat-thumb-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.chat-thumb:hover .chat-thumb-remove {
+  opacity: 1;
+}
+
+/* Drag-and-drop state on input */
+.chat-input-inner.dragging .chat-input-body {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* Full-page drop overlay */
+.chat-drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: color-mix(in srgb, var(--accent-subtle) 90%, transparent);
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+.chat-drop-overlay svg {
+  color: var(--accent);
+}
+.chat-drop-overlay-text {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* User-uploaded images in chat bubbles */
+.chat-user-image {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+/* Upload progress */
+.chat-upload-indicator {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--accent);
+  padding: var(--space-1) var(--space-3);
 }
 
 .chat-send-btn {

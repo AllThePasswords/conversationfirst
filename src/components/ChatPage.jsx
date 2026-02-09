@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useChat } from '../hooks/useChat';
 import { useChatHistory } from '../hooks/useChatHistory';
+import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
 import ChatInput from './ChatInput';
@@ -16,8 +17,13 @@ const SUGGESTIONS = [
   'What components are in the framework?',
 ];
 
+let nextImageId = 0;
+
 export default function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [stagedImages, setStagedImages] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragCounter = useRef(0);
   const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
 
   // Auto-create conversation: always new if ?new in hash, otherwise fallback
@@ -34,7 +40,7 @@ export default function ChatPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { messages, isStreaming, isSearching, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
+  const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const pendingSentRef = useRef(false);
@@ -52,21 +58,25 @@ export default function ChatPage() {
       const hasMessages = existing && JSON.parse(existing).length > 0;
 
       if (hasMessages) {
-        // Create a fresh conversation for this new question
         const newId = createConversation();
         setTimeout(() => sendMessage(pending), 100);
       } else {
-        // Reuse the current empty conversation
         setTimeout(() => sendMessage(pending), 50);
       }
     }
   }, [activeId, sendMessage, createConversation]);
 
   // Scroll to bottom only when messages array changes (user sent or response completed)
-  // Never force-scroll during streaming — let the user read at their own pace
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Clean up staged image previews on unmount or clear
+  useEffect(() => {
+    return () => {
+      stagedImages.forEach(img => URL.revokeObjectURL(img.preview));
+    };
+  }, [stagedImages]);
 
   const handleNewChat = useCallback(() => {
     createConversation();
@@ -78,8 +88,90 @@ export default function ChatPage() {
     setSidebarOpen(false);
   }, [setActiveId]);
 
+  // Image staging
+  const addImages = useCallback((files) => {
+    const validFiles = [];
+    for (const file of files) {
+      const err = validateImage(file);
+      if (err) {
+        // Skip invalid files silently for drag-drop, could show toast later
+        continue;
+      }
+      validFiles.push(file);
+    }
+
+    setStagedImages(prev => {
+      const countErr = validateImageCount(prev.length, validFiles.length);
+      if (countErr) return prev; // cap at max
+
+      const newImages = validFiles.map(file => ({
+        id: ++nextImageId,
+        file,
+        preview: URL.createObjectURL(file),
+      }));
+      return [...prev, ...newImages];
+    });
+  }, []);
+
+  const removeImage = useCallback((id) => {
+    setStagedImages(prev => {
+      const img = prev.find(i => i.id === id);
+      if (img) URL.revokeObjectURL(img.preview);
+      return prev.filter(i => i.id !== id);
+    });
+  }, []);
+
+  // Wrapped send that includes staged images then clears them
+  const handleSend = useCallback((text, imageFiles = []) => {
+    sendMessage(text, imageFiles);
+    setStagedImages(prev => {
+      prev.forEach(img => URL.revokeObjectURL(img.preview));
+      return [];
+    });
+  }, [sendMessage]);
+
+  // Page-level drag and drop
+  const handleDragEnter = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragCounter.current++;
+    if (dragCounter.current === 1) setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragCounter.current--;
+    if (dragCounter.current === 0) setIsDragging(false);
+  }, []);
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDrop = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dragCounter.current = 0;
+    setIsDragging(false);
+
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length > 0) {
+      addImages(files);
+    }
+  }, [addImages]);
+
+  const inputDisabled = isStreaming || isUploading;
+
   return (
-    <div className={`chat-page ${sidebarOpen ? 'sidebar-open' : ''}`}>
+    <div
+      className={`chat-page ${sidebarOpen ? 'sidebar-open' : ''}`}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       <a href="#chat-main" className="skip-link">Skip to content</a>
       <ChatSidebar
         isOpen={sidebarOpen}
@@ -102,7 +194,18 @@ export default function ChatPage() {
         </button>
       </header>
 
-      <main id="chat-main" className="chat-messages" ref={messagesContainerRef}>
+      <main id="chat-main" className="chat-messages" ref={messagesContainerRef} style={{ position: 'relative' }}>
+        {isDragging && (
+          <div className="chat-drop-overlay" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            <span className="chat-drop-overlay-text">Drop images here</span>
+          </div>
+        )}
+
         <div className="chat-messages-inner">
           {messages.length === 0 && !isStreaming ? (
             <div className="chat-welcome">
@@ -207,7 +310,19 @@ export default function ChatPage() {
         </div>
       </main>
 
-      <ChatInput onSend={sendMessage} disabled={isStreaming} />
+      <ChatInput
+        onSend={handleSend}
+        disabled={inputDisabled}
+        stagedImages={stagedImages}
+        onAddImages={addImages}
+        onRemoveImage={removeImage}
+      />
+
+      {isUploading && (
+        <div className="chat-upload-indicator" role="status" aria-live="polite">
+          Uploading images...
+        </div>
+      )}
     </div>
   );
 }
