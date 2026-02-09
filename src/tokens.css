@@ -3,7 +3,7 @@
   --font-heading: 'Fraunces', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  --text-xs: 0.6875rem;
+  --text-xs: 0.75rem;
   --text-sm: 0.8125rem;
   --text-base: 0.9375rem;
   --text-lg: 1.125rem;
@@ -32,8 +32,8 @@
   --border: #e4e2dd;
   --border-strong: #ccc9c3;
   --text: #1a1a1a;
-  --text-secondary: #71706c;
-  --text-muted: #a09e99;
+  --text-secondary: #595856;
+  --text-muted: #767472;
   --accent: #3d6b5e;
   --accent-hover: #2f5549;
   --accent-subtle: #eef4f1;
@@ -58,8 +58,8 @@
     --border: #2e2e2c;
     --border-strong: #444440;
     --text: #e8e6e1;
-    --text-secondary: #a09e99;
-    --text-muted: #6b6a66;
+    --text-secondary: #b0aea9;
+    --text-muted: #908e89;
     --accent: #6fb89f;
     --accent-hover: #8dcbb5;
     --accent-subtle: #1c2923;

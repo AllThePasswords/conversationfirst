@@ -87,13 +87,13 @@ export default function ChatPage() {
       />
 
       <div className="chat-header">
-        <button className="chat-menu-btn" onClick={() => setSidebarOpen(true)} title="Conversations">
+        <button className="chat-menu-btn" onClick={() => setSidebarOpen(true)} title="Conversations" aria-label="Open conversation list">
           ☰
         </button>
         <div className="chat-header-title">
           <a href="#/">Conversation First</a>
         </div>
-        <button className="chat-menu-btn" onClick={handleNewChat} title="New chat">
+        <button className="chat-menu-btn" onClick={handleNewChat} title="New chat" aria-label="Start new conversation">
           +
         </button>
       </div>
@@ -164,11 +164,11 @@ export default function ChatPage() {
                 <div className="chat-bubble">
                   <div className="bubble-label">Assistant</div>
                   {isSearching && (
-                    <div className="search-indicator">
+                    <div className="search-indicator" role="status" aria-live="polite">
                       <div className="processing-status">
-                        <div className="processing-cursor" />
+                        <div className="processing-cursor" aria-hidden="true" />
                         <span className="processing-text">
-                          Searching the web<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+                          Searching the web<span className="dot" aria-hidden="true">.</span><span className="dot" aria-hidden="true">.</span><span className="dot" aria-hidden="true">.</span>
                         </span>
                       </div>
                     </div>

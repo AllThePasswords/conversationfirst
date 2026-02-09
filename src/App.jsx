@@ -39,6 +39,7 @@ function FloatingInput() {
           ref={textareaRef}
           className="chat-input-field"
           placeholder="Ask a question..."
+          aria-label="Message input"
           value={text}
           onChange={(e) => { setText(e.target.value); resize(); }}
           onKeyDown={handleKeyDown}
@@ -49,6 +50,7 @@ function FloatingInput() {
           onClick={handleSend}
           disabled={!text.trim()}
           title="Send"
+          aria-label="Send message"
         >
           ↑
         </button>

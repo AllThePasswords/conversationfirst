@@ -64,11 +64,11 @@ function generateTestPage(c) {
   --font-body: ${b.family};
   --font-heading: ${h.family};
   --font-mono: ${m.family};
-  --text-xs:0.6875rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
+  --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
   --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-full:9999px;
   --bg:#faf9f7;--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
-  --text:#1a1a1a;--text-secondary:#71706c;--text-muted:#a09e99;
+  --text:#1a1a1a;--text-secondary:#595856;--text-muted:#767472;
   --accent:#3d6b5e;--accent-hover:#2f5549;--accent-subtle:#eef4f1;
   --destructive:#c4453a;--destructive-subtle:#fef2f1;--warning:#b58a2b;--warning-subtle:#fef9ee;
   --code-bg:#f3f1ed;--cite-bg:#eef4f1;--cite-border:#3d6b5e;
@@ -76,7 +76,7 @@ function generateTestPage(c) {
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#141413;--surface:#1c1c1b;--surface-raised:#232322;--border:#2e2e2c;--border-strong:#444440;
-  --text:#e8e6e1;--text-secondary:#a09e99;--text-muted:#6b6a66;
+  --text:#e8e6e1;--text-secondary:#b0aea9;--text-muted:#908e89;
   --accent:#6fb89f;--accent-hover:#8dcbb5;--accent-subtle:#1c2923;
   --destructive:#e8675e;--destructive-subtle:#2a1c1b;--warning:#d4a94e;--warning-subtle:#2a2418;
   --code-bg:#232321;--cite-bg:#1c2923;--cite-border:#6fb89f;

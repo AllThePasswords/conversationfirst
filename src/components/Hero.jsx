@@ -1,4 +1,9 @@
 export default function Hero() {
+  function scrollTo(e, id) {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
   return (
     <div className="section" style={{ marginBottom: 'var(--space-12)', paddingBottom: 'var(--space-8)', borderBottom: '1px solid var(--border)' }}>
       <div style={{ fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', fontWeight: 500, marginBottom: 'var(--space-3)' }}>
@@ -17,10 +22,10 @@ export default function Hero() {
         <a href="#/chat" className="btn btn-primary" style={{ textDecoration: 'none' }}>
           Try the chat
         </a>
-        <a href="#configurator" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
+        <a href="#configurator" className="btn btn-secondary" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'configurator')}>
           Configure your spec
         </a>
-        <a href="#voice" className="btn btn-ghost" style={{ textDecoration: 'none' }}>
+        <a href="#voice" className="btn btn-ghost" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'voice')}>
           Read the rules
         </a>
       </div>

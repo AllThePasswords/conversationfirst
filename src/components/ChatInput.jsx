@@ -34,6 +34,7 @@ export default function ChatInput({ onSend, disabled }) {
           ref={textareaRef}
           className="chat-input-field"
           placeholder="Ask a question..."
+          aria-label="Message input"
           value={text}
           onChange={(e) => { setText(e.target.value); resize(); }}
           onKeyDown={handleKeyDown}
@@ -45,6 +46,7 @@ export default function ChatInput({ onSend, disabled }) {
           onClick={handleSend}
           disabled={disabled || !text.trim()}
           title="Send"
+          aria-label="Send message"
         >
           ↑
         </button>
