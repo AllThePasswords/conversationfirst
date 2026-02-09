@@ -14,10 +14,13 @@ export default function Hero() {
         Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library.
       </p>
       <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-        <a href="#configurator" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+        <a href="#/chat" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+          Try the chat
+        </a>
+        <a href="#configurator" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
           Configure your spec
         </a>
-        <a href="#voice" className="btn btn-secondary" style={{ textDecoration: 'none' }}>
+        <a href="#voice" className="btn btn-ghost" style={{ textDecoration: 'none' }}>
           Read the rules
         </a>
       </div>
