@@ -30,10 +30,21 @@ export default function ChatPage() {
     if (pending) {
       sessionStorage.removeItem('cf-pending-message');
       pendingSentRef.current = true;
-      // Small delay to let the conversation initialize
-      setTimeout(() => sendMessage(pending), 50);
+
+      // Check if current conversation already has messages
+      const existing = localStorage.getItem(`cf-chat-${activeId}`);
+      const hasMessages = existing && JSON.parse(existing).length > 0;
+
+      if (hasMessages) {
+        // Create a fresh conversation for this new question
+        const newId = createConversation();
+        setTimeout(() => sendMessage(pending), 100);
+      } else {
+        // Reuse the current empty conversation
+        setTimeout(() => sendMessage(pending), 50);
+      }
     }
-  }, [activeId, sendMessage]);
+  }, [activeId, sendMessage, createConversation]);
 
   // Auto-scroll when new content arrives
   useEffect(() => {
