@@ -16,7 +16,7 @@ export default function Hero() {
         The AI is a computer. Not a person, not an assistant, not a helper. A computer with deep capabilities behind an elegant conversational interface.
       </p>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', maxWidth: 560, marginBottom: 'var(--space-8)' }}>
-        Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library.
+        Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library. WCAG 2.1 AA compliant.
       </p>
       <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
         <a href="#/chat" className="btn btn-primary" style={{ textDecoration: 'none' }}>

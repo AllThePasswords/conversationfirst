@@ -1,7 +1,7 @@
 export default function ComponentShowcase() {
   return (
-    <div className="section" id="components">
-      <div className="section-label">App components — all tokens, no custom values</div>
+    <section className="section" id="components" aria-labelledby="components-heading">
+      <h2 className="section-label" id="components-heading">App components — all tokens, no custom values</h2>
 
       <h3 style={{ marginTop: 0 }}>Buttons</h3>
       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-6)', alignItems: 'center' }}>
@@ -63,17 +63,17 @@ export default function ComponentShowcase() {
       <h3>Forms</h3>
       <div style={{ maxWidth: 440, marginBottom: 'var(--space-6)' }}>
         <div className="input-group">
-          <label className="input-label">Project name</label>
-          <input className="input" defaultValue="Conversation First" />
+          <label className="input-label" htmlFor="demo-project">Project name</label>
+          <input id="demo-project" className="input" defaultValue="Conversation First" />
         </div>
         <div className="input-group">
-          <label className="input-label">Endpoint</label>
-          <div className="input-hint">Base URL for the AI service</div>
-          <input className="input input-mono" defaultValue="https://api.anthropic.com/v1" />
+          <label className="input-label" htmlFor="demo-endpoint">Endpoint</label>
+          <div className="input-hint" id="demo-endpoint-hint">Base URL for the AI service</div>
+          <input id="demo-endpoint" className="input input-mono" defaultValue="https://api.anthropic.com/v1" aria-describedby="demo-endpoint-hint" />
         </div>
         <div className="input-group">
-          <label className="input-label">System prompt</label>
-          <textarea className="input" defaultValue="You are a computer. Answer directly. Cite sources. Give examples. Do not editorialize." />
+          <label className="input-label" htmlFor="demo-prompt">System prompt</label>
+          <textarea id="demo-prompt" className="input" defaultValue="You are a computer. Answer directly. Cite sources. Give examples. Do not editorialize." />
         </div>
         <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
           <button className="btn btn-primary">Save</button>
@@ -121,6 +121,6 @@ export default function ComponentShowcase() {
       <div style={{ marginBottom: 'var(--space-6)' }}>
         <span className="toast">✓ Exported</span>
       </div>
-    </div>
+    </section>
   );
 }

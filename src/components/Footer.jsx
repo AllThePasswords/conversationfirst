@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
       </div>
       <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-        The AI is a computer.
+        Created by <a href="https://ericgreene.ie" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'underline', textUnderlineOffset: 2 }}>Eric Greene</a>
       </div>
     </footer>
   );

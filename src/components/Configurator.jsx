@@ -87,7 +87,9 @@ html{font-size:16px}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
 .page{max-width:840px;margin:0 auto;padding:var(--space-12) var(--space-8) 96px}
 .section{margin-bottom:var(--space-12)}
-.section-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin-bottom:var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border)}
+.skip-link{position:absolute;top:-100%;left:var(--space-4);z-index:100;padding:var(--space-2) var(--space-4);background:var(--accent);color:#fff;font-weight:600;font-size:var(--text-sm);border-radius:var(--radius-md);text-decoration:none}
+.skip-link:focus{top:var(--space-4)}
+.section-label{font-family:var(--font-body);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin:0 0 var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border);line-height:1.6}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)}
 @media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr}}
@@ -121,7 +123,8 @@ tr:last-child td{border-bottom:none}
 .chat-bubble{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-6) var(--space-8);margin-bottom:var(--space-3)}
 .chat-bubble.user{background:var(--bg);margin-left:var(--space-12)}
 .bubble-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;margin-bottom:var(--space-3)}
-.cite-inline{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.625rem;font-weight:600;width:18px;height:18px;border-radius:var(--radius-full);background:var(--cite-bg);color:var(--cite-border);border:1px solid color-mix(in srgb,var(--cite-border) 30%,transparent);vertical-align:super;margin:0 1px;cursor:pointer;text-decoration:none;position:relative;top:-1px;transition:all 0.12s ease}
+.cite-inline{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.625rem;font-weight:600;width:18px;height:18px;border-radius:var(--radius-full);background:var(--cite-bg);color:var(--cite-border);border:1px solid color-mix(in srgb,var(--cite-border) 50%,transparent);vertical-align:super;margin:0 1px;cursor:pointer;text-decoration:none;position:relative;top:-1px;transition:all 0.12s ease}
+.cite-inline:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .cite-inline:hover{background:color-mix(in srgb,var(--cite-bg) 60%,var(--cite-border));color:#fff;border-color:var(--cite-border);transform:scale(1.1)}
 .cite-inline:active{transform:scale(0.95)}
 .cite-block{display:flex;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--cite-bg);border-left:3px solid var(--cite-border);border-radius:0 var(--radius-md) var(--radius-md) 0;margin:0 0 1em;font-size:var(--text-sm)}
@@ -130,7 +133,7 @@ tr:last-child td{border-bottom:none}
 .cite-block-title a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--border);transition:border-color 0.12s,color 0.12s}
 .cite-block-title a:hover{color:var(--accent);border-color:var(--accent)}
 .cite-block-meta{font-size:var(--text-xs);color:var(--text-muted)}
-.cite-block-meta a{color:var(--text-muted);text-decoration:none;border-bottom:1px solid transparent;transition:all 0.12s}
+.cite-block-meta a{color:var(--text-secondary);text-decoration:none;border-bottom:1px solid var(--border-strong);transition:all 0.12s}
 .cite-block-meta a:hover{color:var(--accent);border-color:var(--accent)}
 .cite-footer{margin-top:var(--space-6);padding-top:var(--space-4);border-top:1px solid var(--border)}
 .cite-footer-title{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;margin-bottom:var(--space-3)}
@@ -146,12 +149,13 @@ tr:last-child td{border-bottom:none}
 .cite-footer-source{color:var(--text-muted);font-size:var(--text-xs)}
 .cite-footer-arrow{color:var(--text-muted);font-size:var(--text-xs);margin-left:auto;opacity:0;transition:opacity 0.12s}
 .cite-footer-link:hover .cite-footer-arrow{opacity:1}
-.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-body);font-size:var(--text-sm);font-weight:600;padding:var(--space-2) var(--space-4);border-radius:var(--radius-md);border:1px solid transparent;cursor:pointer;transition:all 0.15s;text-decoration:none;line-height:1.4}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-body);font-size:var(--text-sm);font-weight:600;padding:var(--space-2) var(--space-4);border-radius:var(--radius-md);border:1px solid transparent;cursor:pointer;transition:all 0.15s;text-decoration:none;line-height:1.4;min-height:36px}
 .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-secondary{background:var(--surface);color:var(--text);border-color:var(--border)}
 .btn-ghost{background:transparent;color:var(--text-secondary)}
 .btn-destructive{background:var(--destructive-subtle);color:var(--destructive);border-color:color-mix(in srgb,var(--destructive) 20%,transparent)}
-.btn-sm{font-size:var(--text-xs);padding:var(--space-1) var(--space-3)}
+.btn-sm{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);min-height:28px}
 .badge{display:inline-flex;align-items:center;font-size:var(--text-xs);font-weight:600;padding:2px var(--space-2);border-radius:var(--radius-full);line-height:1.4}
 .badge-accent{background:var(--accent-subtle);color:var(--accent)}
 .badge-warning{background:var(--warning-subtle);color:var(--warning)}
@@ -200,7 +204,7 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 .processing{padding:var(--space-6) var(--space-8)}
 .processing-status{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
 .processing-cursor{width:2px;height:18px;background:var(--accent);animation:cursor-blink 1s ease-in-out infinite;border-radius:1px}
-.processing-text{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--text-muted);letter-spacing:0.01em}
+.processing-text{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--accent);letter-spacing:0.01em}
 .processing-text .dot{animation:dot-cascade 1.4s ease-in-out infinite}
 .processing-text .dot:nth-child(2){animation-delay:0.2s}
 .processing-text .dot:nth-child(3){animation-delay:0.4s}
@@ -212,10 +216,13 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 
 .processing-minimal .processing-status{margin-bottom:0}
 .processing-thinking .processing-text{font-style:italic}
+.nav-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
 </style>
 </head>
 <body>
-<div class="page">
+<a href="#main-content" class="skip-link">Skip to content</a>
+<main id="main-content" class="page">
 
 <div class="header">
   <div class="header-kicker">Conversation First</div>
@@ -230,8 +237,8 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 </dl>
 
 <!-- PROCESSING STATES -->
-<div class="section">
-<div class="section-label">Processing states</div>
+<section class="section" aria-labelledby="s-processing">
+<h2 class="section-label" id="s-processing">Processing states</h2>
 
 <h3>Minimal — cursor only</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For fast responses under 2 seconds. Just a blinking cursor.</p>
@@ -302,11 +309,11 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
   <div class="bubble-label">Assistant</div>
   <p>Revenue grew 18% quarter-over-quarter, reaching $4.2M<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a>. This outpaces the industry median<span style="display:inline-block;width:2px;height:16px;background:var(--accent);animation:cursor-blink 1s ease-in-out infinite;vertical-align:text-bottom;margin-left:2px;border-radius:1px"></span></p>
 </div>
-</div>
+</section>
 
 <!-- CONVERSATION TONE -->
-<div class="section">
-<div class="section-label">Conversation — correct tone</div>
+<section class="section" aria-labelledby="s-tone">
+<h2 class="section-label" id="s-tone">Conversation — correct tone</h2>
 
 <div class="chat-bubble user"><div class="bubble-label">User</div>
 <p>What's the retention rate for Q3?</p>
@@ -330,7 +337,7 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 
 <h3 style="margin-top:var(--space-8)">Incorrect tone — for comparison</h3>
 
-<div class="chat-bubble" style="opacity:0.55;border-style:dashed">
+<div class="chat-bubble" style="opacity:0.7;border-style:dashed">
   <div class="bubble-label">Assistant ✗</div>
   <p>Great question! I'd be happy to help you with that. Based on my analysis of your Q3 data, it looks like the net revenue retention rate came in at a really impressive 124%, which is actually a significant improvement over the previous quarter. This is particularly noteworthy because it suggests strong product-market fit and indicates that your existing customers are finding increasing value in the platform. The industry benchmarks suggest this is well above average, which is definitely something to celebrate! Let me know if you'd like me to dig deeper into any of these metrics.</p>
 </div>
@@ -338,11 +345,11 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-4);padding:var(--space-3) var(--space-4);background:var(--destructive-subtle);border:1px solid color-mix(in srgb,var(--destructive) 15%,transparent);border-radius:var(--radius-md)">
   <strong style="color:var(--destructive)">Why this is wrong:</strong> Filler opener. Emotional language. No citations. No examples. Verbose. Editorialising. Ends with unnecessary prompt.
 </p>
-</div>
+</section>
 
 <!-- COMPLEX QUERY -->
-<div class="section">
-<div class="section-label">Conversation — complex query</div>
+<section class="section" aria-labelledby="s-complex">
+<h2 class="section-label" id="s-complex">Conversation — complex query</h2>
 
 <div class="chat-bubble user"><div class="bubble-label">User</div>
 <p>How does our Q3 margin compare to industry, and what drove the change?</p>
@@ -376,11 +383,11 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
   </ul>
 </div>
 </div>
-</div>
+</section>
 
 <!-- APP COMPONENTS -->
-<div class="section">
-<div class="section-label">App components</div>
+<section class="section" aria-labelledby="s-components">
+<h2 class="section-label" id="s-components">App components</h2>
 
 <h3>Buttons</h3>
 <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-6);align-items:center">
@@ -420,9 +427,9 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
 
 <h3>Forms</h3>
 <div style="max-width:440px;margin-bottom:var(--space-6)">
-  <div class="input-group"><label class="input-label">Project name</label><input class="input" value="Conversation First"/></div>
-  <div class="input-group"><label class="input-label">Endpoint</label><div class="input-hint">Base URL for the AI service</div><input class="input input-mono" value="https://api.anthropic.com/v1"/></div>
-  <div class="input-group"><label class="input-label">System prompt</label><textarea class="input">You are a computer. Answer directly. Cite sources. Give examples. Do not editorialize.</textarea></div>
+  <div class="input-group"><label class="input-label" for="tp-project">Project name</label><input id="tp-project" class="input" value="Conversation First"/></div>
+  <div class="input-group"><label class="input-label" for="tp-endpoint">Endpoint</label><div class="input-hint" id="tp-endpoint-hint">Base URL for the AI service</div><input id="tp-endpoint" class="input input-mono" value="https://api.anthropic.com/v1" aria-describedby="tp-endpoint-hint"/></div>
+  <div class="input-group"><label class="input-label" for="tp-prompt">System prompt</label><textarea id="tp-prompt" class="input">You are a computer. Answer directly. Cite sources. Give examples. Do not editorialize.</textarea></div>
   <div style="display:flex;gap:var(--space-2)"><button class="btn btn-primary">Save</button><button class="btn btn-secondary">Cancel</button></div>
 </div>
 
@@ -457,9 +464,9 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
 <h3>Toast</h3>
 <div style="margin-bottom:var(--space-6)"><span class="toast">✓ Exported</span></div>
 
-</div>
+</section>
 
-</div>
+</main>
 </body>
 </html>`;
 }
@@ -469,7 +476,7 @@ function generateSpec(c) {
   const b = c.body, h = resolve(c), m = c.mono;
   return `# Conversation First — App Configuration Spec
 
-> Three typeface decisions. Everything else is fixed. The AI is a computer, not a person.
+> Three typeface decisions. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
 
 ---
 
@@ -778,7 +785,7 @@ function ProcessingPreviewDemo({ choices }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
       <div style={{ width: "2px", height: "16px", background: "var(--accent)", borderRadius: "1px", animation: "cursor-blink 1s ease-in-out infinite" }} />
-      <span style={{ fontFamily: m?.family, fontSize: "var(--text-xs)", color: "var(--text-muted)", transition: "opacity 0.3s", letterSpacing: "0.01em" }}>
+      <span style={{ fontFamily: m?.family, fontSize: "var(--text-xs)", color: "var(--accent)", transition: "opacity 0.3s", letterSpacing: "0.01em" }}>
         {labels[phase]}
         <span style={{ animation: "dot-cascade 1.4s ease-in-out infinite" }}>.</span>
         <span style={{ animation: "dot-cascade 1.4s ease-in-out infinite 0.2s" }}>.</span>
@@ -856,8 +863,8 @@ export default function Configurator() {
   }, []);
 
   return (
-    <div className="section" id="configurator">
-      <div className="section-label">Configurator — build your spec</div>
+    <section className="section" id="configurator" aria-labelledby="configurator-heading">
+      <h2 className="section-label" id="configurator-heading">Configurator — build your spec</h2>
 
       <style>{`
         @keyframes toastUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -922,6 +929,10 @@ export default function Configurator() {
               className="btn btn-secondary">
               Download test page (.html)
             </button>
+            <button onClick={() => { const w = window.open("", "_blank"); if (w) { w.document.write(generateTestPage(choices)); w.document.close(); } }}
+              className="btn btn-secondary">
+              Preview test page
+            </button>
             <button onClick={() => { navigator.clipboard.writeText(generateSpec(choices)).then(() => flash("Copied")); }}
               className="btn btn-secondary">
               Copy spec
@@ -942,6 +953,6 @@ export default function Configurator() {
           <button onClick={() => setStep(0)} className="btn btn-secondary" style={{ marginTop: "var(--space-3)" }}>Start over</button>
         </div>
       )}
-    </div>
+    </section>
   );
 }

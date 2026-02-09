@@ -74,7 +74,8 @@ export default function App() {
 
   return (
     <>
-      <div className="page" style={{ paddingBottom: 120 }}>
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
         <Hero />
         <VoiceRules />
         <ProcessingDemo />
@@ -82,7 +83,7 @@ export default function App() {
         <ComponentShowcase />
         <Configurator />
         <Footer />
-      </div>
+      </main>
       <FloatingInput />
     </>
   );

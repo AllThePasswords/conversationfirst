@@ -1,8 +1,30 @@
+import { useEffect, useRef } from 'react';
+
 export default function ChatSidebar({ isOpen, conversations, activeId, onSelect, onNew, onClose }) {
+  const sidebarRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    // Focus the sidebar when it opens
+    sidebarRef.current?.focus();
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <>
       {isOpen && <div className="chat-sidebar-overlay" onClick={onClose} />}
-      <div className={`chat-sidebar ${isOpen ? 'open' : ''}`}>
+      <nav
+        ref={sidebarRef}
+        className={`chat-sidebar ${isOpen ? 'open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Conversation history"
+        tabIndex={-1}
+      >
         <div className="chat-sidebar-header">
           <span style={{
             fontSize: 'var(--text-xs)',
@@ -13,7 +35,7 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
           }}>
             Conversations
           </span>
-          <button className="chat-menu-btn" onClick={onClose} title="Close">
+          <button className="chat-menu-btn" onClick={onClose} title="Close" aria-label="Close conversation list">
             ✕
           </button>
         </div>
@@ -42,7 +64,7 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
             </div>
           )}
         </div>
-      </div>
+      </nav>
     </>
   );
 }

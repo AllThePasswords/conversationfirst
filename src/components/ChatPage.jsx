@@ -77,6 +77,7 @@ export default function ChatPage() {
 
   return (
     <div className="chat-page">
+      <a href="#chat-main" className="skip-link">Skip to content</a>
       <ChatSidebar
         isOpen={sidebarOpen}
         conversations={conversations}
@@ -86,7 +87,7 @@ export default function ChatPage() {
         onClose={() => setSidebarOpen(false)}
       />
 
-      <div className="chat-header">
+      <header className="chat-header">
         <button className="chat-menu-btn" onClick={() => setSidebarOpen(true)} title="Conversations" aria-label="Open conversation list">
           ☰
         </button>
@@ -96,9 +97,9 @@ export default function ChatPage() {
         <button className="chat-menu-btn" onClick={handleNewChat} title="New chat" aria-label="Start new conversation">
           +
         </button>
-      </div>
+      </header>
 
-      <div className="chat-messages" ref={messagesContainerRef}>
+      <main id="chat-main" className="chat-messages" ref={messagesContainerRef}>
         <div className="chat-messages-inner">
           {messages.length === 0 && !isStreaming ? (
             <div className="chat-welcome">
@@ -185,8 +186,15 @@ export default function ChatPage() {
               )}
 
               {error && (
-                <div className="alert alert-destructive" style={{ cursor: 'pointer' }} onClick={clearError}>
-                  <div><strong>Error:</strong> {error}</div>
+                <div className="alert alert-destructive" role="alert">
+                  <div style={{ flex: 1 }}><strong>Error:</strong> {error}</div>
+                  <button
+                    onClick={clearError}
+                    aria-label="Dismiss error"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 'var(--text-lg)', padding: 'var(--space-1)', lineHeight: 1 }}
+                  >
+                    ✕
+                  </button>
                 </div>
               )}
 
@@ -194,7 +202,7 @@ export default function ChatPage() {
             </>
           )}
         </div>
-      </div>
+      </main>
 
       <ChatInput onSend={sendMessage} disabled={isStreaming} />
     </div>
