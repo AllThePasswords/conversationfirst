@@ -226,8 +226,29 @@ export default async function handler(req) {
   });
 
   if (!response.ok) {
-    const err = await response.text();
-    return new Response(JSON.stringify({ error: `Anthropic API error: ${response.status}` }), {
+    let detail = '';
+    try {
+      const errBody = await response.json();
+      detail = errBody?.error?.message || '';
+    } catch {
+      try { detail = await response.text(); } catch {}
+    }
+
+    // Map to user-friendly messages
+    let userMessage;
+    if (response.status === 401) {
+      userMessage = 'API key is invalid or missing.';
+    } else if (response.status === 429) {
+      userMessage = 'Rate limit reached. Wait a moment and try again.';
+    } else if (response.status === 400) {
+      userMessage = 'Request error. Try starting a new conversation.';
+    } else if (response.status === 529 || response.status === 503) {
+      userMessage = 'Service temporarily unavailable. Try again shortly.';
+    } else {
+      userMessage = `Something went wrong (${response.status}). Try again.`;
+    }
+
+    return new Response(JSON.stringify({ error: userMessage }), {
       status: 502,
       headers: { 'Content-Type': 'application/json' },
     });
