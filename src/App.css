@@ -435,3 +435,23 @@ kbd {
   animation: shimmer 1.8s ease-in-out infinite;
 }
 .processing-minimal .processing-status { margin-bottom: 0; }
+
+/* Generative UI preview container */
+.cf-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-4) 0;
+  background: var(--surface-raised);
+}
+.cf-preview::before {
+  content: 'Preview';
+  display: block;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+.cf-preview > *:last-child { margin-bottom: 0; }
