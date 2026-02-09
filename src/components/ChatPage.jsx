@@ -45,6 +45,7 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const pendingSentRef = useRef(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
 
   // Send pending message from landing page floating input
   useEffect(() => {
@@ -71,6 +72,15 @@ export default function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Show header border on scroll
+  useEffect(() => {
+    const el = messagesContainerRef.current;
+    if (!el) return;
+    const onScroll = () => setHeaderScrolled(el.scrollTop > 8);
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Clean up staged image previews on unmount or clear
   useEffect(() => {
@@ -183,10 +193,7 @@ export default function ChatPage() {
         onClose={() => setSidebarOpen(false)}
       />
 
-      <header className="chat-header">
-        <div className="chat-header-title">
-          {activeConversation?.title || 'New conversation'}
-        </div>
+      <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
         <button className="chat-menu-btn" onClick={() => setSidebarOpen(prev => !prev)} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6" />
@@ -194,6 +201,11 @@ export default function ChatPage() {
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
+        {messages.length > 0 && activeConversation?.title && (
+          <div className="chat-header-title">
+            {activeConversation.title}
+          </div>
+        )}
       </header>
 
       <main id="chat-main" className="chat-messages" ref={messagesContainerRef} style={{ position: 'relative' }}>

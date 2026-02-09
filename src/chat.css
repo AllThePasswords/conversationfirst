@@ -455,10 +455,15 @@
 .chat-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid transparent;
   flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.chat-header.scrolled {
+  border-bottom-color: var(--border);
 }
 
 .chat-header-title {
@@ -491,7 +496,7 @@
 .home-nav {
   position: fixed;
   top: var(--space-4);
-  right: var(--space-4);
+  left: var(--space-4);
   z-index: 40;
 }
 

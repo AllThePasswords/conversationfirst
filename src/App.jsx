@@ -119,6 +119,7 @@ export default function App() {
           </svg>
         </a>
       </nav>
+
       <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
         <Hero />
         <VoiceRules />
