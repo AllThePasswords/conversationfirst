@@ -20,12 +20,19 @@ export default function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
 
-  // Auto-create first conversation if none exists
+  // Auto-create conversation: always new if ?new in hash, otherwise fallback
   useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('?new')) {
+      createConversation();
+      window.location.hash = '#/chat';
+      return;
+    }
     if (!activeId && conversations.length === 0) {
       createConversation();
     }
-  }, [activeId, conversations.length, createConversation]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { messages, isStreaming, isSearching, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
   const messagesEndRef = useRef(null);
@@ -55,15 +62,11 @@ export default function ChatPage() {
     }
   }, [activeId, sendMessage, createConversation]);
 
-  // Auto-scroll when new content arrives
+  // Scroll to bottom only when messages array changes (user sent or response completed)
+  // Never force-scroll during streaming — let the user read at their own pace
   useEffect(() => {
-    const container = messagesContainerRef.current;
-    if (!container) return;
-    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
-    if (isNearBottom) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, streamingContent]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleNewChat = useCallback(() => {
     createConversation();
@@ -76,7 +79,7 @@ export default function ChatPage() {
   }, [setActiveId]);
 
   return (
-    <div className="chat-page">
+    <div className={`chat-page ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <a href="#chat-main" className="skip-link">Skip to content</a>
       <ChatSidebar
         isOpen={sidebarOpen}

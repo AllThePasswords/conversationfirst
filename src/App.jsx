@@ -22,7 +22,7 @@ function FloatingInput() {
   const handleSend = useCallback(() => {
     if (!text.trim()) return;
     sessionStorage.setItem('cf-pending-message', text.trim());
-    window.location.hash = '#/chat';
+    window.location.hash = '#/chat?new';
   }, [text]);
 
   const handleKeyDown = useCallback((e) => {
@@ -68,13 +68,20 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  if (route === '#/chat') {
+  if (route === '#/chat' || route.startsWith('#/chat?')) {
     return <ChatPage />;
   }
 
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to content</a>
+      <nav className="home-nav" aria-label="Chat navigation">
+        <a href="#/chat" className="home-nav-btn" title="Chat history" aria-label="Open chat history">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        </a>
+      </nav>
       <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
         <Hero />
         <VoiceRules />

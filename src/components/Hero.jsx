@@ -19,7 +19,7 @@ export default function Hero() {
         Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library. WCAG 2.1 AA compliant.
       </p>
       <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-        <a href="#/chat" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+        <a href="#/chat?new" className="btn btn-primary" style={{ textDecoration: 'none' }}>
           Try the chat
         </a>
         <a href="#configurator" className="btn btn-secondary" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'configurator')}>

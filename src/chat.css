@@ -51,7 +51,9 @@
 }
 
 .chat-messages-inner .chat-bubble.user {
-  margin-left: var(--space-10);
+  margin-left: auto;
+  width: fit-content;
+  max-width: 85%;
 }
 
 /* ===== Input Bar ===== */
@@ -146,6 +148,19 @@
 
 .chat-sidebar.open {
   transform: translateX(0);
+}
+
+/* Desktop: push layout — no overlay, content shifts right */
+@media (min-width: 641px) {
+  .chat-page {
+    transition: margin-left 0.2s ease;
+  }
+  .chat-page.sidebar-open {
+    margin-left: 280px;
+  }
+  .chat-sidebar-overlay {
+    display: none;
+  }
 }
 
 .chat-sidebar-overlay {
@@ -325,6 +340,38 @@
   outline-offset: 2px;
 }
 
+/* ===== Home Page Chat Nav ===== */
+.home-nav {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 40;
+}
+
+.home-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.home-nav-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.home-nav-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ===== Floating Input (Landing Page) ===== */
 .chat-input-floating {
   position: fixed;
@@ -365,7 +412,7 @@
     padding: var(--space-4) var(--space-5);
   }
   .chat-messages-inner .chat-bubble.user {
-    margin-left: var(--space-6);
+    max-width: 90%;
   }
   .chat-sidebar {
     width: 100%;
