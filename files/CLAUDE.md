@@ -194,6 +194,84 @@ See `conversation-first.jsx` → download test page for full rendered reference.
 
 ---
 
+## Document layout system
+
+When generating documents inside `cf-doc`, use named layout classes. Never use inline `grid-template-columns`.
+
+### Column classes (inside .cf-doc)
+
+| Class | Layout | Use case |
+|---|---|---|
+| `doc-cols-2` | 1fr 1fr | Equal two-column (comparison, side-by-side) |
+| `doc-cols-3` | 1fr 1fr 1fr | Three equal columns (stats, features) |
+| `doc-cols-4` | 1fr 1fr 1fr 1fr | Four equal columns (metrics dashboard) |
+| `doc-cols-2-1` | 2fr 1fr | Main content + sidebar (CV, report) |
+| `doc-cols-1-2` | 1fr 2fr | Sidebar + main content (left nav layout) |
+| `doc-cols-3-1` | 3fr 1fr | Wide content + narrow sidebar |
+| `doc-cols-1-3` | 1fr 3fr | Narrow sidebar + wide content |
+
+### Gap modifiers
+
+Add to any grid container to change spacing:
+- `gap-tight` — 8px, for dense layouts (stats, tags)
+- `gap-normal` — 16px, default
+- `gap-loose` — 24px, for spacious layouts
+
+### Section helpers
+
+- `doc-section` — bottom margin between vertical sections
+- `doc-section-sm` — tighter section spacing
+
+### Region patterns
+
+- `doc-header-band` — full-width accent-coloured header at document top. Supports h1, h2, p, doc-kicker inside.
+- `doc-aside` — sidebar region styling: smaller text, uppercase h3 headings in accent colour, no bullet lists.
+
+### General grids (outside .cf-doc)
+
+`grid-2`, `grid-3`, `grid-4`, `grid-2-1`, `grid-1-2`, `grid-3-1`, `grid-1-3`. All collapse to single column below 640px.
+
+### Layout rules
+
+1. Always use class-based layouts. No inline grid styles.
+2. Use `doc-cols-*` inside `.cf-doc`. Use `grid-*` outside.
+3. Prefer `doc-cols-2-1` for any document with a sidebar.
+4. Use `doc-aside` on the narrow column for sidebar styling.
+5. Use `gap-tight` for dense content. Use `gap-loose` for spacious reading.
+
+### Example — CV with sidebar
+
+```html
+<div class="cf-doc">
+  <div class="doc-header-band">
+    <div class="doc-kicker">Curriculum Vitae</div>
+    <h1>Jane Smith</h1>
+    <p>Senior Software Engineer</p>
+  </div>
+  <div class="doc-section">
+    <div class="doc-cols-2-1">
+      <div>
+        <h2>Experience</h2>
+        <h3>Lead Engineer — Acme Corp</h3>
+        <p>Led team of 8 engineers building distributed systems.</p>
+      </div>
+      <div class="doc-aside">
+        <h3>Contact</h3>
+        <ul><li>jane@example.com</li><li>+1 555 0123</li></ul>
+        <h3>Skills</h3>
+        <ul><li>TypeScript</li><li>React</li><li>Node.js</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Jane Smith</span>
+    <span>Page 1</span>
+  </div>
+</div>
+```
+
+---
+
 ## Reminders
 
 - Read this file before every task

@@ -50,7 +50,17 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
-@media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+.grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); }
+.grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-4); }
+.grid-3-1 { display: grid; grid-template-columns: 3fr 1fr; gap: var(--space-4); }
+.grid-1-3 { display: grid; grid-template-columns: 1fr 3fr; gap: var(--space-4); }
+@media (max-width: 640px) { .grid-2, .grid-3, .grid-4, .grid-2-1, .grid-1-2, .grid-3-1, .grid-1-3 { grid-template-columns: 1fr; } }
+
+/* Gap modifiers */
+.gap-tight { gap: var(--space-2); }
+.gap-normal { gap: var(--space-4); }
+.gap-loose { gap: var(--space-6); }
 
 h1 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 1.5em 0 0.5em; }
 h2 { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 1.5em 0 0.5em; }
@@ -658,6 +668,51 @@ kbd {
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: var(--text-sm);
   margin: var(--space-3) 0;
+}
+
+/* Document columns — named ratio classes */
+.cf-doc .doc-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+.cf-doc .doc-cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
+.cf-doc .doc-cols-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--space-3); }
+.cf-doc .doc-cols-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-5); }
+.cf-doc .doc-cols-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-5); }
+.cf-doc .doc-cols-3-1 { display: grid; grid-template-columns: 3fr 1fr; gap: var(--space-5); }
+.cf-doc .doc-cols-1-3 { display: grid; grid-template-columns: 1fr 3fr; gap: var(--space-5); }
+
+/* Document section helpers */
+.cf-doc .doc-section { margin-bottom: var(--space-6); }
+.cf-doc .doc-section:last-child { margin-bottom: 0; }
+.cf-doc .doc-section-sm { margin-bottom: var(--space-3); }
+
+/* Document header band — full-width accent background at top */
+.cf-doc .doc-header-band {
+  background: var(--accent);
+  color: #fff;
+  margin: -48px -56px 0;
+  padding: var(--space-8) 56px var(--space-6);
+  margin-bottom: var(--space-6);
+}
+.cf-doc .doc-header-band h1,
+.cf-doc .doc-header-band h2,
+.cf-doc .doc-header-band h3 { color: #fff; margin-top: 0; }
+.cf-doc .doc-header-band p { color: rgba(255, 255, 255, 0.85); }
+.cf-doc .doc-header-band .doc-kicker { color: rgba(255, 255, 255, 0.7); }
+
+/* Document aside — sidebar region styling */
+.cf-doc .doc-aside { font-size: var(--text-sm); color: #595856; }
+.cf-doc .doc-aside h3 {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+  margin: var(--space-4) 0 var(--space-2);
+}
+.cf-doc .doc-aside h3:first-child { margin-top: 0; }
+.cf-doc .doc-aside ul { list-style: none; padding-left: 0; }
+.cf-doc .doc-aside li { padding-left: 0; }
+@media (prefers-color-scheme: dark) {
+  .cf-doc .doc-aside { color: var(--text-secondary); }
 }
 .cf-doc ul, .cf-doc ol { padding-left: var(--space-5); margin: 0 0 var(--space-3); }
 .cf-doc li { margin-bottom: var(--space-1); font-size: var(--text-sm); }

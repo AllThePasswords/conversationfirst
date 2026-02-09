@@ -92,7 +92,13 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-he
 .section-label{font-family:var(--font-body);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin:0 0 var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border);line-height:1.6}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)}
-@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)}
+.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:var(--space-4)}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:var(--space-4)}
+.grid-3-1{display:grid;grid-template-columns:3fr 1fr;gap:var(--space-4)}
+.grid-1-3{display:grid;grid-template-columns:1fr 3fr;gap:var(--space-4)}
+@media(max-width:640px){.grid-2,.grid-3,.grid-4,.grid-2-1,.grid-1-2,.grid-3-1,.grid-1-3{grid-template-columns:1fr}}
+.gap-tight{gap:var(--space-2)}.gap-normal{gap:var(--space-4)}.gap-loose{gap:var(--space-6)}
 .header{margin-bottom:var(--space-12);padding-bottom:var(--space-8);border-bottom:1px solid var(--border)}
 .header-kicker{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:500;margin-bottom:var(--space-2)}
 .header h1{font-family:var(--font-heading);font-size:var(--text-3xl);font-weight:700;letter-spacing:-0.03em;line-height:1.15;margin-bottom:var(--space-3)}
@@ -218,6 +224,42 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 .processing-thinking .processing-text{font-style:italic}
 .nav-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
+
+/* Document layout */
+.cf-doc{background:#fff;color:#1a1a1a;border-radius:var(--radius-md);padding:48px 56px;max-width:680px;margin:0 auto;font-size:var(--text-base);line-height:1.6;box-shadow:var(--shadow-md);overflow:hidden;position:relative}
+@media(prefers-color-scheme:dark){.cf-doc{box-shadow:0 4px 24px rgba(0,0,0,0.4)}}
+.cf-doc h1{font-family:var(--font-heading);font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin:0 0 var(--space-2);color:#1a1a1a}
+.cf-doc h2{font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;line-height:1.3;margin:var(--space-6) 0 var(--space-2);color:#1a1a1a}
+.cf-doc h3{font-family:var(--font-heading);font-size:var(--text-base);font-weight:600;line-height:1.4;margin:var(--space-4) 0 var(--space-1);color:#1a1a1a}
+.cf-doc p{margin:0 0 var(--space-3);color:#1a1a1a}
+.cf-doc .doc-kicker{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:600;margin-bottom:var(--space-1)}
+.cf-doc .doc-subtitle{font-size:var(--text-sm);color:#595856;margin-bottom:var(--space-6);line-height:1.5}
+.cf-doc .doc-divider{border:none;border-top:2px solid var(--accent);width:40px;margin:var(--space-4) 0 var(--space-6)}
+.cf-doc .doc-footer{position:absolute;bottom:48px;left:56px;right:56px;font-size:var(--text-xs);color:#6b6966;border-top:1px solid #e4e2dd;padding-top:var(--space-3);display:flex;justify-content:space-between}
+.cf-doc .doc-cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)}
+.cf-doc .doc-cols-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)}
+.cf-doc .doc-cols-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)}
+.cf-doc .doc-cols-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:var(--space-3)}
+.cf-doc .doc-cols-2-1{display:grid;grid-template-columns:2fr 1fr;gap:var(--space-5)}
+.cf-doc .doc-cols-1-2{display:grid;grid-template-columns:1fr 2fr;gap:var(--space-5)}
+.cf-doc .doc-cols-3-1{display:grid;grid-template-columns:3fr 1fr;gap:var(--space-5)}
+.cf-doc .doc-cols-1-3{display:grid;grid-template-columns:1fr 3fr;gap:var(--space-5)}
+.cf-doc .doc-highlight{background:var(--accent-subtle);border-left:3px solid var(--accent);padding:var(--space-3) var(--space-4);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:var(--text-sm);margin:var(--space-3) 0}
+.cf-doc .doc-section{margin-bottom:var(--space-6)}
+.cf-doc .doc-section:last-child{margin-bottom:0}
+.cf-doc .doc-section-sm{margin-bottom:var(--space-3)}
+.cf-doc .doc-header-band{background:var(--accent);color:#fff;margin:-48px -56px 0;padding:var(--space-8) 56px var(--space-6);margin-bottom:var(--space-6)}
+.cf-doc .doc-header-band h1,.cf-doc .doc-header-band h2,.cf-doc .doc-header-band h3{color:#fff;margin-top:0}
+.cf-doc .doc-header-band p{color:rgba(255,255,255,0.85)}
+.cf-doc .doc-header-band .doc-kicker{color:rgba(255,255,255,0.7)}
+.cf-doc .doc-aside{font-size:var(--text-sm);color:#595856}
+.cf-doc .doc-aside h3{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:600;margin:var(--space-4) 0 var(--space-2)}
+.cf-doc .doc-aside h3:first-child{margin-top:0}
+.cf-doc .doc-aside ul{list-style:none;padding-left:0}
+.cf-doc .doc-aside li{padding-left:0}
+.cf-doc ul,.cf-doc ol{padding-left:var(--space-5);margin:0 0 var(--space-3)}
+.cf-doc li{margin-bottom:var(--space-1);font-size:var(--text-sm)}
+@media(prefers-color-scheme:dark){.cf-doc .doc-aside{color:var(--text-secondary)}}
 </style>
 </head>
 <body>
@@ -463,6 +505,105 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
 
 <h3>Toast</h3>
 <div style="margin-bottom:var(--space-6)"><span class="toast">✓ Exported</span></div>
+
+</section>
+
+<!-- DOCUMENT LAYOUT -->
+<section class="section" aria-labelledby="s-layout">
+<h2 class="section-label" id="s-layout">Document layout system</h2>
+
+<h3>Equal columns</h3>
+<p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Two, three, and four equal columns for content grids.</p>
+<div class="grid-2" style="margin-bottom:var(--space-4)">
+  <div class="card"><div class="card-title">Column 1</div><div class="card-desc">Half width</div></div>
+  <div class="card"><div class="card-title">Column 2</div><div class="card-desc">Half width</div></div>
+</div>
+<div class="grid-3" style="margin-bottom:var(--space-4)">
+  <div class="card"><div class="card-title">Col 1</div><div class="card-desc">Third</div></div>
+  <div class="card"><div class="card-title">Col 2</div><div class="card-desc">Third</div></div>
+  <div class="card"><div class="card-title">Col 3</div><div class="card-desc">Third</div></div>
+</div>
+<div class="grid-4" style="margin-bottom:var(--space-6)">
+  <div class="card stat"><div class="stat-value">$4.2M</div><div class="stat-label">Revenue</div></div>
+  <div class="card stat"><div class="stat-value">124%</div><div class="stat-label">NRR</div></div>
+  <div class="card stat"><div class="stat-value">72%</div><div class="stat-label">Margin</div></div>
+  <div class="card stat"><div class="stat-value">847</div><div class="stat-label">Customers</div></div>
+</div>
+
+<h3>Asymmetric columns</h3>
+<p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Named ratio classes for main + sidebar layouts.</p>
+<div class="grid-2-1" style="margin-bottom:var(--space-4)">
+  <div class="card"><div class="card-title">Main content (2fr)</div><div class="card-desc">Two-thirds width. Use for primary content in documents, reports, and CVs.</div></div>
+  <div class="card"><div class="card-title">Sidebar (1fr)</div><div class="card-desc">One-third width.</div></div>
+</div>
+<div class="grid-3-1" style="margin-bottom:var(--space-6)">
+  <div class="card"><div class="card-title">Wide content (3fr)</div><div class="card-desc">Three-quarters width. Use when the sidebar needs minimal space.</div></div>
+  <div class="card"><div class="card-title">Narrow (1fr)</div><div class="card-desc">Quarter width.</div></div>
+</div>
+
+<h3>Gap modifiers</h3>
+<p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Three levels: tight (8px), normal (16px), loose (24px).</p>
+<div style="margin-bottom:var(--space-6)">
+  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-tight</code> — 8px</p>
+  <div class="grid-4 gap-tight" style="margin-bottom:var(--space-3)">
+    <div class="card stat"><div class="stat-value">A</div><div class="stat-label">Dense</div></div>
+    <div class="card stat"><div class="stat-value">B</div><div class="stat-label">Dense</div></div>
+    <div class="card stat"><div class="stat-value">C</div><div class="stat-label">Dense</div></div>
+    <div class="card stat"><div class="stat-value">D</div><div class="stat-label">Dense</div></div>
+  </div>
+  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-loose</code> — 24px</p>
+  <div class="grid-4 gap-loose">
+    <div class="card stat"><div class="stat-value">A</div><div class="stat-label">Spacious</div></div>
+    <div class="card stat"><div class="stat-value">B</div><div class="stat-label">Spacious</div></div>
+    <div class="card stat"><div class="stat-value">C</div><div class="stat-label">Spacious</div></div>
+    <div class="card stat"><div class="stat-value">D</div><div class="stat-label">Spacious</div></div>
+  </div>
+</div>
+
+<h3>Document — CV with sidebar</h3>
+<p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Full document layout using doc-header-band, doc-cols-2-1, and doc-aside.</p>
+<div class="cf-doc">
+  <div class="doc-header-band">
+    <div class="doc-kicker">Curriculum Vitae</div>
+    <h1>Jane Smith</h1>
+    <p>Senior Software Engineer</p>
+  </div>
+  <div class="doc-section">
+    <div class="doc-cols-2-1">
+      <div>
+        <h2>Experience</h2>
+        <h3>Lead Engineer — Acme Corp</h3>
+        <p>Led a team of 8 engineers building distributed systems. Reduced API latency 40%.</p>
+        <h3>Software Engineer — StartupCo</h3>
+        <p>Built the core payments platform from scratch. Processed $2M monthly.</p>
+      </div>
+      <div class="doc-aside">
+        <h3>Contact</h3>
+        <ul>
+          <li>jane@example.com</li>
+          <li>+1 555 0123</li>
+          <li>San Francisco, CA</li>
+        </ul>
+        <h3>Skills</h3>
+        <ul>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>Node.js</li>
+          <li>PostgreSQL</li>
+        </ul>
+        <h3>Education</h3>
+        <ul>
+          <li>BS Computer Science</li>
+          <li>Stanford University</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Jane Smith</span>
+    <span>Page 1</span>
+  </div>
+</div>
 
 </section>
 
@@ -718,7 +859,55 @@ Full rendering specifications in test page.
 
 ---
 
-## 9 — Conversational Typesetting
+## 9 — Document Layout System
+
+When generating documents inside \`cf-doc\`, use named layout classes. Never use inline \`grid-template-columns\`.
+
+### 9.1 Column classes (inside .cf-doc)
+
+| Class | Layout | Use case |
+|---|---|---|
+| \`doc-cols-2\` | 1fr 1fr | Equal two-column (comparison, side-by-side) |
+| \`doc-cols-3\` | 1fr 1fr 1fr | Three equal columns (stats, features) |
+| \`doc-cols-4\` | 1fr 1fr 1fr 1fr | Four equal columns (metrics dashboard) |
+| \`doc-cols-2-1\` | 2fr 1fr | Main content + sidebar (CV, report) |
+| \`doc-cols-1-2\` | 1fr 2fr | Sidebar + main content (left nav layout) |
+| \`doc-cols-3-1\` | 3fr 1fr | Wide content + narrow sidebar |
+| \`doc-cols-1-3\` | 1fr 3fr | Narrow sidebar + wide content |
+
+### 9.2 Gap modifiers
+
+Add to any grid container to change spacing:
+- \`gap-tight\` — 8px, for dense layouts (stats, tags)
+- \`gap-normal\` — 16px, default
+- \`gap-loose\` — 24px, for spacious layouts
+
+### 9.3 Section helpers
+
+- \`doc-section\` — bottom margin between vertical sections
+- \`doc-section-sm\` — tighter section spacing
+
+### 9.4 Region patterns
+
+- \`doc-header-band\` — full-width accent-coloured header at document top. Place as first child of cf-doc. Supports h1, h2, p, doc-kicker inside.
+- \`doc-aside\` — sidebar region styling: smaller text, uppercase h3 section headings in accent colour, no bullet list styling. Use on the narrow column in asymmetric layouts.
+
+### 9.5 General grids (outside .cf-doc)
+
+\`grid-2\`, \`grid-3\`, \`grid-4\`, \`grid-2-1\`, \`grid-1-2\`, \`grid-3-1\`, \`grid-1-3\`. All collapse to single column below 640px.
+
+### 9.6 Layout rules
+
+1. Always use class-based layouts. No inline grid styles.
+2. Use \`doc-cols-*\` inside \`.cf-doc\`. Use \`grid-*\` outside.
+3. Prefer \`doc-cols-2-1\` for any document with a sidebar (CV, report).
+4. Use \`doc-aside\` on the narrow column for sidebar styling.
+5. Use \`gap-tight\` for dense content. Use \`gap-loose\` for spacious reading.
+6. Use \`doc-section\` to separate vertical sections within a document.
+
+---
+
+## 10 — Conversational Typesetting
 
 - 2–4 sentences per paragraph. One idea per paragraph. Max ~120 words per block.
 - Short sentences. Active voice. No semicolons.
@@ -727,7 +916,7 @@ Full rendering specifications in test page.
 
 ---
 
-## 10 — Quick Reference
+## 11 — Quick Reference
 
 | Goal | Markdown |
 |---|---|

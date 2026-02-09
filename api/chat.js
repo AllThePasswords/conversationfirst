@@ -137,7 +137,8 @@ Available classes for cf-preview blocks:
 - Alerts: alert, alert-accent, alert-warning, alert-destructive
 - Cards: card, card-title, card-desc, card-meta
 - Stats: card + stat, stat-value, stat-label
-- Grids: grid-2, grid-3
+- Grids: grid-2, grid-3, grid-4, grid-2-1, grid-1-2, grid-3-1, grid-1-3
+- Gap modifiers: gap-tight, gap-normal, gap-loose
 - Forms: input-group, input-label, input-hint, input, input-mono, textarea.input
 - Citations: cite-inline, cite-block, cite-block-num, cite-block-title, cite-block-meta
 - Processing: processing, processing-minimal, processing-status, processing-cursor, processing-text
@@ -147,7 +148,7 @@ Available classes for cf-preview blocks:
 - Empty state: empty-state
 - Keyboard: kbd
 - Chat bubble: chat-bubble, chat-bubble user, bubble-label
-- Document: cf-doc, doc-kicker, doc-subtitle, doc-divider, doc-rule, doc-rule-num, doc-rule-title, doc-rule-desc, doc-example, doc-example good, doc-example bad, doc-footer, doc-cols, doc-highlight
+- Document: cf-doc, doc-kicker, doc-subtitle, doc-divider, doc-rule, doc-rule-num, doc-rule-title, doc-rule-desc, doc-example, doc-example good, doc-example bad, doc-footer, doc-cols, doc-cols-2, doc-cols-3, doc-cols-4, doc-cols-2-1, doc-cols-1-2, doc-cols-3-1, doc-cols-1-3, doc-highlight, doc-section, doc-section-sm, doc-header-band, doc-aside
 
 ---
 
@@ -188,6 +189,109 @@ Example — voice rules one-pager:
   <div class="doc-footer">
     <span>Conversation First Framework</span>
     <span>conversationfirst.vercel.app</span>
+  </div>
+</div>
+\`\`\`
+
+---
+
+DOCUMENT LAYOUT SYSTEM — column and grid classes for documents:
+
+When building documents with columns, always use the named layout classes. Never use inline grid-template-columns.
+
+Document column classes (inside .cf-doc):
+| Class | Layout | Use case |
+| doc-cols-2 | 1fr 1fr | Equal two-column (comparison, side-by-side) |
+| doc-cols-3 | 1fr 1fr 1fr | Three equal columns (stats, features) |
+| doc-cols-4 | 1fr 1fr 1fr 1fr | Four equal columns (metrics dashboard) |
+| doc-cols-2-1 | 2fr 1fr | Main content + sidebar (CV, report with sidebar) |
+| doc-cols-1-2 | 1fr 2fr | Sidebar + main content (left nav layout) |
+| doc-cols-3-1 | 3fr 1fr | Wide content + narrow sidebar |
+| doc-cols-1-3 | 1fr 3fr | Narrow sidebar + wide content |
+
+Gap modifiers — add to any grid to change spacing:
+- gap-tight: 8px gaps, for dense layouts (stats, tags, compact grids)
+- gap-normal: 16px gaps, the default
+- gap-loose: 24px gaps, for spacious reading layouts
+
+Section helpers:
+- doc-section: standard bottom margin between vertical sections
+- doc-section-sm: tighter section spacing
+
+Region patterns:
+- doc-header-band: full-width accent-coloured header at the top of a document. Uses negative margins to bleed to edges. Place as first child of cf-doc. Supports h1, h2, p, doc-kicker inside.
+- doc-aside: styles content as a sidebar region — smaller text, uppercase h3 section headings in accent colour, no bullet list styling. Use on the narrow column in asymmetric layouts.
+
+General grids (outside .cf-doc, for previews):
+grid-2, grid-3, grid-4, grid-2-1, grid-1-2, grid-3-1, grid-1-3
+All collapse to single column below 640px.
+
+Layout rules:
+1. Always use class-based layouts. No inline grid styles.
+2. Use doc-cols-* inside .cf-doc. Use grid-* outside.
+3. Prefer doc-cols-2-1 for any document with a sidebar (CV, report).
+4. Use doc-aside on the narrow column for sidebar styling.
+5. Use gap-tight for dense content (stats, tags). Use gap-loose for spacious reading.
+6. Use doc-section to separate vertical sections within a document.
+
+Example — CV with sidebar:
+
+\`\`\`cf-preview
+<div class="cf-doc">
+  <div class="doc-header-band">
+    <div class="doc-kicker">Curriculum Vitae</div>
+    <h1>Jane Smith</h1>
+    <p>Senior Software Engineer</p>
+  </div>
+  <div class="doc-section">
+    <div class="doc-cols-2-1">
+      <div>
+        <h2>Experience</h2>
+        <h3>Lead Engineer — Acme Corp</h3>
+        <p>Led a team of 8 engineers building distributed systems. Reduced API latency 40%.</p>
+        <h3>Software Engineer — StartupCo</h3>
+        <p>Built the core payments platform from scratch. Processed $2M monthly.</p>
+      </div>
+      <div class="doc-aside">
+        <h3>Contact</h3>
+        <ul>
+          <li>jane@example.com</li>
+          <li>+1 555 0123</li>
+          <li>San Francisco, CA</li>
+        </ul>
+        <h3>Skills</h3>
+        <ul>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>Node.js</li>
+          <li>PostgreSQL</li>
+        </ul>
+        <h3>Education</h3>
+        <ul>
+          <li>BS Computer Science</li>
+          <li>Stanford University</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="doc-footer">
+    <span>Jane Smith</span>
+    <span>Page 1</span>
+  </div>
+</div>
+\`\`\`
+
+Example — stats dashboard:
+
+\`\`\`cf-preview
+<div class="cf-doc">
+  <h1>Q3 Performance</h1>
+  <hr class="doc-divider">
+  <div class="doc-cols-4 gap-tight">
+    <div class="stat"><div class="stat-value">$4.2M</div><div class="stat-label">Revenue</div></div>
+    <div class="stat"><div class="stat-value">124%</div><div class="stat-label">NRR</div></div>
+    <div class="stat"><div class="stat-value">72%</div><div class="stat-label">Margin</div></div>
+    <div class="stat"><div class="stat-value">847</div><div class="stat-label">Customers</div></div>
   </div>
 </div>
 \`\`\`
