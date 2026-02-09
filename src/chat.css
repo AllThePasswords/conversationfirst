@@ -227,6 +227,40 @@
   background: var(--bg);
 }
 
+/* ===== Floating Input (Landing Page) ===== */
+.chat-input-floating {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-4) var(--space-8) var(--space-6);
+  background: linear-gradient(transparent, var(--bg) 30%);
+  z-index: 40;
+}
+
+.chat-input-floating .chat-input-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-lg);
+}
+
+.chat-input-floating .chat-input-field {
+  border: none;
+  background: transparent;
+  min-height: 40px;
+}
+
+.chat-input-floating .chat-input-field:focus {
+  box-shadow: none;
+}
+
+.chat-input-floating .chat-send-btn {
+  width: 40px;
+  height: 40px;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 640px) {
   .chat-messages-inner .chat-bubble {

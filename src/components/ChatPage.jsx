@@ -21,6 +21,19 @@ export default function ChatPage() {
   const { messages, isStreaming, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const pendingSentRef = useRef(false);
+
+  // Send pending message from landing page floating input
+  useEffect(() => {
+    if (!activeId || pendingSentRef.current) return;
+    const pending = sessionStorage.getItem('cf-pending-message');
+    if (pending) {
+      sessionStorage.removeItem('cf-pending-message');
+      pendingSentRef.current = true;
+      // Small delay to let the conversation initialize
+      setTimeout(() => sendMessage(pending), 50);
+    }
+  }, [activeId, sendMessage]);
 
   // Auto-scroll when new content arrives
   useEffect(() => {
