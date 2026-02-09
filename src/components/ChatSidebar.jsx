@@ -35,9 +35,6 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
           }}>
             Conversations
           </span>
-          <button className="chat-menu-btn" onClick={onClose} title="Close" aria-label="Close conversation list">
-            ✕
-          </button>
         </div>
 
         <button
