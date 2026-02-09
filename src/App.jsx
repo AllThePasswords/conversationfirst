@@ -7,6 +7,8 @@ import ComponentShowcase from './components/ComponentShowcase';
 import Configurator from './components/Configurator';
 import Footer from './components/Footer';
 import ChatPage from './components/ChatPage';
+import ChatSidebar from './components/ChatSidebar';
+import { useChatHistory } from './hooks/useChatHistory';
 
 function FloatingInput() {
   const [text, setText] = useState('');
@@ -94,8 +96,25 @@ function FloatingInput() {
   );
 }
 
+const MenuButton = ({ onClick, sidebarOpen }) => (
+  <button
+    className="chat-menu-btn"
+    onClick={onClick}
+    title={sidebarOpen ? 'Close menu' : 'Menu'}
+    aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  </button>
+);
+
 export default function App() {
   const [route, setRoute] = useState(window.location.hash);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
 
   useEffect(() => {
     const onHash = () => setRoute(window.location.hash);
@@ -103,22 +122,61 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  if (route === '#/chat' || route.startsWith('#/chat?')) {
-    return <ChatPage />;
+  const isChat = route === '#/chat' || route.startsWith('#/chat?');
+
+  const handleSidebarSelect = useCallback((id) => {
+    setActiveId(id);
+    setSidebarOpen(false);
+    if (!window.location.hash.startsWith('#/chat')) {
+      window.location.hash = '#/chat';
+    }
+  }, [setActiveId]);
+
+  const handleNewChat = useCallback(() => {
+    createConversation();
+    setSidebarOpen(false);
+    if (!window.location.hash.startsWith('#/chat')) {
+      window.location.hash = '#/chat';
+    }
+  }, [createConversation]);
+
+  const toggleSidebar = useCallback(() => {
+    setSidebarOpen(prev => !prev);
+  }, []);
+
+  if (isChat) {
+    return (
+      <ChatPage
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        conversations={conversations}
+        activeId={activeId}
+        setActiveId={setActiveId}
+        createConversation={createConversation}
+        updateTitle={updateTitle}
+        deleteConversation={deleteConversation}
+        onSidebarSelect={handleSidebarSelect}
+        onNewChat={handleNewChat}
+      />
+    );
   }
 
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to content</a>
-      <nav className="home-nav" aria-label="Chat navigation">
-        <a href="#/chat" className="home-nav-btn" title="Chat history" aria-label="Open chat history">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </a>
-      </nav>
+      <ChatSidebar
+        isOpen={sidebarOpen}
+        conversations={conversations}
+        activeId={activeId}
+        onSelect={handleSidebarSelect}
+        onNew={handleNewChat}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      <header className="chat-header home-header">
+        <MenuButton onClick={toggleSidebar} sidebarOpen={sidebarOpen} />
+      </header>
 
       <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
         <Hero />

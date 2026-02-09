@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useChat } from '../hooks/useChat';
-import { useChatHistory } from '../hooks/useChatHistory';
 import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
@@ -19,12 +18,20 @@ const SUGGESTIONS = [
 
 let nextImageId = 0;
 
-export default function ChatPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+export default function ChatPage({
+  sidebarOpen,
+  setSidebarOpen,
+  toggleSidebar,
+  conversations,
+  activeId,
+  createConversation,
+  updateTitle,
+  onSidebarSelect,
+  onNewChat,
+}) {
   const [stagedImages, setStagedImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
-  const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
 
   // Auto-create conversation: always new if ?new in hash, otherwise fallback
   useEffect(() => {
@@ -60,7 +67,7 @@ export default function ChatPage() {
       const hasMessages = existing && JSON.parse(existing).length > 0;
 
       if (hasMessages) {
-        const newId = createConversation();
+        createConversation();
         setTimeout(() => sendMessage(pending), 100);
       } else {
         setTimeout(() => sendMessage(pending), 50);
@@ -89,23 +96,12 @@ export default function ChatPage() {
     };
   }, [stagedImages]);
 
-  const handleNewChat = useCallback(() => {
-    createConversation();
-    setSidebarOpen(false);
-  }, [createConversation]);
-
-  const handleSelectChat = useCallback((id) => {
-    setActiveId(id);
-    setSidebarOpen(false);
-  }, [setActiveId]);
-
   // Image staging
   const addImages = useCallback((files) => {
     const validFiles = [];
     for (const file of files) {
       const err = validateImage(file);
       if (err) {
-        // Skip invalid files silently for drag-drop, could show toast later
         continue;
       }
       validFiles.push(file);
@@ -113,7 +109,7 @@ export default function ChatPage() {
 
     setStagedImages(prev => {
       const countErr = validateImageCount(prev.length, validFiles.length);
-      if (countErr) return prev; // cap at max
+      if (countErr) return prev;
 
       const newImages = validFiles.map(file => ({
         id: ++nextImageId,
@@ -188,13 +184,13 @@ export default function ChatPage() {
         isOpen={sidebarOpen}
         conversations={conversations}
         activeId={activeId}
-        onSelect={handleSelectChat}
-        onNew={handleNewChat}
+        onSelect={onSidebarSelect}
+        onNew={onNewChat}
         onClose={() => setSidebarOpen(false)}
       />
 
       <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-        <button className="chat-menu-btn" onClick={() => setSidebarOpen(prev => !prev)} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
+        <button className="chat-menu-btn" onClick={toggleSidebar} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="12" x2="21" y2="12" />
