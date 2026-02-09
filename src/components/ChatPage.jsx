@@ -7,6 +7,15 @@ import ChatInput from './ChatInput';
 import ChatSidebar from './ChatSidebar';
 import MarkdownRenderer from './MarkdownRenderer';
 
+const SUGGESTIONS = [
+  'Write me a system prompt that follows the 7 voice rules',
+  'How do I set up the typography tokens?',
+  'Show me how the citation system works',
+  'What are the 5 processing state tiers?',
+  'Help me configure dark mode with the colour tokens',
+  'What components are in the framework?',
+];
+
 export default function ChatPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
@@ -93,8 +102,57 @@ export default function ChatPage() {
         <div className="chat-messages-inner">
           {messages.length === 0 && !isStreaming ? (
             <div className="chat-welcome">
-              <h2>Conversation First</h2>
-              <p>The AI is a computer. Ask a question.</p>
+              <div className="welcome-header">
+                <h2>Conversation First</h2>
+                <p className="welcome-subtitle">
+                  The AI is a computer. Not a person, not an assistant, not a helper.
+                </p>
+              </div>
+
+              <div className="welcome-section">
+                <div className="welcome-section-label">What this chat does</div>
+                <p className="welcome-desc">
+                  This assistant knows the entire Conversation First framework. It helps you apply the method — voice rules, design tokens, citation system, processing states, and components — to your own AI products.
+                </p>
+              </div>
+
+              <div className="welcome-section">
+                <div className="welcome-section-label">Try asking</div>
+                <div className="welcome-suggestions">
+                  {SUGGESTIONS.map((s, i) => (
+                    <button
+                      key={i}
+                      className="welcome-suggestion"
+                      onClick={() => sendMessage(s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="welcome-rules">
+                <div className="welcome-section-label">The 7 rules this chat follows</div>
+                <div className="welcome-rules-grid">
+                  {[
+                    ['1', 'Answer first', 'Direct answer in the first sentence'],
+                    ['2', 'Cite everything', 'Every claim has a source'],
+                    ['3', 'Give examples', 'Code, data, or before/after'],
+                    ['4', 'Stop when done', 'No padding or summaries'],
+                    ['5', 'No emotion', 'Facts, not feelings'],
+                    ['6', 'Short sentences', 'One idea per sentence'],
+                    ['7', 'No filler', 'Every word earns its place'],
+                  ].map(([num, title, desc]) => (
+                    <div key={num} className="welcome-rule">
+                      <span className="welcome-rule-num">{num}</span>
+                      <div>
+                        <strong>{title}.</strong>{' '}
+                        <span className="welcome-rule-desc">{desc}.</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : (
             <>
