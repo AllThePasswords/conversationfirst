@@ -76,6 +76,55 @@ pre {
   margin: 0 0 1em;
 }
 pre code { background: none; padding: 0; font-size: var(--text-sm); line-height: 1.55; }
+
+/* Code block wrapper with header and copy button */
+.code-block-wrapper {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 0 0 1em;
+}
+.code-block-wrapper pre {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  background: var(--code-bg);
+  border-bottom: 1px solid var(--border);
+}
+.code-block-lang {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: lowercase;
+}
+.code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color 0.12s, background 0.12s;
+}
+.code-copy-btn:hover {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+.code-copy-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
 blockquote {
   border-left: 3px solid var(--border);
   padding-left: var(--space-4);
