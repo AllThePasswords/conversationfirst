@@ -129,9 +129,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   transition: all 0.12s ease;
 }
 .cite-inline:hover {
-  background: color-mix(in srgb, var(--cite-bg) 60%, var(--cite-border));
+  background: var(--accent);
   color: #fff;
-  border-color: var(--cite-border);
+  border-color: var(--accent);
   transform: scale(1.1);
 }
 .cite-inline:focus-visible {
@@ -211,9 +211,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 }
 .cite-footer-link:hover { color: var(--accent); }
 .cite-footer-link:hover .cite-inline {
-  background: color-mix(in srgb, var(--cite-bg) 60%, var(--cite-border));
+  background: var(--accent);
   color: #fff;
-  border-color: var(--cite-border);
+  border-color: var(--accent);
 }
 .cite-footer-source { color: var(--text-muted); font-size: var(--text-xs); }
 .cite-footer-arrow {
