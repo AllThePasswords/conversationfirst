@@ -750,19 +750,19 @@ function FontCard({ font, selected, onClick, previewText, previewStyle }) {
   const on = selected?.name === font.name;
   return (
     <button onClick={onClick} style={{
-      display: "block", width: "100%", textAlign: "left", padding: "13px 16px",
-      border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "10px",
+      display: "block", width: "100%", textAlign: "left", padding: "var(--space-3) var(--space-4)",
+      border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
       background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
       boxShadow: on ? "var(--shadow-md)" : "none", color: "var(--text)",
     }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
-        <span style={{ fontFamily: font.family || "inherit", fontSize: "12px", fontWeight: 600 }}>{font.name}</span>
-        {font.style && <span style={{ fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 500 }}>{font.style}</span>}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--space-1)" }}>
+        <span style={{ fontFamily: font.family || "inherit", fontSize: "var(--text-xs)", fontWeight: 600 }}>{font.name}</span>
+        {font.style && <span style={{ fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 500 }}>{font.style}</span>}
       </div>
-      <div style={{ fontFamily: font.family || "inherit", fontSize: "18px", lineHeight: 1.3, marginBottom: "4px", ...previewStyle }}>
+      <div style={{ fontFamily: font.family || "inherit", fontSize: "var(--text-lg)", lineHeight: 1.3, marginBottom: "var(--space-1)", ...previewStyle }}>
         {previewText || "The quick brown fox jumps over the lazy dog"}
       </div>
-      <div style={{ fontSize: "11px", color: "var(--text-muted)", lineHeight: 1.3 }}>{font.desc}</div>
+      <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", lineHeight: 1.3 }}>{font.desc}</div>
     </button>
   );
 }
@@ -776,9 +776,9 @@ function ProcessingPreviewDemo({ choices }) {
   }, []);
   const labels = ["Processing", "Searching 2 documents", "Reading Q3 Report", "Composing response"];
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
       <div style={{ width: "2px", height: "16px", background: "var(--accent)", borderRadius: "1px", animation: "cursor-blink 1s ease-in-out infinite" }} />
-      <span style={{ fontFamily: m?.family, fontSize: "12px", color: "var(--text-muted)", transition: "opacity 0.3s", letterSpacing: "0.01em" }}>
+      <span style={{ fontFamily: m?.family, fontSize: "var(--text-xs)", color: "var(--text-muted)", transition: "opacity 0.3s", letterSpacing: "0.01em" }}>
         {labels[phase]}
         <span style={{ animation: "dot-cascade 1.4s ease-in-out infinite" }}>.</span>
         <span style={{ animation: "dot-cascade 1.4s ease-in-out infinite 0.2s" }}>.</span>
@@ -793,46 +793,46 @@ function MiniPreview({ choices }) {
   if (!b || !h || !m) return null;
   const citeStyle = {
     display: "inline-flex", alignItems: "center", justifyContent: "center",
-    fontFamily: m.family, fontSize: "9px", fontWeight: 600, width: "16px", height: "16px",
-    borderRadius: "8px", background: "var(--cite-bg)", color: "var(--accent)",
+    fontFamily: m.family, fontSize: "var(--text-xs)", fontWeight: 600, width: "16px", height: "16px",
+    borderRadius: "var(--radius-full)", background: "var(--cite-bg)", color: "var(--accent)",
     border: "1px solid color-mix(in srgb, var(--accent) 25%, transparent)",
     verticalAlign: "super", margin: "0 1px", top: "-1px", position: "relative",
     textDecoration: "none", cursor: "pointer", transition: "all 0.12s",
   };
   return (
-    <div style={{ fontFamily: b.family, fontSize: "14px", lineHeight: 1.55, color: "var(--text)" }}>
-      <div style={{ marginBottom: "16px", padding: "12px 16px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "10px" }}>
-        <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 600, marginBottom: "8px" }}>Processing</div>
+    <div style={{ fontFamily: b.family, fontSize: "var(--text-base)", lineHeight: 1.55, color: "var(--text)" }}>
+      <div style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
+        <div style={{ fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Processing</div>
         <ProcessingPreviewDemo choices={choices} />
       </div>
 
-      <div style={{ padding: "12px 16px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "10px" }}>
-        <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 600, marginBottom: "8px" }}>Response</div>
-        <p style={{ marginBottom: "8px" }}>
+      <div style={{ padding: "var(--space-3) var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
+        <div style={{ fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Response</div>
+        <p style={{ marginBottom: "var(--space-2)" }}>
           124% net revenue retention. Up from 118% in Q2<a href="#" onClick={e => e.preventDefault()} style={citeStyle}>1</a>.
         </p>
-        <p style={{ marginBottom: "10px", color: "var(--text-secondary)", fontSize: "13px" }}>
+        <p style={{ marginBottom: "var(--space-3)", color: "var(--text-secondary)", fontSize: "var(--text-sm)" }}>
           Industry median is 110%<a href="#" onClick={e => e.preventDefault()} style={citeStyle}>2</a>. Improvement from mid-market expansion where ACV increased 31%<a href="#" onClick={e => e.preventDefault()} style={citeStyle}>1</a>.
         </p>
-        <div style={{ display: "flex", gap: "8px", padding: "8px 12px", background: "var(--cite-bg)", borderLeft: "3px solid var(--accent)", borderRadius: "0 6px 6px 0", fontSize: "11px", marginBottom: "10px" }}>
-          <span style={{ fontFamily: m.family, fontSize: "9px", fontWeight: 600, color: "var(--accent)" }}>1</span>
+        <div style={{ display: "flex", gap: "var(--space-2)", padding: "var(--space-2) var(--space-3)", background: "var(--cite-bg)", borderLeft: "3px solid var(--accent)", borderRadius: "0 var(--radius-md) var(--radius-md) 0", fontSize: "var(--text-sm)", marginBottom: "var(--space-3)" }}>
+          <span style={{ fontFamily: m.family, fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--accent)" }}>1</span>
           <div>
-            <div style={{ fontWeight: 600, fontSize: "11px" }}>Q3 Financial Report</div>
-            <div style={{ fontSize: "9px", color: "var(--text-muted)" }}>Google Drive · Document</div>
+            <div style={{ fontWeight: 600, fontSize: "var(--text-sm)" }}>Q3 Financial Report</div>
+            <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Google Drive · Document</div>
           </div>
         </div>
-        <div style={{ borderTop: "1px solid var(--border)", paddingTop: "8px", fontSize: "10px", color: "var(--text-muted)" }}>
-          <span style={{ fontFamily: m.family, fontWeight: 600, color: "var(--accent)", marginRight: "4px" }}>1</span> Q3 Report
-          <span style={{ margin: "0 6px" }}>·</span>
-          <span style={{ fontFamily: m.family, fontWeight: 600, color: "var(--accent)", marginRight: "4px" }}>2</span> SaaS Benchmarks
+        <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-2)", fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+          <span style={{ fontFamily: m.family, fontWeight: 600, color: "var(--accent)", marginRight: "var(--space-1)" }}>1</span> Q3 Report
+          <span style={{ margin: "0 var(--space-2)" }}>·</span>
+          <span style={{ fontFamily: m.family, fontWeight: 600, color: "var(--accent)", marginRight: "var(--space-1)" }}>2</span> SaaS Benchmarks
         </div>
       </div>
 
-      <div style={{ marginTop: "14px", display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "11px", fontWeight: 600, color: "#fff", background: "var(--accent)", padding: "4px 12px", borderRadius: "6px" }}>Primary</span>
-        <span style={{ fontSize: "11px", fontWeight: 600, color: "var(--text)", background: "var(--surface)", padding: "4px 12px", borderRadius: "6px", border: "1px solid var(--border)" }}>Secondary</span>
-        <span style={{ fontSize: "9px", fontWeight: 600, background: "var(--accent-subtle)", color: "var(--accent)", padding: "2px 8px", borderRadius: "99px" }}>Badge</span>
-        <span style={{ fontFamily: m.family, fontSize: "11px", background: "var(--code-bg)", padding: "2px 6px", borderRadius: "3px", color: "var(--text-secondary)" }}>code</span>
+      <div style={{ marginTop: "var(--space-3)", display: "flex", gap: "var(--space-2)", flexWrap: "wrap", alignItems: "center" }}>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--surface)", background: "var(--accent)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-sm)" }}>Primary</span>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text)", background: "var(--surface)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>Secondary</span>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, background: "var(--accent-subtle)", color: "var(--accent)", padding: "2px var(--space-2)", borderRadius: "var(--radius-full)" }}>Badge</span>
+        <span style={{ fontFamily: m.family, fontSize: "var(--text-xs)", background: "var(--code-bg)", padding: "2px var(--space-2)", borderRadius: "var(--radius-sm)", color: "var(--text-secondary)" }}>code</span>
       </div>
     </div>
   );
@@ -869,15 +869,15 @@ export default function Configurator() {
 
       {toast && (
         <div style={{
-          position: "fixed", bottom: "24px", left: "50%", transform: "translateX(-50%)",
-          background: "var(--text)", color: "var(--bg)", padding: "9px 22px", borderRadius: "8px",
-          fontSize: "12px", fontWeight: 600, zIndex: 100, animation: "toastUp 0.18s ease-out",
+          position: "fixed", bottom: "var(--space-6)", left: "50%", transform: "translateX(-50%)",
+          background: "var(--text)", color: "var(--bg)", padding: "var(--space-2) var(--space-5)", borderRadius: "var(--radius-md)",
+          fontSize: "var(--text-xs)", fontWeight: 600, zIndex: 100, animation: "toastUp 0.18s ease-out",
           boxShadow: "var(--shadow-lg)",
         }}>{toast}</div>
       )}
 
       <div style={{ marginBottom: "var(--space-4)" }}>
-        <div style={{ display: "flex", gap: "3px", marginBottom: "8px" }}>
+        <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-2)" }}>
           {STEPS.map((s, i) => (
             <button key={s} onClick={() => { if (i <= step || (i === 3 && all)) setStep(i); }}
               style={{
@@ -889,22 +889,22 @@ export default function Configurator() {
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>Step {step + 1}/4 — {STEP_TITLES[cur]}</span>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "12px", color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Back</button>}
-            {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "12px", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "6px", padding: "5px 14px", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Step {step + 1}/4 — {STEP_TITLES[cur]}</span>
+          <div style={{ display: "flex", gap: "var(--space-2)" }}>
+            {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "var(--space-1) var(--space-2)" }}>Back</button>}
+            {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
           </div>
         </div>
       </div>
 
       {(cur === "body" || cur === "heading" || cur === "mono") && (
         <div className="cfg-fin" key={cur}>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "16px", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "7px" }}>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "var(--space-2)" }}>
             {FONT_OPTIONS[cur].map(f => (
               <FontCard key={f.name} font={f} selected={choices[cur]} onClick={() => setChoices(p => ({ ...p, [cur]: f }))}
                 previewText={cur === "heading" ? "Conversation First" : cur === "mono" ? "const config = { body, heading, mono };" : undefined}
-                previewStyle={cur === "heading" ? { fontSize: "22px", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "15px" } : undefined}
+                previewStyle={cur === "heading" ? { fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "var(--text-base)" } : undefined}
               />
             ))}
           </div>
@@ -913,7 +913,7 @@ export default function Configurator() {
 
       {cur === "review" && all && (
         <div className="cfg-fin" key="review">
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
+          <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginBottom: "var(--space-4)" }}>
             <button onClick={() => { dl(generateSpec(choices), "conversation-first-spec.md", "text/markdown"); flash("Spec downloaded"); }}
               className="btn btn-primary">
               Download spec (.md)
@@ -927,19 +927,19 @@ export default function Configurator() {
               Copy spec
             </button>
           </div>
-          <p style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "24px", lineHeight: 1.5, maxWidth: "540px" }}>
+          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-6)", lineHeight: 1.5, maxWidth: "540px" }}>
             Test page includes processing states, correct/incorrect tone examples, full conversation with citations, and all app components. Dark mode automatic.
           </p>
-          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "20px 24px" }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "var(--space-5) var(--space-6)" }}>
             <MiniPreview choices={choices} />
           </div>
         </div>
       )}
 
       {cur === "review" && !all && (
-        <div style={{ textAlign: "center", padding: "48px", color: "var(--text-muted)" }}>
+        <div style={{ textAlign: "center", padding: "var(--space-12)", color: "var(--text-muted)" }}>
           <p>Complete all three selections.</p>
-          <button onClick={() => setStep(0)} className="btn btn-secondary" style={{ marginTop: "12px" }}>Start over</button>
+          <button onClick={() => setStep(0)} className="btn btn-secondary" style={{ marginTop: "var(--space-3)" }}>Start over</button>
         </div>
       )}
     </div>
