@@ -35,16 +35,6 @@
 .chat-input-bar {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-8) var(--space-6);
-  background: transparent;
-  position: relative;
-}
-
-.chat-input-bar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent, var(--bg) 50%);
-  pointer-events: none;
 }
 
 .chat-input-inner {
@@ -59,8 +49,6 @@
   padding: var(--space-2);
   box-shadow: var(--shadow-lg);
   transition: border-color 0.15s, box-shadow 0.15s;
-  position: relative;
-  z-index: 1;
 }
 .chat-input-inner:focus-within {
   border-color: var(--accent);
