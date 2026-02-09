@@ -40,6 +40,7 @@ export default function ChatPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const activeConversation = conversations.find(c => c.id === activeId);
   const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -182,20 +183,18 @@ export default function ChatPage() {
         onClose={() => setSidebarOpen(false)}
       />
 
-      <nav className="chat-nav" aria-label="Chat navigation">
-        <button
-          className="home-nav-btn"
-          onClick={() => setSidebarOpen(prev => !prev)}
-          title={sidebarOpen ? 'Close menu' : 'Menu'}
-          aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}
-        >
+      <header className="chat-header">
+        <div className="chat-header-title">
+          {activeConversation?.title || 'New conversation'}
+        </div>
+        <button className="chat-menu-btn" onClick={() => setSidebarOpen(prev => !prev)} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
-      </nav>
+      </header>
 
       <main id="chat-main" className="chat-messages" ref={messagesContainerRef} style={{ position: 'relative' }}>
         {isDragging && (

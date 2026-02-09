@@ -451,12 +451,40 @@
   outline-offset: 2px;
 }
 
-/* ===== Chat Page Nav (top-left hamburger) ===== */
-.chat-nav {
-  position: fixed;
-  top: var(--space-4);
-  left: var(--space-4);
-  z-index: 60;
+/* ===== Chat Header ===== */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.chat-header-title {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* ===== Sidebar Home Link ===== */
+.chat-sidebar-home {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.12s;
+}
+
+.chat-sidebar-home:hover {
+  color: var(--accent);
 }
 
 /* ===== Home Page Chat Nav ===== */

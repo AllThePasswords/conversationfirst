@@ -9,7 +9,6 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleKeyDown);
-    // Focus the sidebar when it opens
     sidebarRef.current?.focus();
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
@@ -26,6 +25,13 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
         tabIndex={-1}
       >
         <div className="chat-sidebar-header">
+          <a href="#/" className="chat-sidebar-home">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Home
+          </a>
           <span style={{
             fontSize: 'var(--text-xs)',
             textTransform: 'uppercase',
