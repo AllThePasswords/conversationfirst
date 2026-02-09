@@ -1,4 +1,6 @@
-export async function streamResponse(messages, onChunk, onDone, onError) {
+export async function streamResponse(messages, callbacks) {
+  const { onChunk, onDone, onError, onSearchStart, onSearchDone, onContentBlock, onPauseTurn } = callbacks;
+
   let response;
   try {
     response = await fetch('/api/chat', {
@@ -24,6 +26,7 @@ export async function streamResponse(messages, onChunk, onDone, onError) {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
+  let stopReason = null;
 
   try {
     while (true) {
@@ -38,16 +41,37 @@ export async function streamResponse(messages, onChunk, onDone, onError) {
         if (!line.startsWith('data: ')) continue;
         const data = line.slice(6).trim();
         if (data === '[DONE]') {
-          onDone();
+          onDone(stopReason);
           return;
         }
         try {
           const parsed = JSON.parse(data);
+
+          // Content block started — detect search tool use and results
+          if (parsed.type === 'content_block_start') {
+            const block = parsed.content_block;
+            if (block.type === 'server_tool_use' && block.name === 'web_search') {
+              onSearchStart?.();
+            }
+            if (block.type === 'web_search_tool_result') {
+              onSearchDone?.(block.content);
+            }
+            // Track all content blocks for multi-turn
+            onContentBlock?.(block);
+          }
+
+          // Text deltas — regular text streaming
           if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
             onChunk(parsed.delta.text);
           }
+
+          // Capture stop reason (may be pause_turn)
+          if (parsed.type === 'message_delta' && parsed.delta?.stop_reason) {
+            stopReason = parsed.delta.stop_reason;
+          }
+
           if (parsed.type === 'message_stop') {
-            onDone();
+            onDone(stopReason);
             return;
           }
         } catch {}
@@ -58,5 +82,5 @@ export async function streamResponse(messages, onChunk, onDone, onError) {
     return;
   }
 
-  onDone();
+  onDone(stopReason);
 }

@@ -27,7 +27,7 @@ export default function ChatPage() {
     }
   }, [activeId, conversations.length, createConversation]);
 
-  const { messages, isStreaming, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
+  const { messages, isStreaming, isSearching, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const pendingSentRef = useRef(false);
@@ -163,14 +163,24 @@ export default function ChatPage() {
               {isStreaming && (
                 <div className="chat-bubble">
                   <div className="bubble-label">Assistant</div>
+                  {isSearching && (
+                    <div className="search-indicator">
+                      <div className="processing-status">
+                        <div className="processing-cursor" />
+                        <span className="processing-text">
+                          Searching the web<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   {streamingContent ? (
                     <div>
                       <MarkdownRenderer content={streamingContent} />
                       <span className="streaming-cursor" />
                     </div>
-                  ) : (
+                  ) : !isSearching ? (
                     <ChatProcessing />
-                  )}
+                  ) : null}
                 </div>
               )}
 

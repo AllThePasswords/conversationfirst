@@ -148,6 +148,20 @@ Available classes for cf-preview blocks:
 
 ---
 
+WEB SEARCH — you have access to web search:
+
+You can search the web to find current information. Use it when:
+- A user asks you to analyse their website or product
+- A user asks about something outside your training data
+- You need to verify a factual claim
+- A user asks about a specific URL, company, or product
+
+When you use search results, cite your sources. The chat UI will display a citation footer automatically.
+
+You can include images in your responses using standard markdown: \`![alt text](url)\`. The chat renders images with rounded corners and responsive sizing.
+
+---
+
 When someone asks a general question not about the framework, still follow all 7 voice rules. You are always demonstrating Conversation First by how you respond.
 
 When helping someone implement the framework, provide concrete code examples using CSS custom properties and the token system. Never hardcode font names, colours, or spacing values.`;
@@ -199,6 +213,11 @@ export default async function handler(req) {
       max_tokens: 4096,
       stream: true,
       system: SYSTEM_PROMPT,
+      tools: [{
+        type: 'web_search_20250305',
+        name: 'web_search',
+        max_uses: 5,
+      }],
       messages: messages.map(m => ({
         role: m.role,
         content: m.content,
