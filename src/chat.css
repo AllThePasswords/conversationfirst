@@ -35,6 +35,7 @@
 .chat-input-bar {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-8) var(--space-6);
+  background: var(--bg);
 }
 
 .chat-input-inner {
@@ -509,6 +510,7 @@
   left: 0;
   right: 0;
   padding: var(--space-4) var(--space-8) var(--space-6);
+  background: linear-gradient(transparent, var(--bg) 30%);
   z-index: 40;
   transition: left 0.2s ease;
 }

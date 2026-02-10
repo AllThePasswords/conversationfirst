@@ -124,9 +124,10 @@ describe('Chat input bar CSS', () => {
     expect(barRule[0]).not.toMatch(/position\s*:\s*relative/);
   });
 
-  it('.chat-input-bar does not set background: transparent (removed with gradient)', () => {
+  it('.chat-input-bar uses var(--bg) background (solid, no gradient)', () => {
     const barRule = chatCss.match(/\.chat-input-bar\s*\{[^}]*\}/);
-    expect(barRule[0]).not.toMatch(/background\s*:\s*transparent/);
+    expect(barRule[0]).toMatch(/background\s*:\s*var\(--bg\)/);
+    expect(barRule[0]).not.toMatch(/linear-gradient/);
   });
 
   it('.chat-input-inner does not set z-index (no longer needs to stack above gradient)', () => {
@@ -155,10 +156,11 @@ describe('Floating input CSS', () => {
     expect(chatCss).toMatch(/\.chat-input-floating\s*\{[^}]*z-index:\s*40/);
   });
 
-  it('floating input has no gradient background', () => {
-    const floatingRule = chatCss.match(/\.chat-input-floating\s*\{[^}]*\}/);
-    expect(floatingRule[0]).not.toMatch(/linear-gradient/);
-    expect(floatingRule[0]).not.toMatch(/background/);
+  it('floating input has gradient fade background for smooth scroll overlap', () => {
+    // Match the main .chat-input-floating rule (not .sidebar-open variant)
+    const floatingRule = chatCss.match(/^\.chat-input-floating\s*\{[^}]*\}/m);
+    expect(floatingRule).not.toBeNull();
+    expect(floatingRule[0]).toMatch(/background:\s*linear-gradient/);
   });
 
   it('floating input shifts left when sidebar is open on desktop', () => {
