@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useChat } from '../hooks/useChat';
+import { useChatDB } from '../hooks/useChatDB';
 import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
@@ -28,10 +29,16 @@ export default function ChatPage({
   updateTitle,
   onSidebarSelect,
   onNewChat,
+  isAuthenticated,
+  user,
+  session,
 }) {
   const [stagedImages, setStagedImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [showDropFlash, setShowDropFlash] = useState(false);
   const dragCounter = useRef(0);
+
+  const accessToken = session?.access_token || null;
 
   // Auto-create conversation: always new if ?new in hash, otherwise fallback
   useEffect(() => {
@@ -48,7 +55,13 @@ export default function ChatPage({
   }, []);
 
   const activeConversation = conversations.find(c => c.id === activeId);
-  const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } = useChat(activeId, updateTitle);
+
+  // Use DB-backed hook when authenticated, localStorage hook when guest
+  const guestChat = useChat(isAuthenticated ? null : activeId, updateTitle);
+  const dbChat = useChatDB(isAuthenticated ? activeId : null, updateTitle, accessToken);
+  const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } =
+    isAuthenticated ? dbChat : guestChat;
+
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const pendingSentRef = useRef(false);
@@ -62,20 +75,18 @@ export default function ChatPage({
       sessionStorage.removeItem('cf-pending-message');
       pendingSentRef.current = true;
 
-      // Check if current conversation already has messages
-      const existing = localStorage.getItem(`cf-chat-${activeId}`);
-      const hasMessages = existing && JSON.parse(existing).length > 0;
-
-      if (hasMessages) {
-        createConversation();
-        setTimeout(() => sendMessage(pending), 100);
-      } else {
+      if (!isAuthenticated) {
+        // Guest mode — just send immediately
         setTimeout(() => sendMessage(pending), 50);
+      } else {
+        // Authenticated — check if conversation has messages
+        // For DB mode, messages are loaded async, so just send with a small delay
+        setTimeout(() => sendMessage(pending), 100);
       }
     }
-  }, [activeId, sendMessage, createConversation]);
+  }, [activeId, sendMessage, createConversation, isAuthenticated]);
 
-  // Scroll to bottom only when messages array changes (user sent or response completed)
+  // Scroll to bottom only when messages array changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -166,6 +177,8 @@ export default function ChatPage({
     const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
     if (files.length > 0) {
       addImages(files);
+      setShowDropFlash(true);
+      setTimeout(() => setShowDropFlash(false), 500);
     }
   }, [addImages]);
 
@@ -180,23 +193,41 @@ export default function ChatPage({
       onDrop={handleDrop}
     >
       <a href="#chat-main" className="skip-link">Skip to content</a>
-      <ChatSidebar
-        isOpen={sidebarOpen}
-        conversations={conversations}
-        activeId={activeId}
-        onSelect={onSidebarSelect}
-        onNew={onNewChat}
-        onClose={() => setSidebarOpen(false)}
-      />
+
+      {isAuthenticated && (
+        <ChatSidebar
+          isOpen={sidebarOpen}
+          conversations={conversations}
+          activeId={activeId}
+          onSelect={onSidebarSelect}
+          onNew={onNewChat}
+          onClose={() => setSidebarOpen(false)}
+          user={user}
+        />
+      )}
 
       <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-        <button className="chat-menu-btn" onClick={toggleSidebar} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
+        {isAuthenticated ? (
+          <button className="chat-menu-btn" onClick={toggleSidebar} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        ) : (
+          <button
+            className="chat-menu-btn"
+            onClick={() => { window.location.hash = '#/'; }}
+            title="Back"
+            aria-label="Back to home"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+          </button>
+        )}
         {messages.length > 0 && activeConversation?.title && (
           <div className="chat-header-title">
             {activeConversation.title}
@@ -207,14 +238,19 @@ export default function ChatPage({
       <main id="chat-main" className="chat-messages" ref={messagesContainerRef} style={{ position: 'relative' }}>
         {isDragging && (
           <div className="chat-drop-overlay" aria-hidden="true">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <polyline points="21 15 16 10 5 21" />
+            <div className="mic-drop-ripple" />
+            <div className="mic-drop-ripple" />
+            <div className="mic-drop-ripple" />
+            <svg className="mic-drop-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="2" width="6" height="11" rx="3" />
+              <path d="M5 10a7 7 0 0 0 14 0" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+              <line x1="8" y1="21" x2="16" y2="21" />
             </svg>
-            <span className="chat-drop-overlay-text">Drop images here</span>
+            <span className="mic-drop-text">Drop it</span>
           </div>
         )}
+        {showDropFlash && <div className="chat-drop-flash" />}
 
         <div className="chat-messages-inner">
           {messages.length === 0 && !isStreaming ? (

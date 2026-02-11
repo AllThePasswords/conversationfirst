@@ -1,11 +1,28 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AuthProvider } from '../../context/AuthContext';
 import ChatPage from '../ChatPage';
+
+// Mock supabase so AuthProvider doesn't try real connections
+vi.mock('../../lib/supabase', () => ({ supabase: null }));
 
 // Mock hooks and child components to isolate ChatPage behavior
 vi.mock('../../hooks/useChat', () => ({
   useChat: vi.fn(() => ({
+    messages: [],
+    isStreaming: false,
+    isSearching: false,
+    isUploading: false,
+    streamingContent: '',
+    error: null,
+    sendMessage: vi.fn(),
+    clearError: vi.fn(),
+  })),
+}));
+
+vi.mock('../../hooks/useChatDB', () => ({
+  useChatDB: vi.fn(() => ({
     messages: [],
     isStreaming: false,
     isSearching: false,
@@ -55,11 +72,18 @@ describe('ChatPage', () => {
       updateTitle: vi.fn(),
       onSidebarSelect: vi.fn(),
       onNewChat: vi.fn(),
+      isAuthenticated: false,
+      user: null,
+      session: null,
     };
   });
 
   function renderPage(props = {}) {
-    return render(<ChatPage {...defaultProps} {...props} />);
+    return render(
+      <AuthProvider>
+        <ChatPage {...defaultProps} {...props} />
+      </AuthProvider>
+    );
   }
 
   // ── Commit: Fix chat header: menu left, hide border until scroll, no empty title ──
@@ -70,20 +94,26 @@ describe('ChatPage', () => {
       expect(container.querySelector('.chat-header')).toBeInTheDocument();
     });
 
-    it('renders hamburger menu button in header', () => {
+    it('renders back button in header for guest mode', () => {
       renderPage();
+      const btn = screen.getByLabelText('Back to home');
+      expect(btn).toBeInTheDocument();
+    });
+
+    it('renders hamburger menu button in header for authenticated mode', () => {
+      renderPage({ isAuthenticated: true, user: { id: 'u1', email: 'test@test.com' } });
       const btn = screen.getByLabelText('Open conversation list');
       expect(btn).toBeInTheDocument();
     });
 
-    it('toggles sidebar when menu button is clicked', async () => {
-      renderPage();
+    it('toggles sidebar when menu button is clicked (authenticated)', async () => {
+      renderPage({ isAuthenticated: true, user: { id: 'u1', email: 'test@test.com' } });
       await userEvent.click(screen.getByLabelText('Open conversation list'));
       expect(defaultProps.toggleSidebar).toHaveBeenCalled();
     });
 
-    it('shows "Close conversation list" label when sidebar is open', () => {
-      renderPage({ sidebarOpen: true });
+    it('shows "Close conversation list" label when sidebar is open (authenticated)', () => {
+      renderPage({ sidebarOpen: true, isAuthenticated: true, user: { id: 'u1', email: 'test@test.com' } });
       expect(screen.getByLabelText('Close conversation list')).toBeInTheDocument();
     });
 
@@ -170,15 +200,19 @@ describe('ChatPage', () => {
     });
   });
 
-  // ── Commit: Remove chat header, use floating hamburger toggle top-left ──
-  // (later re-added — verifies the hamburger exists as a real button)
-  describe('hamburger menu button (SVG)', () => {
-    it('renders 3-line hamburger SVG icon', () => {
+  describe('header button SVG', () => {
+    it('renders back arrow SVG in guest mode', () => {
       const { container } = renderPage();
       const menuBtn = container.querySelector('.chat-menu-btn');
       const svg = menuBtn.querySelector('svg');
       expect(svg).toBeInTheDocument();
-      // 3 lines in hamburger icon
+    });
+
+    it('renders 3-line hamburger SVG icon in authenticated mode', () => {
+      const { container } = renderPage({ isAuthenticated: true, user: { id: 'u1', email: 'test@test.com' } });
+      const menuBtn = container.querySelector('.chat-menu-btn');
+      const svg = menuBtn.querySelector('svg');
+      expect(svg).toBeInTheDocument();
       const lines = svg.querySelectorAll('line');
       expect(lines.length).toBe(3);
     });
@@ -208,7 +242,7 @@ describe('ChatPage', () => {
       const page = container.querySelector('.chat-page');
 
       fireEvent.dragEnter(page, { dataTransfer: { files: [] } });
-      expect(screen.getByText('Drop images here')).toBeInTheDocument();
+      expect(screen.getByText('Drop it')).toBeInTheDocument();
     });
 
     it('hides drop overlay when drag leaves', () => {
@@ -217,7 +251,7 @@ describe('ChatPage', () => {
 
       fireEvent.dragEnter(page, { dataTransfer: { files: [] } });
       fireEvent.dragLeave(page, { dataTransfer: { files: [] } });
-      expect(screen.queryByText('Drop images here')).not.toBeInTheDocument();
+      expect(screen.queryByText('Drop it')).not.toBeInTheDocument();
     });
   });
 
