@@ -655,3 +655,103 @@
   color: var(--text-secondary);
   line-height: 1.5;
 }
+
+/* ── Embedded Prep Chat ── */
+
+.prep-chat {
+  margin-top: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+.prep-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.prep-chat-header h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.prep-chat-clear {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.prep-chat-clear:hover {
+  color: var(--text);
+  border-color: var(--text-secondary);
+}
+
+.prep-chat-empty {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+}
+
+.prep-chat-messages {
+  margin-bottom: var(--space-4);
+}
+
+.prep-chat-messages .chat-bubble {
+  max-width: 100%;
+}
+
+.prep-chat-searching {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--space-2) 0;
+}
+
+.prep-chat-error {
+  background: var(--destructive-subtle, #fef2f2);
+  color: var(--destructive);
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.prep-chat-error button {
+  background: none;
+  border: none;
+  color: var(--destructive);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.prep-chat-input {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+  padding: var(--space-3) 0 var(--space-4);
+  z-index: 10;
+}
+
+.prep-chat-input .chat-input-inner {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}

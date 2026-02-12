@@ -1,4 +1,5 @@
 import { SectionDivider, MetricRow, PrepNav, Bridge, Highlight } from './PrepShared';
+import PrepChat from './PrepChat';
 
 export default function PrepLeadership() {
   return (
@@ -248,6 +249,8 @@ export default function PrepLeadership() {
           <a href="#/prep/mobile" className="prep-nav-link">&larr; Prev: HubSpot Mobile</a>
           <a href="#/prep" className="btn btn-primary">Back to Q&amp;A Prep &rarr;</a>
         </div>
+
+        <PrepChat companyId="leadership" placeholder="Ask about the Design Leadership walkthrough..." />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SectionDivider, Accordion, MetricRow, PrepNav, Bridge, InfoBox, Highlight, TipList, WalkthroughLinks } from './PrepShared';
+import PrepChat from './PrepChat';
 
 /* ─── Theme Data ─── */
 const THEMES = [
@@ -924,6 +925,8 @@ export default function PrepTextcom() {
           Prepared for Eric Greene &middot; Text.com VP of Design Interview &middot; Feb 13,
           2026
         </div>
+
+        <PrepChat companyId="textcom" placeholder="Ask about Text.com, your talking points, or practice an answer..." />
       </div>
     </div>
   );

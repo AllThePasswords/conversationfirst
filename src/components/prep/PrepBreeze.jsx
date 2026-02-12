@@ -1,4 +1,5 @@
 import { SectionDivider, MetricRow, PrepNav, Bridge, Highlight } from './PrepShared';
+import PrepChat from './PrepChat';
 
 function Decision({ title, chose, over }) {
   return (
@@ -303,6 +304,8 @@ export default function PrepBreeze() {
           <a href="#/prep" className="prep-nav-link">&larr; Back to Prep</a>
           <a href="#/prep/mobile" className="btn btn-primary">Next: HubSpot Mobile &rarr;</a>
         </div>
+
+        <PrepChat companyId="breeze" placeholder="Ask about the Breeze AI walkthrough..." />
       </div>
     </div>
   );

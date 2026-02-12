@@ -1,4 +1,5 @@
 import { SectionDivider, MetricRow, PrepNav, Bridge, Highlight } from './PrepShared';
+import PrepChat from './PrepChat';
 
 export default function PrepMobile() {
   return (
@@ -291,6 +292,8 @@ export default function PrepMobile() {
           <a href="#/prep/breeze" className="prep-nav-link">&larr; Prev: Breeze AI</a>
           <a href="#/prep/leadership" className="btn btn-primary">Next: Leadership &rarr;</a>
         </div>
+
+        <PrepChat companyId="mobile" placeholder="Ask about the HubSpot Mobile walkthrough..." />
       </div>
     </div>
   );

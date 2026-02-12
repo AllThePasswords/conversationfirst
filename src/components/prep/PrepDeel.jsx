@@ -1,4 +1,5 @@
 import { SectionDivider, Accordion, MetricRow, PrepNav, Bridge, InfoBox, Highlight, TipList, WalkthroughLinks } from './PrepShared';
+import PrepChat from './PrepChat';
 
 const STAR_EXAMPLES = [
   {
@@ -649,6 +650,8 @@ export default function PrepDeel() {
           Prepared for Eric Greene &middot; Deel Lead Product Designer &middot;
           Round 4 Cultural Assessment &middot; 30 min
         </div>
+
+        <PrepChat companyId="deel" placeholder="Ask about Deel, your talking points, or practice an answer..." />
       </div>
     </div>
   );

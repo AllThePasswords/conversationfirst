@@ -1,4 +1,5 @@
 import { SectionDivider, Accordion, MetricRow, PrepNav, Bridge, InfoBox, Highlight, TipList, WalkthroughLinks } from './PrepShared';
+import PrepChat from './PrepChat';
 
 const QA_ITEMS = [
   {
@@ -411,6 +412,8 @@ export default function PrepN8n() {
           Prepared for Eric Greene &middot; n8n Head of Design Interview &middot;
           Feb 2026
         </div>
+
+        <PrepChat companyId="n8n" placeholder="Ask about n8n, your talking points, or practice an answer..." />
       </div>
     </div>
   );

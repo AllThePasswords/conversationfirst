@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SectionDivider, Accordion, MetricRow, PrepNav, Bridge, InfoBox, Highlight, TipList, WalkthroughLinks } from './PrepShared';
+import PrepChat from './PrepChat';
 
 /* ─── Q&A Data ─── */
 const QA_ITEMS = [
@@ -506,6 +507,8 @@ export default function PrepIntercom() {
           Prepared for Eric Greene &middot; Intercom Design Leadership &middot;
           Pre-screening &middot; Feb 2026
         </div>
+
+        <PrepChat companyId="intercom" placeholder="Ask about Intercom, your talking points, or practice an answer..." />
       </div>
     </div>
   );
