@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-export default function ChatSidebar({ isOpen, conversations, activeId, onSelect, onNew, onClose }) {
+export default function ChatSidebar({ isOpen, conversations, activeId, onSelect, onNew, onClose, user }) {
   const sidebarRef = useRef(null);
+  const { signOut } = useAuth();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -12,6 +14,11 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
     sidebarRef.current?.focus();
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.hash = '#/';
+  };
 
   return (
     <>
@@ -67,6 +74,21 @@ export default function ChatSidebar({ isOpen, conversations, activeId, onSelect,
             </div>
           )}
         </div>
+
+        {user && (
+          <div className="chat-sidebar-footer">
+            <div className="chat-sidebar-user">
+              {user.email}
+            </div>
+            <button
+              className="btn btn-ghost btn-sm"
+              style={{ width: '100%', justifyContent: 'center' }}
+              onClick={handleSignOut}
+            >
+              Sign out
+            </button>
+          </div>
+        )}
       </nav>
     </>
   );

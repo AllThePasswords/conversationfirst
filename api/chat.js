@@ -330,7 +330,49 @@ You can include images in your responses using standard markdown: \`![alt text](
 
 When someone asks a general question not about the framework, still follow all 7 voice rules. You are always demonstrating Conversation First by how you respond.
 
-When helping someone implement the framework, provide concrete code examples using CSS custom properties and the token system. Never hardcode font names, colours, or spacing values.`;
+When helping someone implement the framework, provide concrete code examples using CSS custom properties and the token system. Never hardcode font names, colours, or spacing values.
+
+---
+
+INTERVIEW PREP KNOWLEDGE — Eric Greene's active interviews:
+
+This assistant also knows Eric Greene's interview prep. When asked about interview prep, companies, values, or talking points, provide direct answers from this knowledge base.
+
+**1. Text.com — VP of Design (Final Round, Feb 13 2026)**
+- Polish SaaS, ~$89M ARR, 28K+ customers. Products: LiveChat, ChatBot, HelpDesk, KnowledgeBase.
+- AI-first pivot. 23 product designers across independent Spotify-style teams.
+- Interviewers: Filip Jaskólski (CPO, technical), Iza Gurgul (VP CX, researcher), Joanna Rękosiewicz (leadership).
+- Culture: "#StartSmall mindset", product-led, chat-first DNA, independent team model.
+- Eric's fit: VP role about setting direction and raising quality bar, not running delivery. Outcomes-based system from day one.
+
+**2. n8n — Head of Design (Round 2, Feb 13-14 2026)**
+- AI workflow automation, $2.5B valuation, $40M+ ARR, 723 employees. Series C ($180M) from Accel + NVIDIA.
+- Design team: ~5-6 ICs + 1 lead, doubling this year. Berlin HQ.
+- Values: Stay Hungry, Stay Brave, Stay Kind, Trust by Default, Ship Fast, Be Open, Think Big.
+- David (VP Product) call: discussed HubSpot mobile, design as competitive advantage, AI UX patterns.
+- Eric's fit: first design leader hire, can shape culture and process from scratch.
+
+**3. Deel — Lead Product Designer (Round 4, Feb 13 2026)**
+- Global HR platform, $17.3B valuation, $1B+ ARR, ~5K employees. 90 designers from 30 countries.
+- Design reports to CEO. Preparing for IPO 2026.
+- Interviewer: Avi Ashkenazi (Sr Director Design). Avi's framework: "Low design" (maintenance) vs "High design" (user-need-driven).
+- Values: Deel Speed, Default to Action, Ownership, Grit, Simplicity.
+- STAR format required. 30-minute interview — lead with decisions, not backstory.
+
+**4. Intercom — Design Leadership (Pre-screening, Feb 2026)**
+- AI customer service, $1.3B valuation, $343M revenue, ~1,847 employees. Dublin HQ.
+- Fin.ai resolves 65% of queries. $100M+ committed to AI. 60+ designers.
+- Contact: John Moriarty (Product Design Director, building Fin.ai, joined Dec 2025).
+- SVP Design: Emmet Connolly (ex-Google Flights, Android Wear).
+- Values: Success First, Incredibly High Standards, Open Mindedness, Resilience, Impatience, Customer Obsessed.
+- Career levels: Senior → Staff → Principal (parallel IC track). No homework in hiring.
+- Eric's fit: AI-first product experience (Breeze), "conversation first" design system, Dublin-based.
+
+**Eric's key projects for all interviews:**
+- Breeze AI: Standalone AI sales assistant, 90-day ship, 44% W2 retention, +10 NPS. Player-coach model.
+- HubSpot Mobile: Top-tasks research, 55-person group, 6 design pods, $1B Sales Hub ARR.
+- Design Leadership: Hired 12 designers, exited 3. Outcomes-based performance system (Monday standups, Wednesday critiques).
+- Central Valuations: €1bn+ valued property, lender/valuer trust, marketplace design.`;
 
 export const config = {
   runtime: 'edge',

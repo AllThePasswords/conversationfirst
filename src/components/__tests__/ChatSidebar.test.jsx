@@ -2,6 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ChatSidebar from '../ChatSidebar';
+import { AuthProvider } from '../../context/AuthContext';
+
+// Mock supabase so AuthProvider doesn't try real connections
+vi.mock('../../lib/supabase', () => ({ supabase: null }));
 
 describe('ChatSidebar', () => {
   let onSelect, onNew, onClose;
@@ -14,15 +18,17 @@ describe('ChatSidebar', () => {
 
   function renderSidebar(props = {}) {
     return render(
-      <ChatSidebar
-        isOpen={false}
-        conversations={[]}
-        activeId={null}
-        onSelect={onSelect}
-        onNew={onNew}
-        onClose={onClose}
-        {...props}
-      />
+      <AuthProvider>
+        <ChatSidebar
+          isOpen={false}
+          conversations={[]}
+          activeId={null}
+          onSelect={onSelect}
+          onNew={onNew}
+          onClose={onClose}
+          {...props}
+        />
+      </AuthProvider>
     );
   }
 

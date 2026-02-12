@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import Hero from './components/Hero';
 import VoiceRules from './components/VoiceRules';
 import ProcessingDemo from './components/ProcessingDemo';
@@ -8,7 +8,31 @@ import Configurator from './components/Configurator';
 import Footer from './components/Footer';
 import ChatPage from './components/ChatPage';
 import ChatSidebar from './components/ChatSidebar';
+import AuthPage from './components/AuthPage';
+import PrepPasswordGate from './components/PrepPasswordGate';
+import PrepLanding from './components/PrepLanding';
 import { useChatHistory } from './hooks/useChatHistory';
+import { useChatHistoryDB } from './hooks/useChatHistoryDB';
+import { useAuth } from './context/AuthContext';
+
+// Lazy-load prep pages (large content)
+const PrepTextcom = lazy(() => import('./components/prep/PrepTextcom'));
+const PrepN8n = lazy(() => import('./components/prep/PrepN8n'));
+const PrepDeel = lazy(() => import('./components/prep/PrepDeel'));
+const PrepIntercom = lazy(() => import('./components/prep/PrepIntercom'));
+const PrepBreeze = lazy(() => import('./components/prep/PrepBreeze'));
+const PrepMobile = lazy(() => import('./components/prep/PrepMobile'));
+const PrepLeadership = lazy(() => import('./components/prep/PrepLeadership'));
+
+const PREP_ROUTES = {
+  '#/prep/textcom': PrepTextcom,
+  '#/prep/n8n': PrepN8n,
+  '#/prep/deel': PrepDeel,
+  '#/prep/intercom': PrepIntercom,
+  '#/prep/breeze': PrepBreeze,
+  '#/prep/mobile': PrepMobile,
+  '#/prep/leadership': PrepLeadership,
+};
 
 function FloatingInput() {
   const [text, setText] = useState('');
@@ -38,8 +62,6 @@ function FloatingInput() {
   const handleFileChange = useCallback((e) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      // Store file names, navigate to chat — files can't persist via sessionStorage
-      // so just navigate to chat with the + button ready
       window.location.hash = '#/chat?new';
     }
     e.target.value = '';
@@ -111,10 +133,35 @@ const MenuButton = ({ onClick, sidebarOpen }) => (
   </button>
 );
 
+const LoginButton = () => (
+  <button
+    className="chat-menu-btn"
+    onClick={() => { window.location.hash = '#/login'; }}
+    title="Log in"
+    aria-label="Log in"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+      <polyline points="10 17 15 12 10 7" />
+      <line x1="15" y1="12" x2="3" y2="12" />
+    </svg>
+  </button>
+);
+
 export default function App() {
   const [route, setRoute] = useState(window.location.hash);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } = useChatHistory();
+  const { user, session, loading } = useAuth();
+  const isAuthenticated = !!user;
+
+  // Guest mode hooks (localStorage-based)
+  const guestHistory = useChatHistory();
+  // Authenticated mode hooks (Supabase DB-based)
+  const dbHistory = useChatHistoryDB(user?.id);
+
+  // Pick the right hooks based on auth state
+  const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } =
+    isAuthenticated ? dbHistory : guestHistory;
 
   useEffect(() => {
     const onHash = () => setRoute(window.location.hash);
@@ -123,6 +170,15 @@ export default function App() {
   }, []);
 
   const isChat = route === '#/chat' || route.startsWith('#/chat?');
+  const isLogin = route === '#/login';
+  const isPrep = route === '#/prep' || route.startsWith('#/prep/');
+
+  // Redirect: if logged in and on login page, go to chat
+  useEffect(() => {
+    if (isAuthenticated && isLogin) {
+      window.location.hash = '#/chat';
+    }
+  }, [isAuthenticated, isLogin]);
 
   const handleSidebarSelect = useCallback((id) => {
     setActiveId(id);
@@ -144,6 +200,33 @@ export default function App() {
     setSidebarOpen(prev => !prev);
   }, []);
 
+  // Show loading while auth initializes
+  if (loading) {
+    return null;
+  }
+
+  // Login page
+  if (isLogin) {
+    return <AuthPage />;
+  }
+
+  // Prep pages
+  if (isPrep) {
+    const PrepComponent = PREP_ROUTES[route];
+    return (
+      <PrepPasswordGate>
+        {PrepComponent ? (
+          <Suspense fallback={null}>
+            <PrepComponent />
+          </Suspense>
+        ) : (
+          <PrepLanding />
+        )}
+      </PrepPasswordGate>
+    );
+  }
+
+  // Chat page
   if (isChat) {
     return (
       <ChatPage
@@ -158,24 +241,35 @@ export default function App() {
         deleteConversation={deleteConversation}
         onSidebarSelect={handleSidebarSelect}
         onNewChat={handleNewChat}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        session={session}
       />
     );
   }
 
+  // Home page — public
   return (
     <div className={`home-page ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <a href="#main-content" className="skip-link">Skip to content</a>
-      <ChatSidebar
-        isOpen={sidebarOpen}
-        conversations={conversations}
-        activeId={activeId}
-        onSelect={handleSidebarSelect}
-        onNew={handleNewChat}
-        onClose={() => setSidebarOpen(false)}
-      />
+      {isAuthenticated && (
+        <ChatSidebar
+          isOpen={sidebarOpen}
+          conversations={conversations}
+          activeId={activeId}
+          onSelect={handleSidebarSelect}
+          onNew={handleNewChat}
+          onClose={() => setSidebarOpen(false)}
+          user={user}
+        />
+      )}
 
       <header className="chat-header home-header">
-        <MenuButton onClick={toggleSidebar} sidebarOpen={sidebarOpen} />
+        {isAuthenticated ? (
+          <MenuButton onClick={toggleSidebar} sidebarOpen={sidebarOpen} />
+        ) : (
+          <LoginButton />
+        )}
       </header>
 
       <main id="main-content" className="page" style={{ paddingBottom: 120 }}>

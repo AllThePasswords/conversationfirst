@@ -1,11 +1,16 @@
-export async function streamResponse(messages, callbacks) {
+export async function streamResponse(messages, callbacks, accessToken) {
   const { onChunk, onDone, onError, onSearchStart, onSearchDone, onContentBlock, onPauseTurn } = callbacks;
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+  }
 
   let response;
   try {
     response = await fetch('/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ messages }),
     });
   } catch (err) {
