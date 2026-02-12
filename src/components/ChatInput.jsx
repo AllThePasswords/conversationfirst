@@ -4,15 +4,78 @@ import { validateImage, validateImageCount } from '../lib/imageUpload';
 export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage }) {
   const [text, setText] = useState('');
   const [dragging, setDragging] = useState(false);
+  const [listening, setListening] = useState(false);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const dragCounter = useRef(0);
+  const recognitionRef = useRef(null);
 
   const resize = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = 'auto';
     el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+  }, []);
+
+  const speechSupported = typeof window !== 'undefined' &&
+    (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  const toggleListening = useCallback(() => {
+    if (!speechSupported) return;
+
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    let finalTranscript = '';
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interim = transcript;
+        }
+      }
+      setText(prev => {
+        const base = prev.trimEnd();
+        const spacer = base ? ' ' : '';
+        const combined = base + spacer + finalTranscript + interim;
+        return combined;
+      });
+      resize();
+    };
+
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+    recognition.onerror = (e) => {
+      if (e.error !== 'aborted') setListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  }, [speechSupported, resize]);
+
+  // Clean up recognition on unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
   }, []);
 
   const handleSend = useCallback(() => {
@@ -152,6 +215,24 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
             rows={1}
           />
         </div>
+
+        {speechSupported && (
+          <button
+            className={`chat-mic-btn ${listening ? 'listening' : ''}`}
+            onClick={toggleListening}
+            disabled={disabled}
+            title={listening ? 'Stop listening' : 'Speech to text'}
+            aria-label={listening ? 'Stop listening' : 'Speech to text'}
+            type="button"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="9" y="1" width="6" height="12" rx="3" />
+              <path d="M5 10a7 7 0 0 0 14 0" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+            </svg>
+          </button>
+        )}
 
         <button
           className="chat-send-btn"
