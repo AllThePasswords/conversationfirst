@@ -733,13 +733,21 @@
   gap: var(--space-3);
 }
 
-.prep-chat-error button {
+.prep-chat-error-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.prep-chat-error button,
+.prep-chat-error-actions button {
   background: none;
   border: none;
   color: var(--destructive);
   font-size: var(--text-xs);
   cursor: pointer;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 .prep-chat-input {
