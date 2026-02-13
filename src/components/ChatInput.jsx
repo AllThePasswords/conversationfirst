@@ -35,6 +35,8 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     recognition.interimResults = true;
     recognition.lang = 'en-US';
 
+    // Capture whatever text exists before speech starts
+    const baseText = textareaRef.current?.value || '';
     let finalTranscript = '';
 
     recognition.onresult = (event) => {
@@ -47,12 +49,10 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
           interim = transcript;
         }
       }
-      setText(prev => {
-        const base = prev.trimEnd();
-        const spacer = base ? ' ' : '';
-        const combined = base + spacer + finalTranscript + interim;
-        return combined;
-      });
+      // Rebuild from fixed base + accumulated finals + current interim
+      const spacer = baseText ? ' ' : '';
+      const combined = baseText + spacer + finalTranscript + interim;
+      setText(combined);
       resize();
     };
 
