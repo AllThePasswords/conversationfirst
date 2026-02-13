@@ -45,7 +45,7 @@ async function buildApiContent(content, base64Cache) {
   return blocks;
 }
 
-export function useChat(conversationId, onTitleUpdate) {
+export function useChat(conversationId, onTitleUpdate, brain) {
   const [messages, setMessages] = useState([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -118,6 +118,16 @@ export function useChat(conversationId, onTitleUpdate) {
       accumulatorRef.current = '';
       citationsRef.current = [];
 
+      // Recall relevant memories before sending
+      let memories = [];
+      if (brain?.recall) {
+        try {
+          memories = await brain.recall(text.trim());
+        } catch {
+          // Non-blocking — continue without memories
+        }
+      }
+
       // Build API messages with base64 images
       const apiMessages = [];
       for (const m of updated) {
@@ -157,6 +167,12 @@ export function useChat(conversationId, onTitleUpdate) {
           setIsStreaming(false);
           setIsSearching(false);
           setStreamingContent('');
+
+          // Brain: summarize this turn in the background
+          if (brain?.summarize) {
+            const turnIndex = updated.filter(m => m.role === 'user').length - 1;
+            brain.summarize(conversationId, turnIndex, content, accumulatorRef.current);
+          }
         },
         onError(errMsg) {
           setError(errMsg);
@@ -164,13 +180,13 @@ export function useChat(conversationId, onTitleUpdate) {
           setIsSearching(false);
           setStreamingContent('');
         },
-      });
+      }, null, memories);
     } catch (err) {
       setError(err.message || 'Something went wrong.');
       setIsStreaming(false);
       setIsUploading(false);
     }
-  }, [conversationId, onTitleUpdate]);
+  }, [conversationId, onTitleUpdate, brain]);
 
   const clearError = useCallback(() => setError(null), []);
 

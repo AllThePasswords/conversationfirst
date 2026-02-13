@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useChat } from '../hooks/useChat';
 import { useChatDB } from '../hooks/useChatDB';
+import { useBrain } from '../hooks/useBrain';
+import { useBrainGuest } from '../hooks/useBrainGuest';
 import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
@@ -64,9 +66,14 @@ export default function ChatPage({
 
   const activeConversation = conversations.find(c => c.id === activeId);
 
+  // Brain: memory system for recall and summarization
+  const brain = useBrain(accessToken);
+  const brainGuest = useBrainGuest();
+  const activeBrain = useDB ? brain : brainGuest;
+
   // Use DB-backed hook when authenticated AND DB is available, otherwise localStorage
-  const guestChat = useChat(useDB ? null : activeId, updateTitle);
-  const dbChat = useChatDB(useDB ? activeId : null, updateTitle, accessToken);
+  const guestChat = useChat(useDB ? null : activeId, updateTitle, activeBrain);
+  const dbChat = useChatDB(useDB ? activeId : null, updateTitle, accessToken, activeBrain);
   const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } =
     useDB ? dbChat : guestChat;
 

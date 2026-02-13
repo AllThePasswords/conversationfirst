@@ -30,7 +30,7 @@ async function buildApiContent(content, base64Cache) {
   return blocks;
 }
 
-export function useChatDB(conversationId, onTitleUpdate, accessToken) {
+export function useChatDB(conversationId, onTitleUpdate, accessToken, brain) {
   const [messages, setMessages] = useState([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -141,6 +141,16 @@ export function useChatDB(conversationId, onTitleUpdate, accessToken) {
       accumulatorRef.current = '';
       citationsRef.current = [];
 
+      // Recall relevant memories before sending
+      let memories = [];
+      if (brain?.recall) {
+        try {
+          memories = await brain.recall(text.trim());
+        } catch {
+          // Non-blocking — continue without memories
+        }
+      }
+
       // Build API messages with base64 images
       const apiMessages = [];
       for (const m of updated) {
@@ -192,6 +202,12 @@ export function useChatDB(conversationId, onTitleUpdate, accessToken) {
           setIsStreaming(false);
           setIsSearching(false);
           setStreamingContent('');
+
+          // Brain: summarize this turn in the background
+          if (brain?.summarize) {
+            const turnIndex = updated.filter(m => m.role === 'user').length - 1;
+            brain.summarize(conversationId, turnIndex, content, assistantContent);
+          }
         },
         onError(errMsg) {
           setError(errMsg);
@@ -199,13 +215,13 @@ export function useChatDB(conversationId, onTitleUpdate, accessToken) {
           setIsSearching(false);
           setStreamingContent('');
         },
-      }, accessToken);
+      }, accessToken, memories);
     } catch (err) {
       setError(err.message || 'Something went wrong.');
       setIsStreaming(false);
       setIsUploading(false);
     }
-  }, [conversationId, onTitleUpdate, messages, accessToken]);
+  }, [conversationId, onTitleUpdate, messages, accessToken, brain]);
 
   const clearError = useCallback(() => setError(null), []);
 

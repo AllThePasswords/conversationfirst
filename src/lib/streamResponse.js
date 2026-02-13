@@ -1,4 +1,4 @@
-export async function streamResponse(messages, callbacks, accessToken) {
+export async function streamResponse(messages, callbacks, accessToken, memories = []) {
   const { onChunk, onDone, onError, onSearchStart, onSearchDone, onContentBlock, onPauseTurn } = callbacks;
 
   const headers = { 'Content-Type': 'application/json' };
@@ -6,12 +6,17 @@ export async function streamResponse(messages, callbacks, accessToken) {
     headers['Authorization'] = `Bearer ${accessToken}`;
   }
 
+  const payload = { messages };
+  if (memories && memories.length > 0) {
+    payload.memories = memories;
+  }
+
   let response;
   try {
     response = await fetch('/api/chat', {
       method: 'POST',
       headers,
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(payload),
     });
   } catch (err) {
     onError('Network error. Check your connection.');

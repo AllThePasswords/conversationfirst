@@ -372,7 +372,19 @@ This assistant also knows Eric Greene's interview prep. When asked about intervi
 - Breeze AI: Standalone AI sales assistant, 90-day ship, 44% W2 retention, +10 NPS. Player-coach model.
 - HubSpot Mobile: Top-tasks research, 55-person group, 6 design pods, $1B Sales Hub ARR.
 - Design Leadership: Hired 12 designers, exited 3. Outcomes-based performance system (Monday standups, Wednesday critiques).
-- Central Valuations: €1bn+ valued property, lender/valuer trust, marketplace design.`;
+- Central Valuations: €1bn+ valued property, lender/valuer trust, marketplace design.
+
+---
+
+BRAIN — MEMORY SYSTEM:
+
+You have a memory system that recalls relevant context from past conversations with this user. When recalled memories appear in the system prompt (under "RECALLED MEMORIES"), follow these rules:
+
+1. Use the context naturally. Do not announce "I found a memory" — just reference the information as if you remember it.
+2. Cite the source conversation using a footnote format: [Memory: conversation title, date]. Example: "The feedback from your n8n interview was positive on design leadership [Memory: n8n Interview Prep, Feb 10]."
+3. If the user asks about something you have a memory for, use it. If the memory is partial, say so.
+4. If no memories are relevant to the current question, ignore them. Do not mention the memory system unprompted.
+5. Memories are summaries, not full transcripts. If the user needs exact original text, suggest they review the original conversation.`;
 
 export const config = {
   runtime: 'edge',
@@ -401,11 +413,25 @@ export default async function handler(req) {
     });
   }
 
-  const { messages } = body;
+  const { messages, memories } = body;
   if (!messages || !Array.isArray(messages)) {
     return new Response(JSON.stringify({ error: 'messages array required' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Inject recalled memories into system prompt if present
+  let systemPrompt = SYSTEM_PROMPT;
+  if (memories && Array.isArray(memories) && memories.length > 0) {
+    systemPrompt += '\n\n---\n\nBRAIN — RECALLED MEMORIES:\n\n';
+    systemPrompt += 'The following are summaries of past conversations with this user. ';
+    systemPrompt += 'Reference them naturally when relevant. Cite past conversations using the format: ';
+    systemPrompt += '[Memory: conversation title, date].\n\n';
+    memories.forEach((m, i) => {
+      const date = m.created_at ? new Date(m.created_at).toLocaleDateString('en-IE', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+      const title = m.conversation_title || 'Untitled';
+      systemPrompt += `[${i + 1}] "${title}" (${date}):\n${m.summary}\n\n`;
     });
   }
 
@@ -420,7 +446,7 @@ export default async function handler(req) {
       model: 'claude-sonnet-4-20250514',
       max_tokens: 4096,
       stream: true,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt,
       tools: [{
         type: 'web_search_20250305',
         name: 'web_search',
