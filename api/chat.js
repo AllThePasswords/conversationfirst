@@ -451,7 +451,7 @@ export default async function handler(req) {
     } else if (response.status === 400) {
       userMessage = detail.includes('too long') || detail.includes('token')
         ? 'Message too long. Try a shorter message or clear the conversation.'
-        : 'Request error. Try starting a new conversation.';
+        : `Request error (400): ${detail || 'Unknown'}. Try starting a new conversation.`;
     } else if (response.status === 529 || response.status === 503) {
       userMessage = 'Service temporarily unavailable. Try again shortly.';
     } else {
