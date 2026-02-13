@@ -242,7 +242,7 @@ export default function ResponseDemo() {
       {/* --- User bubble rules --- */}
       <h3>User messages</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        User messages are right-aligned, use the page background colour, and cap at 85% width. They never contain markdown rendering — user text is displayed as-is.
+        User messages are right-aligned, use the page background colour, and cap at 85% width. Text is displayed as plain text by default, but pasted content may contain markdown formatting.
       </p>
 
       <div style={{ marginBottom: 'var(--space-4)' }}>
@@ -260,7 +260,7 @@ export default function ResponseDemo() {
         {[
           'Right-aligned, max-width 85%',
           'Background uses page colour (--bg)',
-          'Plain text only — no markdown',
+          'Plain text default — pasted markdown preserved',
           'Same label, padding, and border-radius as assistant',
           'Images render inline above text',
           'No citations or footers',
