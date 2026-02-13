@@ -4,9 +4,11 @@ import VoiceRules from './components/VoiceRules';
 import ProcessingDemo from './components/ProcessingDemo';
 import CitationDemo from './components/CitationDemo';
 import ResponseDemo from './components/ResponseDemo';
+import InlineFormsDemo from './components/InlineFormsDemo';
 import ComponentShowcase from './components/ComponentShowcase';
 import Configurator from './components/Configurator';
 import Footer from './components/Footer';
+import ThemePresetBar from './components/ThemePresetBar';
 import ChatPage from './components/ChatPage';
 import ChatSidebar from './components/ChatSidebar';
 import AuthPage from './components/AuthPage';
@@ -253,6 +255,7 @@ export default function App() {
   return (
     <div className={`home-page ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <a href="#main-content" className="skip-link">Skip to content</a>
+      <ThemePresetBar />
       {isAuthenticated && (
         <ChatSidebar
           isOpen={sidebarOpen}
@@ -279,6 +282,7 @@ export default function App() {
         <ProcessingDemo />
         <CitationDemo />
         <ResponseDemo />
+        <InlineFormsDemo />
         <ComponentShowcase />
         <Configurator />
         <Footer />
