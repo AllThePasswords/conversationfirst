@@ -35,14 +35,21 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 }
 
 /* Response prose rhythm — legibility rules for assistant responses */
+
+/* Measure & leading */
 .chat-bubble p,
 .chat-bubble li,
 .chat-bubble blockquote {
   max-width: var(--measure);
   line-height: var(--line-height-prose);
 }
+
+/* Paragraph spacing: 0.75em between paragraphs, zero on last */
+.chat-bubble p { margin: 0 0 0.75em; }
 .chat-bubble > div > p:last-child,
 .chat-bubble > p:last-child { margin-bottom: 0; }
+
+/* Headings: tighter measure, bind to following content */
 .chat-bubble h1,
 .chat-bubble h2,
 .chat-bubble h3,
@@ -52,15 +59,60 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 }
 .chat-bubble h1 + p,
 .chat-bubble h2 + p,
-.chat-bubble h3 + p { margin-top: var(--space-2); }
-.chat-bubble ul, .chat-bubble ol { max-width: var(--measure); }
-.chat-bubble li + li { margin-top: var(--space-2); }
+.chat-bubble h3 + p,
+.chat-bubble h4 + p { margin-top: var(--space-2); }
+
+/* Lists: tighter top when following a paragraph, no double-spacing */
+.chat-bubble ul,
+.chat-bubble ol {
+  max-width: var(--measure);
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  padding-left: var(--space-5);
+}
 .chat-bubble p + ul,
-.chat-bubble p + ol { margin-top: calc(-1 * var(--space-2)); }
+.chat-bubble p + ol { margin-top: -0.25em; }
+.chat-bubble li {
+  margin-bottom: 0;
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
+}
+.chat-bubble li:first-child { padding-top: 0; }
+.chat-bubble li:last-child { padding-bottom: 0; }
+
+/* Nested lists tighten further */
+.chat-bubble li > ul,
+.chat-bubble li > ol {
+  margin-top: var(--space-1);
+  margin-bottom: 0;
+}
+
+/* Last list in a bubble drops bottom margin */
+.chat-bubble > div > ul:last-child,
+.chat-bubble > div > ol:last-child,
+.chat-bubble > ul:last-child,
+.chat-bubble > ol:last-child { margin-bottom: 0; }
+
+/* Blockquote spacing */
+.chat-bubble blockquote {
+  margin: 0.5em 0 0.75em;
+}
+.chat-bubble > div > blockquote:last-child,
+.chat-bubble > blockquote:last-child { margin-bottom: 0; }
+
+/* Horizontal rules */
 .chat-bubble hr {
-  margin: var(--space-6) 0;
+  margin: var(--space-5) 0;
   max-width: var(--measure);
 }
+
+/* Code blocks: consistent spacing with prose */
+.chat-bubble .code-block-wrapper {
+  margin-top: 0.5em;
+  margin-bottom: 0.75em;
+}
+.chat-bubble > div > .code-block-wrapper:last-child { margin-bottom: 0; }
+.chat-bubble p + .code-block-wrapper { margin-top: 0; }
 
 .page { max-width: 840px; margin: 0 auto; padding: var(--space-12) var(--space-8) 96px; }
 .section { margin-bottom: var(--space-12); }
@@ -94,7 +146,7 @@ h1 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 
 h2 { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 1.5em 0 0.5em; }
 h3 { font-family: var(--font-heading); font-size: var(--text-lg); font-weight: 600; line-height: 1.3; margin: 1.25em 0 0.4em; }
 h4 { font-family: var(--font-heading); font-size: var(--text-base); font-weight: 600; margin: 1em 0 0.3em; }
-p { margin: 0 0 1em; line-height: 1.6; }
+p { margin: 0 0 0.75em; line-height: 1.6; }
 a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 strong { font-weight: 700; }
 em { font-style: italic; }
@@ -170,8 +222,9 @@ blockquote {
   margin: 0 0 1em;
   font-style: italic;
 }
-ul, ol { padding-left: var(--space-5); margin: 0 0 1em; }
-li { margin-bottom: var(--space-2); }
+ul, ol { padding-left: var(--space-5); margin: 0 0 0.75em; }
+li { margin-bottom: var(--space-1); }
+li:last-child { margin-bottom: 0; }
 li::marker { color: var(--text-muted); }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 

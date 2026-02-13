@@ -148,8 +148,8 @@ export default function ResponseDemo() {
           },
           {
             title: 'Paragraph spacing',
-            desc: 'Paragraphs use 1em bottom margin — one full line of whitespace. No first-line indent. The last paragraph in a bubble has no bottom margin.',
-            token: '--paragraph-spacing: 1em',
+            desc: 'Paragraphs use 0.75em bottom margin — three-quarter line of whitespace. Enough to separate ideas, tight enough to maintain flow. The last paragraph in a bubble has no bottom margin.',
+            token: 'margin: 0 0 0.75em',
           },
           {
             title: 'Text wrap',
@@ -163,8 +163,8 @@ export default function ResponseDemo() {
           },
           {
             title: 'List rhythm',
-            desc: 'List items use 8px vertical spacing. Paragraphs before lists tighten by 8px so the list reads as a continuation, not a separate block.',
-            token: 'li + li: margin-top: var(--space-2)',
+            desc: 'List items use 4px vertical padding. No bottom margin between items — padding alone creates rhythm. Paragraphs before lists pull up by 0.25em so the list reads as a continuation.',
+            token: 'li: padding 4px 0; p + ul: margin-top -0.25em',
           },
         ].map((rule, i) => (
           <div key={i} style={{
@@ -298,7 +298,10 @@ export default function ResponseDemo() {
           'Last paragraph in bubble has no bottom margin',
           'Code blocks use full available width',
           'Headings bind to following content, not preceding',
-          'Lists tighten spacing with preceding paragraph',
+          'Lists pull up 0.25em when following a paragraph',
+          'List items use 4px padding, not margin — no stacking',
+          'Last list/blockquote in bubble drops bottom margin',
+          'Code blocks tighten to 0 top margin after paragraphs',
           'No horizontal scrolling — code blocks scroll independently',
         ].map((rule, i) => (
           <div key={i} style={{
