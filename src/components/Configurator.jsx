@@ -839,13 +839,105 @@ The badge must always be interactive. A non-clickable citation is a broken citat
 
 ---
 
-## 7 — Chat Rendering
+## 7 — Response Anatomy & Rendering
 
-Bubbles: \`--surface\`, 1px \`--border\`, \`--radius-lg\`, padding \`--space-6\` / \`--space-8\`.
+### 7.1 Bubble structure
 
-User bubbles: \`--bg\` background, indented.
+Every response bubble has three regions:
 
-Inline styles, code blocks, tables, blockquotes, lists, rules: standard Markdown rendering using token system. See test page.
+| Region | Content | Rules |
+|---|---|---|
+| **Label** | "Assistant" or "You" | Uppercase, \`--text-xs\`, \`--text-muted\`, \`--font-body\`, semibold, letter-spacing 0.08em |
+| **Body** | Prose, lists, code, headings | All typographic rules below apply. Markdown rendered via \`marked\` with GFM. |
+| **Sources** | Footer citations | Separated by 1px \`--border\` top. Only present when citations exist. |
+
+### 7.2 Assistant bubbles
+
+- Background: \`--surface\`
+- Border: 1px \`--border\`
+- Border radius: \`--radius-lg\` (12px)
+- Padding: \`--space-6\` vertical, \`--space-8\` horizontal (24px / 32px)
+- Full width of container (max 840px)
+
+### 7.3 User bubbles
+
+- Background: \`--bg\` (page background, not surface)
+- Right-aligned: \`margin-left: auto\`
+- Width: \`fit-content\`, max 85% of container
+- Plain text by default — pasted markdown is preserved
+- Images render inline above text
+- No citations, no footer, no markdown rendering
+- Same label, padding, border-radius as assistant
+
+### 7.4 Paragraph spacing
+
+- Paragraphs: \`margin: 0 0 0.75em\` — three-quarter line of whitespace between paragraphs
+- Last paragraph in a bubble: \`margin-bottom: 0\`
+- No first-line indent (\`--paragraph-indent: 0\`)
+
+### 7.5 Measure (line length)
+
+- Prose (\`p\`, \`li\`, \`blockquote\`): capped at \`--measure\` (68ch)
+- Headings (\`h1\`–\`h4\`): capped at \`--measure-narrow\` (55ch)
+- Lists (\`ul\`, \`ol\`): capped at \`--measure\`
+- Code blocks: full available width (scroll independently)
+
+### 7.6 Line height
+
+| Context | Value | Token |
+|---|---|---|
+| Body text | 1.6 | \`--line-height-prose\` |
+| Headings | 1.3 | \`--line-height-tight\` |
+| UI labels | 1.4 | \`--line-height-ui\` |
+
+### 7.7 Widow & orphan control
+
+All prose elements enforce:
+
+\`\`\`css
+orphans: 2;      /* min 2 lines at bottom of a column/page break */
+widows: 2;       /* min 2 lines at top of a column/page break */
+text-wrap: pretty; /* browser-level line balancing for even rag */
+\`\`\`
+
+Applied to: \`p\`, \`li\`, \`dd\`, \`blockquote\`, \`.chat-bubble p\`, \`.cf-doc p\`, \`.cf-doc li\`.
+
+### 7.8 Heading proximity
+
+Headings bind to their following content, not the preceding section:
+
+- \`h1\`–\`h3\` followed by \`p\`: \`margin-top: var(--space-2)\` (8px) on the paragraph
+- Headings have larger top margin (\`1.25em+\`) than bottom (\`0.3–0.5em\`)
+
+### 7.9 List spacing
+
+- Lists: \`margin-top: 0; margin-bottom: 0.75em\`
+- \`p + ul\` / \`p + ol\`: \`margin-top: -0.25em\` — lists pull up to read as continuations
+- List items: \`padding: 4px 0\`, no margin. First/last child: no top/bottom padding.
+- Nested lists: \`margin-top: 4px; margin-bottom: 0\`
+- Last list in bubble: \`margin-bottom: 0\`
+
+### 7.10 Code blocks
+
+- Wrapped in \`.code-block-wrapper\` with header (language label + copy button) and \`<pre><code>\`
+- Spacing: \`margin-top: 0.5em; margin-bottom: 0.75em\`
+- After a paragraph: \`margin-top: 0\` (tightens to preceding prose)
+- Last code block in bubble: \`margin-bottom: 0\`
+- Font: \`--font-mono\`, \`--text-sm\`, line-height 1.55
+
+### 7.11 Blockquotes
+
+- Left border: 3px \`--border\`
+- Padding-left: \`--space-4\`
+- Colour: \`--text-secondary\`
+- Spacing: \`margin: 0.5em 0 0.75em\`
+- Last blockquote in bubble: \`margin-bottom: 0\`
+
+### 7.12 Horizontal rules
+
+- 1px \`--border\` top
+- Margin: \`var(--space-5)\` vertical
+- Capped at \`--measure\` width
 
 ---
 
@@ -909,14 +1001,136 @@ Add to any grid container to change spacing:
 
 ## 10 — Conversational Typesetting
 
+### 10.1 Prose rhythm
+
 - 2–4 sentences per paragraph. One idea per paragraph. Max ~120 words per block.
-- Short sentences. Active voice. No semicolons.
-- Bold sparingly. No emoji. No mixing bullets and prose.
+- Paragraph spacing: 0.75em (three-quarter line). Tight enough for flow, open enough to scan.
+- Short sentences. Active voice. No semicolons, no nested clauses.
+- Bold sparingly. No emoji. No mixing bullets and prose in the same block.
 - Straight quotes. Em dashes sparingly. One space after periods.
+
+### 10.2 Legibility rules
+
+| Rule | Value | Why |
+|---|---|---|
+| Measure (line length) | 68ch body, 55ch headings | 45–75ch is optimal for sustained reading |
+| Line height | 1.6× body, 1.3× headings, 1.4× UI | Prevents line doubling (eye losing its place) |
+| Widows | ≥ 2 lines | No single line stranded at top of break |
+| Orphans | ≥ 2 lines | No single line stranded at bottom of break |
+| Text wrap | \`text-wrap: pretty\` | Browser-level line balancing for even rag |
+| Paragraph spacing | 0.75em bottom margin | Consistent vertical rhythm, zero on last-child |
+| Paragraph indent | 0 | Block spacing replaces indent in digital type |
+| Font smoothing | \`-webkit-font-smoothing: antialiased\` | Consistent rendering across browsers |
+
+### 10.3 Spacing between elements
+
+| Transition | Rule | Effect |
+|---|---|---|
+| Paragraph → paragraph | 0.75em gap | Standard prose rhythm |
+| Paragraph → list | List pulls up 0.25em | List reads as continuation of paragraph |
+| Paragraph → code block | Code top margin: 0 | Code sits tight under its introducing sentence |
+| Heading → paragraph | 8px gap | Heading binds to its content |
+| Previous content → heading | 1.25em+ gap | Heading separates from preceding section |
+| List item → list item | 4px padding | Tight rhythm, no stacking margins |
+| Paragraph → blockquote | 0.5em gap | Slight separation |
+| Any element → end of bubble | 0 bottom margin | Clean bubble termination |
 
 ---
 
-## 11 — Quick Reference
+## 11 — Inline Forms & Actions
+
+### 11.1 When to use
+
+When the assistant needs information or confirmation, it renders forms and action buttons directly inside the response bubble. Never redirect users to external forms. Never use modals for simple input.
+
+### 11.2 Form structure
+
+Forms sit inside the assistant bubble, separated from prose by a 1px \`--border\` top:
+
+\`\`\`
+[Prose explanation — why the form is needed]
+─────────────────────────────────────
+[Form: labels, inputs, hints]
+[Actions: Submit / Cancel]
+\`\`\`
+
+### 11.3 Form rendering rules
+
+- Container: \`.chat-form\` — \`margin-top: var(--space-4)\`, \`padding-top: var(--space-4)\`, \`border-top: 1px solid var(--border)\`, \`max-width: var(--measure)\`
+- Inputs: \`--bg\` background (page background, not bubble surface) — creates visual depth
+- Labels: \`--font-body\`, semibold, \`--text-sm\`
+- Hints: \`--text-xs\`, \`--text-muted\`, placed between label and input
+- Input groups: \`margin-bottom: var(--space-3)\`
+- Selects: native \`appearance: auto\` for accessibility
+
+### 11.4 Validation
+
+Validation is **immediate, inline, and non-blocking**. No submit-then-error. No modals. No toasts.
+
+**Error state:**
+- Input border: \`--destructive\`
+- Focus ring: 3px \`--destructive\` at 15% opacity
+- Message: \`.input-error-msg\` — \`--text-xs\`, \`--destructive\`, below the input
+- Message format: names the problem AND the fix (e.g., "Numeric values only. Remove: \\"$\\"")
+
+**Valid state:**
+- Input border: \`--accent\`
+- Message: \`.input-valid-msg\` — \`--text-xs\`, \`--accent\`, "Valid"
+
+**Number input example:** If a user types "$45.00" in a numeric field, the error reads: "Numeric values only. Remove: \\"$\\"". The message identifies the offending character.
+
+### 11.5 Action buttons (CTAs)
+
+When the assistant needs a decision (confirm/decline), it presents buttons below the response, separated by a border:
+
+\`\`\`
+[Prose explanation — what will happen]
+─────────────────────────────────────
+[Primary action] [Secondary action]
+\`\`\`
+
+**Rules:**
+- Container: \`.chat-actions\` — flex, gap \`var(--space-2)\`, \`border-top: 1px solid var(--border)\`, \`margin-top/padding-top: var(--space-4)\`
+- Primary action is always first (leftmost)
+- Destructive actions use \`btn-destructive\`, never \`btn-primary\`
+- Max 3 buttons per row — consolidate beyond that
+- Button labels are verbs: "Deploy", "Delete", not "OK" or "Yes"
+- Minimum width: 100px, centred text
+
+### 11.6 Confirmed state
+
+After a button is clicked, the action row is **replaced** with a confirmation strip. Buttons never remain interactive after selection.
+
+\`\`\`html
+<div class="chat-action-confirmed">
+  <span class="chat-action-confirmed-icon confirm">✓</span>
+  <span class="chat-action-confirmed-label">Deploy confirmed</span>
+  <span class="chat-action-confirmed-time">Just now</span>
+</div>
+\`\`\`
+
+- Confirmed: ✓ icon in \`--accent-subtle\` circle
+- Declined/cancelled: ✗ icon in \`--destructive-subtle\` circle
+- Timestamp: \`--text-xs\`, \`--text-muted\`, right-aligned
+
+### 11.7 Form submitted state
+
+After form submission, the form collapses into a confirmation banner:
+
+\`\`\`html
+<div class="chat-form-confirmed">
+  <span>✓</span> Billing details submitted
+</div>
+\`\`\`
+
+- Background: \`--accent-subtle\`
+- Colour: \`--accent\`, semibold
+- Full width, bleeds to bubble edges
+- Replaces the form — no stale inputs visible
+
+---
+
+## 12 — Quick Reference
 
 | Goal | Markdown |
 |---|---|
