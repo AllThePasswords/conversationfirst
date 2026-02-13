@@ -78,6 +78,12 @@
   max-height: 200px;
   line-height: 1.5;
   overflow-y: auto;
+  transition: max-height 0.2s ease;
+}
+
+/* When dictating, allow up to ~8 lines before scrolling */
+.chat-input-field.dictating {
+  max-height: 320px;
 }
 
 .chat-input-field:focus {
@@ -314,6 +320,7 @@
 
 /* Mic (speech-to-text) button */
 .chat-mic-btn {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -322,13 +329,14 @@
   border-radius: var(--radius-md);
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text);
   cursor: pointer;
-  transition: color 0.15s;
+  transition: color 0.2s, transform 0.2s;
   flex-shrink: 0;
 }
 .chat-mic-btn:hover {
-  color: var(--accent);
+  color: var(--text);
+  transform: scale(1.08);
 }
 .chat-mic-btn:focus-visible {
   outline: 2px solid var(--accent);
@@ -338,13 +346,54 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Active listening state — green with ripple waves */
 .chat-mic-btn.listening {
-  color: #e53e3e;
-  animation: mic-pulse 1.2s ease-in-out infinite;
+  color: var(--accent);
 }
-@keyframes mic-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.chat-mic-btn.listening svg {
+  animation: mic-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Ripple rings that emanate from the mic when listening */
+.mic-ripple {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  animation: mic-ripple-wave 1.6s ease-out infinite;
+}
+.mic-ripple:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.mic-ripple:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes mic-ripple-wave {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+@keyframes mic-bounce {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .chat-send-btn {

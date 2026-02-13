@@ -14,8 +14,9 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 200) + 'px';
-  }, []);
+    const maxH = listening ? 320 : 200;
+    el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
+  }, [listening]);
 
   const speechSupported = typeof window !== 'undefined' &&
     (window.SpeechRecognition || window.webkitSpeechRecognition);
@@ -204,7 +205,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
           )}
           <textarea
             ref={textareaRef}
-            className="chat-input-field"
+            className={`chat-input-field ${listening ? 'dictating' : ''}`}
             placeholder="Ask a question..."
             aria-label="Message input"
             value={text}
@@ -225,6 +226,13 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
             aria-label={listening ? 'Stop listening' : 'Speech to text'}
             type="button"
           >
+            {listening && (
+              <>
+                <div className="mic-ripple" />
+                <div className="mic-ripple" />
+                <div className="mic-ripple" />
+              </>
+            )}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="9" y="1" width="6" height="12" rx="3" />
               <path d="M5 10a7 7 0 0 0 14 0" />
