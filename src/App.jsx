@@ -87,8 +87,10 @@ export default function App() {
   const dbHistory = useChatHistoryDB(user?.id);
 
   // Pick the right hooks based on auth state
+  // Fall back to guest hooks if DB is unavailable (e.g. tables not created)
+  const useDB = isAuthenticated && dbHistory.dbAvailable;
   const { conversations, activeId, setActiveId, createConversation, updateTitle, deleteConversation } =
-    isAuthenticated ? dbHistory : guestHistory;
+    useDB ? dbHistory : guestHistory;
 
   useEffect(() => {
     const onHash = () => setRoute(window.location.hash);
@@ -169,6 +171,7 @@ export default function App() {
         onSidebarSelect={handleSidebarSelect}
         onNewChat={handleNewChat}
         isAuthenticated={isAuthenticated}
+        useDB={useDB}
         user={user}
         session={session}
       />

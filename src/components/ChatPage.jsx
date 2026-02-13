@@ -30,6 +30,7 @@ export default function ChatPage({
   onSidebarSelect,
   onNewChat,
   isAuthenticated,
+  useDB = false,
   user,
   session,
 }) {
@@ -63,11 +64,11 @@ export default function ChatPage({
 
   const activeConversation = conversations.find(c => c.id === activeId);
 
-  // Use DB-backed hook when authenticated, localStorage hook when guest
-  const guestChat = useChat(isAuthenticated ? null : activeId, updateTitle);
-  const dbChat = useChatDB(isAuthenticated ? activeId : null, updateTitle, accessToken);
+  // Use DB-backed hook when authenticated AND DB is available, otherwise localStorage
+  const guestChat = useChat(useDB ? null : activeId, updateTitle);
+  const dbChat = useChatDB(useDB ? activeId : null, updateTitle, accessToken);
   const { messages, isStreaming, isSearching, isUploading, streamingContent, error, sendMessage, clearError } =
-    isAuthenticated ? dbChat : guestChat;
+    useDB ? dbChat : guestChat;
 
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);

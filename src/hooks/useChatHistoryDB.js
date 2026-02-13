@@ -5,10 +5,14 @@ export function useChatHistoryDB(userId) {
   const [conversations, setConversations] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [dbAvailable, setDbAvailable] = useState(true);
 
   // Fetch conversations on mount and when userId changes
   useEffect(() => {
-    if (!userId || !supabase) return;
+    if (!userId || !supabase) {
+      setDbAvailable(false);
+      return;
+    }
 
     let cancelled = false;
 
@@ -21,7 +25,14 @@ export function useChatHistoryDB(userId) {
 
       if (cancelled) return;
 
-      if (!error && data) {
+      if (error) {
+        // Tables don't exist or Supabase is misconfigured
+        setDbAvailable(false);
+        setLoaded(true);
+        return;
+      }
+
+      if (data) {
         const list = data.map(c => ({
           id: c.id,
           title: c.title || '',
@@ -97,5 +108,6 @@ export function useChatHistoryDB(userId) {
     updateTitle,
     deleteConversation,
     loaded,
+    dbAvailable,
   };
 }
