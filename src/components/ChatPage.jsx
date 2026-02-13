@@ -39,12 +39,19 @@ export default function ChatPage({
   const dragCounter = useRef(0);
 
   const accessToken = session?.access_token || null;
+  const newConvoIdRef = useRef(null);
 
   // Auto-create conversation: always new if ?new in hash, otherwise fallback
   useEffect(() => {
     const hash = window.location.hash;
     if (hash.includes('?new')) {
-      createConversation();
+      const result = createConversation();
+      // createConversation returns id (sync/guest) or Promise<id> (async/DB)
+      if (result && typeof result.then === 'function') {
+        result.then(id => { if (id) newConvoIdRef.current = id; });
+      } else if (result) {
+        newConvoIdRef.current = result;
+      }
       window.location.hash = '#/chat';
       return;
     }
@@ -68,23 +75,18 @@ export default function ChatPage({
   const [headerScrolled, setHeaderScrolled] = useState(false);
 
   // Send pending message from landing page floating input
+  // Only fires once activeId matches the newly created conversation
   useEffect(() => {
     if (!activeId || pendingSentRef.current) return;
     const pending = sessionStorage.getItem('cf-pending-message');
-    if (pending) {
-      sessionStorage.removeItem('cf-pending-message');
-      pendingSentRef.current = true;
-
-      if (!isAuthenticated) {
-        // Guest mode — just send immediately
-        setTimeout(() => sendMessage(pending), 50);
-      } else {
-        // Authenticated — check if conversation has messages
-        // For DB mode, messages are loaded async, so just send with a small delay
-        setTimeout(() => sendMessage(pending), 100);
-      }
-    }
-  }, [activeId, sendMessage, createConversation, isAuthenticated]);
+    if (!pending) return;
+    // If we created a new conversation via ?new, wait until activeId matches it
+    if (newConvoIdRef.current && activeId !== newConvoIdRef.current) return;
+    sessionStorage.removeItem('cf-pending-message');
+    pendingSentRef.current = true;
+    newConvoIdRef.current = null;
+    setTimeout(() => sendMessage(pending), 50);
+  }, [activeId, sendMessage, isAuthenticated]);
 
   // Scroll to bottom only when messages array changes
   useEffect(() => {
