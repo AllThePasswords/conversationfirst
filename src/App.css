@@ -34,6 +34,34 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   text-wrap: pretty;
 }
 
+/* Response prose rhythm — legibility rules for assistant responses */
+.chat-bubble p,
+.chat-bubble li,
+.chat-bubble blockquote {
+  max-width: var(--measure);
+  line-height: var(--line-height-prose);
+}
+.chat-bubble > div > p:last-child,
+.chat-bubble > p:last-child { margin-bottom: 0; }
+.chat-bubble h1,
+.chat-bubble h2,
+.chat-bubble h3,
+.chat-bubble h4 {
+  max-width: var(--measure-narrow);
+  line-height: var(--line-height-tight);
+}
+.chat-bubble h1 + p,
+.chat-bubble h2 + p,
+.chat-bubble h3 + p { margin-top: var(--space-2); }
+.chat-bubble ul, .chat-bubble ol { max-width: var(--measure); }
+.chat-bubble li + li { margin-top: var(--space-2); }
+.chat-bubble p + ul,
+.chat-bubble p + ol { margin-top: calc(-1 * var(--space-2)); }
+.chat-bubble hr {
+  margin: var(--space-6) 0;
+  max-width: var(--measure);
+}
+
 .page { max-width: 840px; margin: 0 auto; padding: var(--space-12) var(--space-8) 96px; }
 .section { margin-bottom: var(--space-12); }
 .section-label {
