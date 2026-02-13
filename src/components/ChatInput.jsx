@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { validateImage, validateImageCount } from '../lib/imageUpload';
 
-export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage }) {
+export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage, variant = 'bar' }) {
   const [text, setText] = useState('');
   const [dragging, setDragging] = useState(false);
   const [listening, setListening] = useState(false);
@@ -37,22 +37,22 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
 
     // Capture whatever text exists before speech starts
     const baseText = textareaRef.current?.value || '';
-    let finalTranscript = '';
 
     recognition.onresult = (event) => {
+      // Rebuild the full transcript from ALL results each time.
+      // This avoids accumulation bugs — we read the canonical state
+      // from the SpeechRecognition results array directly.
+      let final = '';
       let interim = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
+      for (let i = 0; i < event.results.length; i++) {
         if (event.results[i].isFinal) {
-          finalTranscript += transcript;
+          final += event.results[i][0].transcript;
         } else {
-          interim = transcript;
+          interim += event.results[i][0].transcript;
         }
       }
-      // Rebuild from fixed base + accumulated finals + current interim
-      const spacer = baseText ? ' ' : '';
-      const combined = baseText + spacer + finalTranscript + interim;
-      setText(combined);
+      const spacer = baseText && (final || interim) ? ' ' : '';
+      setText(baseText + spacer + final + interim);
       resize();
     };
 
@@ -152,7 +152,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   const canSend = !disabled && (text.trim() || stagedImages.length > 0);
 
   return (
-    <div className="chat-input-bar">
+    <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
         className={`chat-input-inner ${dragging ? 'dragging' : ''}`}
         onDragEnter={handleDragEnter}

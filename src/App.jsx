@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import Hero from './components/Hero';
 import VoiceRules from './components/VoiceRules';
 import ProcessingDemo from './components/ProcessingDemo';
@@ -9,6 +9,7 @@ import ComponentShowcase from './components/ComponentShowcase';
 import Configurator from './components/Configurator';
 import Footer from './components/Footer';
 import ThemePresetBar from './components/ThemePresetBar';
+import ChatInput from './components/ChatInput';
 import ChatPage from './components/ChatPage';
 import ChatSidebar from './components/ChatSidebar';
 import AuthPage from './components/AuthPage';
@@ -37,88 +38,11 @@ const PREP_ROUTES = {
   '#/prep/leadership': PrepLeadership,
 };
 
-function FloatingInput() {
-  const [text, setText] = useState('');
-  const textareaRef = useRef(null);
-  const fileInputRef = useRef(null);
-
-  const resize = useCallback(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 200) + 'px';
-  }, []);
-
-  const handleSend = useCallback(() => {
-    if (!text.trim()) return;
-    sessionStorage.setItem('cf-pending-message', text.trim());
-    window.location.hash = '#/chat?new';
-  }, [text]);
-
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  }, [handleSend]);
-
-  const handleFileChange = useCallback((e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > 0) {
-      window.location.hash = '#/chat?new';
-    }
-    e.target.value = '';
-  }, []);
-
-  return (
-    <div className="chat-input-floating">
-      <div className="chat-input-inner">
-        <button
-          className="chat-attach-btn"
-          onClick={() => fileInputRef.current?.click()}
-          title="Attach image"
-          aria-label="Attach image"
-          type="button"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
-          multiple
-          capture="environment"
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-          aria-hidden="true"
-        />
-        <div className="chat-input-body">
-          <textarea
-            ref={textareaRef}
-            className="chat-input-field"
-            placeholder="Ask a question..."
-            aria-label="Message input"
-            value={text}
-            onChange={(e) => { setText(e.target.value); resize(); }}
-            onKeyDown={handleKeyDown}
-            rows={1}
-          />
-        </div>
-        <button
-          className="chat-send-btn"
-          onClick={handleSend}
-          disabled={!text.trim()}
-          title="Send"
-          aria-label="Send message"
-        >
-          ↑
-        </button>
-      </div>
-    </div>
-  );
+// Home page send: stash message and navigate to chat
+function handleHomeSend(text) {
+  if (!text.trim()) return;
+  sessionStorage.setItem('cf-pending-message', text.trim());
+  window.location.hash = '#/chat?new';
 }
 
 const MenuButton = ({ onClick, sidebarOpen }) => (
@@ -287,7 +211,7 @@ export default function App() {
         <Configurator />
         <Footer />
       </main>
-      <FloatingInput />
+      <ChatInput onSend={handleHomeSend} variant="floating" />
     </div>
   );
 }
