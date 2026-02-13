@@ -449,9 +449,13 @@ export default async function handler(req) {
     } else if (response.status === 429) {
       userMessage = 'Rate limit reached. Wait a moment and try again.';
     } else if (response.status === 400) {
-      userMessage = detail.includes('too long') || detail.includes('token')
-        ? 'Message too long. Try a shorter message or clear the conversation.'
-        : `Request error (400): ${detail || 'Unknown'}. Try starting a new conversation.`;
+      if (detail.includes('too long') || detail.includes('token')) {
+        userMessage = 'Message too long. Try a shorter message or clear the conversation.';
+      } else if (detail.includes('credit') || detail.includes('balance') || detail.includes('billing')) {
+        userMessage = 'API credits exhausted. The site owner needs to top up Anthropic billing.';
+      } else {
+        userMessage = 'Request error. Try starting a new conversation.';
+      }
     } else if (response.status === 529 || response.status === 503) {
       userMessage = 'Service temporarily unavailable. Try again shortly.';
     } else {
