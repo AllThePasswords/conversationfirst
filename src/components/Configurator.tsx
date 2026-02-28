@@ -1222,6 +1222,271 @@ After form submission, the form collapses into a confirmation banner:
 `;
 }
 
+/* ═══ CLAUDE.md RULES ═══ */
+
+function generateClaudeMdRules(c) {
+  const b = c.body, h = resolve(c), m = c.mono;
+  const ac = c.accent?.hex || '#3d6b5e';
+  const bg = c.bg?.hex || '#faf9f7';
+  return `# Design System — ConversationFirst
+# Generated at conversationfirst.xyz — by Eric Greene
+
+## Voice rules (MANDATORY — apply to ALL AI-generated text)
+
+1. Answer first. Direct answer in sentence one. No preamble, no "Great question!", no "I'd be happy to help."
+2. Cite everything. Every factual claim gets a citation. No citation = no claim.
+3. Give examples. Abstract statements followed by concrete examples. No hand-waving.
+4. Stop when done. No padding, no summaries, no "Would you like me to elaborate?"
+5. No emotion. No excitement, no apologising, no hedging. State facts.
+6. Short sentences. One idea per sentence. Active voice. No semicolons.
+7. No filler. Remove: "certainly", "absolutely", "of course", "it's worth noting", "interestingly", "essentially", "basically", "actually", "in order to".
+
+## Response structure
+
+\`\`\`
+[Direct answer — 1-2 sentences]
+
+[Supporting evidence with citations — 1-3 short paragraphs]
+
+[Example or data if applicable]
+
+[Sources footer]
+\`\`\`
+
+## Typography
+
+| Slot | Typeface | CSS variable | Use |
+|---|---|---|---|
+| Body | ${b.name} | \`--font-body: ${b.family}\` | Prose, lists, quotes, UI labels, forms, navigation |
+| Heading | ${h.name} | \`--font-heading: ${h.family}\` | Page titles, section heads, modal titles, card titles |
+| Mono | ${m.name} | \`--font-mono: ${m.family}\` | Code, inline code, identifiers, processing status |
+
+Google Fonts import: \`${fontsUrl(c)}\`
+
+## Type scale
+
+| Token | Size | Use |
+|---|---|---|
+| \`--text-3xl\` | 36px | Hero |
+| \`--text-2xl\` | 28px | H1, page titles |
+| \`--text-xl\` | 22px | H2, section heads |
+| \`--text-lg\` | 18px | H3, card titles |
+| \`--text-base\` | 15px | Body, chat, forms |
+| \`--text-sm\` | 13px | Secondary, meta |
+| \`--text-xs\` | 11px | Captions, badges |
+
+Body line-height: 1.6. Heading line-height: 1.3. Max measure: 68ch.
+
+## Colours
+
+\`\`\`css
+:root {
+  --accent: ${ac};           /* ${c.accent?.name || 'Forest'} */
+  --accent-hover: ${darken(ac)};
+  --accent-subtle: ${tint(ac)};
+  --bg: ${bg};               /* ${c.bg?.name || 'Warm Paper'} */
+  --cite-border: ${ac};
+  --cite-bg: ${tint(ac, 0.92)};
+}
+\`\`\`
+
+Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inverts.
+
+## Spacing
+
+\`--space-1\`: 4px, \`--space-2\`: 8px, \`--space-3\`: 12px, \`--space-4\`: 16px, \`--space-5\`: 20px, \`--space-6\`: 24px, \`--space-8\`: 32px, \`--space-10\`: 40px, \`--space-12\`: 48px
+
+## Radius
+
+\`--radius-sm\`: 4px, \`--radius-md\`: 8px, \`--radius-lg\`: 12px, \`--radius-full\`: 9999px
+
+## CSS tokens (full set)
+
+\`\`\`css
+:root {
+  --font-body: ${b.family};
+  --font-heading: ${h.family};
+  --font-mono: ${m.family};
+  --accent: ${ac};
+  --accent-hover: ${darken(ac)};
+  --accent-subtle: ${tint(ac)};
+  --bg: ${bg};
+  --surface: #fff;
+  --border: #e5e2dd;
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --text-muted: #888;
+  --cite-bg: ${tint(ac, 0.92)};
+  --cite-border: ${ac};
+  --destructive: #b91c1c;
+  --warning: #ca8a04;
+}
+\`\`\`
+
+## Processing states (no spinners)
+
+- Blinking cursor (2px, accent colour, 1s ease-in-out)
+- Monospace status text in \`--text-muted\`
+- Animated dots (three periods, staggered 0s/0.2s/0.4s)
+- Status examples: "Processing...", "Searching 3 documents...", "Cross-referencing sources..."
+
+## Citations
+
+- Inline: 18px superscript circle, \`--cite-bg\` fill, clickable \`<a>\` tag
+- Block: 3px left border in \`--cite-border\`, \`--cite-bg\` fill, clickable title
+- Footer: 1px top border, each row is a single clickable \`<a>\` tag
+- Convention: \`[cite:N](url)\` for inline, \`[cite-block:N title="..." url="..."]\` for blocks
+
+## Component rules
+
+- Buttons: primary (accent bg, white text), secondary (border only), ghost (no border), destructive (red)
+- All components use design tokens — no component introduces its own colours or fonts
+- Border radius: \`--radius-md\` for inputs/buttons, \`--radius-lg\` for cards/modals
+- Shadows: \`--shadow-sm\`, \`--shadow-md\`, \`--shadow-lg\` (subtle, warm-toned)
+
+## Layout
+
+- Max content width: 840px
+- Prose measure: 68ch body, 55ch headings
+- Grid classes: \`grid-2\`, \`grid-3\`, \`grid-4\`, \`grid-2-1\`, \`grid-1-2\`
+- All grids collapse to single column below 640px
+
+---
+*Generated with the ConversationFirst Configurator — conversationfirst.xyz*
+*${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'}*
+`;
+}
+
+/* ═══ SLASH COMMAND ═══ */
+
+function generateSlashCommand(c) {
+  const b = c.body, h = resolve(c), m = c.mono;
+  const ac = c.accent?.hex || '#3d6b5e';
+  const bg = c.bg?.hex || '#faf9f7';
+  return `# /design-system — ConversationFirst Spec
+# Drop this file into .claude/commands/ and invoke with /design-system
+# Generated at conversationfirst.xyz — by Eric Greene
+
+Apply the ConversationFirst design system to the current task. Use these rules for all UI code, components, and AI-generated text.
+
+## Voice
+
+Answer first, cite everything, give examples, stop when done. No filler, no emotion, no hedging. Short sentences, active voice.
+
+Banned phrases: "Great question!", "I'd be happy to help", "certainly", "absolutely", "it's worth noting", "interestingly", "essentially", "basically".
+
+## Fonts
+
+- Body: \`${b.name}\` → \`font-family: ${b.family}\`
+- Heading: \`${h.name}\` → \`font-family: ${h.family}\`
+- Mono: \`${m.name}\` → \`font-family: ${m.family}\`
+
+Import: \`${fontsUrl(c)}\`
+
+## Colours
+
+- Accent: \`${ac}\` (${c.accent?.name || 'Forest'}) — for buttons, links, citations, focus rings
+- Accent hover: \`${darken(ac)}\`
+- Accent subtle: \`${tint(ac)}\` — for tinted backgrounds
+- Background: \`${bg}\` (${c.bg?.name || 'Warm Paper'})
+- Surface (cards): \`#fff\`
+- Text: \`#1a1a1a\`, secondary: \`#555\`, muted: \`#888\`
+- Border: \`#e5e2dd\`
+- Citation bg: \`${tint(ac, 0.92)}\`, citation border: \`${ac}\`
+
+## Scale
+
+36px hero → 28px h1 → 22px h2 → 18px h3 → 15px body → 13px secondary → 11px caption
+
+## Spacing
+
+4px / 8px / 12px / 16px / 20px / 24px / 32px / 40px / 48px
+
+## Radius
+
+4px sm / 8px md / 12px lg / 9999px full
+
+## Rules
+
+1. Every factual claim requires a citation: \`[cite:N](url)\`
+2. Processing states use blinking cursor + monospace status text, never spinners
+3. All components use design tokens — no custom colours or fonts
+4. Border radius: \`--radius-md\` for inputs/buttons, \`--radius-lg\` for cards
+5. Max prose width: 68ch. Max heading width: 55ch.
+6. Line height: 1.6 body, 1.3 headings
+7. Dark mode: \`prefers-color-scheme: dark\` — accent lightens, bg inverts
+8. Inline forms inside chat bubbles, never modals for simple input
+9. Buttons use verb labels ("Deploy", "Delete"), not "OK" or "Yes"
+
+---
+*Generated with the ConversationFirst Configurator — conversationfirst.xyz*
+`;
+}
+
+/* ═══ AI PROMPT ═══ */
+
+function generateAIPrompt(c) {
+  const b = c.body, h = resolve(c), m = c.mono;
+  const ac = c.accent?.hex || '#3d6b5e';
+  const bg = c.bg?.hex || '#faf9f7';
+  return `You are building a UI that follows the ConversationFirst design system (conversationfirst.xyz — by Eric Greene).
+
+VOICE RULES (apply to all AI-generated text):
+- Answer first. Direct answer in sentence one.
+- Cite every factual claim: [cite:N](url)
+- No filler: remove "certainly", "absolutely", "it's worth noting", "I'd be happy to help"
+- No emotion: no excitement, no apologising, no hedging
+- Short sentences. Active voice. Stop when done.
+
+TYPOGRAPHY:
+- Body: ${b.name} (${b.family})
+- Heading: ${h.name} (${h.family})
+- Mono: ${m.name} (${m.family})
+- Scale: 36/28/22/18/15/13/11px
+- Body line-height: 1.6, headings: 1.3
+- Max line length: 68ch body, 55ch headings
+
+COLOURS:
+- Accent: ${ac} (${c.accent?.name || 'Forest'})
+- Accent hover: ${darken(ac)}
+- Accent subtle: ${tint(ac)}
+- Background: ${bg} (${c.bg?.name || 'Warm Paper'})
+- Surface: #fff
+- Text: #1a1a1a, secondary: #555, muted: #888
+- Border: #e5e2dd
+- Citation background: ${tint(ac, 0.92)}
+
+SPACING: 4/8/12/16/20/24/32/40/48px
+RADIUS: 4px sm, 8px md, 12px lg, 9999px full
+
+COMPONENTS:
+- Buttons: primary (accent bg), secondary (border), ghost, destructive (red)
+- Citations: superscript badges with clickable links
+- Processing: blinking cursor + monospace status, never spinners
+- Cards: white surface, 1px border, 12px radius
+- Inline forms inside responses, never modals for simple input
+- All components use design tokens, no custom colours
+
+CSS CUSTOM PROPERTIES:
+--font-body: ${b.family}
+--font-heading: ${h.family}
+--font-mono: ${m.family}
+--accent: ${ac}
+--accent-hover: ${darken(ac)}
+--accent-subtle: ${tint(ac)}
+--bg: ${bg}
+--surface: #fff
+--border: #e5e2dd
+--text: #1a1a1a
+--text-secondary: #555
+--text-muted: #888
+
+Google Fonts: ${fontsUrl(c)}
+
+Generated with the ConversationFirst Configurator — conversationfirst.xyz
+`;
+}
+
 /* ═══ UI COMPONENTS ═══ */
 
 function ColorCard({ color, selected, onClick }) {
@@ -1444,27 +1709,48 @@ export default function Configurator() {
 
       {cur === "review" && all && (
         <div className="cfg-fin" key="review">
-          <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginBottom: "var(--space-4)" }}>
-            <button onClick={() => { dl(generateSpec(choices), "conversation-first-spec.md", "text/markdown"); flash("Spec downloaded"); }}
-              className="btn btn-primary">
-              Download spec (.md)
-            </button>
-            <button onClick={() => { dl(generateTestPage(choices), "test-page.html", "text/html"); flash("Test page downloaded"); }}
-              className="btn btn-secondary">
-              Download test page (.html)
-            </button>
-            <button onClick={() => { const w = window.open("", "_blank"); if (w) { w.document.write(generateTestPage(choices)); w.document.close(); } }}
-              className="btn btn-secondary">
-              Preview test page
-            </button>
-            <button onClick={() => { navigator.clipboard.writeText(generateSpec(choices)).then(() => flash("Copied")); }}
-              className="btn btn-secondary">
-              Copy spec
-            </button>
+          <div style={{ marginBottom: "var(--space-6)" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Use in your project</h3>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+              Drop these into any project to apply your design system. The CLAUDE.md rules make every Claude Code conversation follow your spec automatically.
+            </p>
+            <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
+              <button onClick={() => { navigator.clipboard.writeText(generateClaudeMdRules(choices)).then(() => flash("CLAUDE.md rules copied")); }}
+                className="btn btn-primary">
+                Copy CLAUDE.md rules
+              </button>
+              <button onClick={() => { dl(generateSlashCommand(choices), "design-system.md", "text/markdown"); flash("Slash command downloaded"); }}
+                className="btn btn-secondary">
+                Download /design-system command
+              </button>
+              <button onClick={() => { navigator.clipboard.writeText(generateAIPrompt(choices)).then(() => flash("AI prompt copied")); }}
+                className="btn btn-secondary">
+                Copy AI prompt
+              </button>
+            </div>
           </div>
-          <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-6)", lineHeight: 1.5, maxWidth: "540px" }}>
-            Test page includes processing states, correct/incorrect tone examples, full conversation with citations, and all app components. Colours are baked into the output. Dark mode automatic.
-          </p>
+
+          <div style={{ marginBottom: "var(--space-6)" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Full spec & test page</h3>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+              Complete specification with all rendering rules, plus an interactive test page with every component. Dark mode automatic.
+            </p>
+            <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
+              <button onClick={() => { dl(generateSpec(choices), "conversation-first-spec.md", "text/markdown"); flash("Spec downloaded"); }}
+                className="btn btn-secondary">
+                Download spec (.md)
+              </button>
+              <button onClick={() => { dl(generateTestPage(choices), "test-page.html", "text/html"); flash("Test page downloaded"); }}
+                className="btn btn-secondary">
+                Download test page (.html)
+              </button>
+              <button onClick={() => { navigator.clipboard.writeText(generateSpec(choices)).then(() => flash("Copied")); }}
+                className="btn btn-secondary">
+                Copy spec
+              </button>
+            </div>
+          </div>
+
           <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "var(--space-5) var(--space-6)" }}>
             <MiniPreview choices={choices} />
           </div>
