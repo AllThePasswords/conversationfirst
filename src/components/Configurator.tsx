@@ -35,12 +35,57 @@ const FONT_OPTIONS = {
   ],
 };
 
-const STEPS = ["body", "heading", "mono", "review"];
-const STEP_TITLES = { body: "Body typeface", heading: "Heading typeface", mono: "Code typeface", review: "Review & export" };
+const ACCENT_OPTIONS = [
+  { name: "Forest", hex: "#3d6b5e", desc: "Default — warm, natural" },
+  { name: "Ocean", hex: "#2563eb", desc: "Clean, professional" },
+  { name: "Violet", hex: "#7c3aed", desc: "Creative, bold" },
+  { name: "Rose", hex: "#9f1239", desc: "Elegant, refined" },
+  { name: "Amber", hex: "#b45309", desc: "Warm, inviting" },
+  { name: "Slate", hex: "#525252", desc: "Neutral, understated" },
+  { name: "Teal", hex: "#0d9488", desc: "Fresh, modern" },
+  { name: "Indigo", hex: "#4f46e5", desc: "Deep, trustworthy" },
+];
+
+const BG_OPTIONS = [
+  { name: "Warm Paper", hex: "#faf9f7", desc: "Default — soft, warm" },
+  { name: "Pure White", hex: "#ffffff", desc: "Clean, bright" },
+  { name: "Cool Gray", hex: "#f8fafc", desc: "Crisp, blue-tinted" },
+  { name: "Cream", hex: "#fffbeb", desc: "Golden warmth" },
+  { name: "Blush", hex: "#fef2f2", desc: "Soft pink undertone" },
+  { name: "Mint", hex: "#f0fdf4", desc: "Fresh, natural" },
+  { name: "Lavender", hex: "#faf5ff", desc: "Soft purple undertone" },
+];
+
+function hexToRgb(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+}
+function rgbToHex(r,g,b) {
+  return '#' + [r,g,b].map(x => Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('');
+}
+function darken(hex, amt=0.18) {
+  const [r,g,b] = hexToRgb(hex);
+  return rgbToHex(r*(1-amt), g*(1-amt), b*(1-amt));
+}
+function tint(hex, amt=0.90) {
+  const [r,g,b] = hexToRgb(hex);
+  return rgbToHex(r+(255-r)*amt, g+(255-g)*amt, b+(255-b)*amt);
+}
+function darkAccent(hex) {
+  const [r,g,b] = hexToRgb(hex);
+  return rgbToHex(Math.min(255,r+80), Math.min(255,g+80), Math.min(255,b+80));
+}
+function darkBg(hex) {
+  const [r,g,b] = hexToRgb(hex);
+  return rgbToHex(Math.round(r*0.08), Math.round(g*0.08), Math.round(b*0.08));
+}
+
+const STEPS = ["body", "heading", "mono", "colors", "review"];
+const STEP_TITLES = { body: "Body typeface", heading: "Heading typeface", mono: "Code typeface", colors: "Colours", review: "Review & export" };
 const STEP_DESCS = {
   body: "The foundation. Chat messages, UI labels, forms, navigation, cards, and all reading surfaces.",
   heading: "Hierarchy. Page titles, section heads, modal titles, card titles, chat headings.",
   mono: "Precision. Code blocks, inline code, technical identifiers, terminal output, data.",
+  colors: "Identity. Your accent colour for buttons, links, and citations. Your background colour for the overall canvas.",
 };
 
 function resolve(c) { return c.heading?.family ? c.heading : c.body; }
@@ -53,6 +98,16 @@ function fontsUrl(c) {
 /* ═══ TEST PAGE GENERATOR ═══ */
 function generateTestPage(c) {
   const b = c.body, h = resolve(c), m = c.mono, gf = fontsUrl(c);
+  const ac = c.accent?.hex || '#3d6b5e';
+  const bg = c.bg?.hex || '#faf9f7';
+  const acHover = darken(ac);
+  const acSubtle = tint(ac);
+  const citeBg = tint(ac, 0.92);
+  const dkAc = darkAccent(ac);
+  const dkBg = darkBg(bg);
+  const dkAcHover = darkAccent(darken(ac, 0.1));
+  const dkAcSubtle = rgbToHex(...hexToRgb(dkAc).map(v => Math.round(v * 0.25)));
+  const dkCiteBg = dkAcSubtle;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,19 +122,19 @@ function generateTestPage(c) {
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
   --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-full:9999px;
-  --bg:#faf9f7;--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
+  --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
-  --accent:#3d6b5e;--accent-hover:#2f5549;--accent-subtle:#eef4f1;
+  --accent:${ac};--accent-hover:${acHover};--accent-subtle:${acSubtle};
   --destructive:#c4453a;--destructive-subtle:#fef2f1;--warning:#b58a2b;--warning-subtle:#fef9ee;
-  --code-bg:#f3f1ed;--cite-bg:#eef4f1;--cite-border:#3d6b5e;
+  --code-bg:#f3f1ed;--cite-bg:${citeBg};--cite-border:${ac};
   --shadow-sm:0 1px 3px rgba(0,0,0,0.04);--shadow-md:0 4px 12px rgba(0,0,0,0.06);--shadow-lg:0 8px 24px rgba(0,0,0,0.08);
 }
 @media(prefers-color-scheme:dark){:root{
-  --bg:#141413;--surface:#1c1c1b;--surface-raised:#232322;--border:#2e2e2c;--border-strong:#444440;
+  --bg:${dkBg};--surface:#1c1c1b;--surface-raised:#232322;--border:#2e2e2c;--border-strong:#444440;
   --text:#e8e6e1;--text-secondary:#b0aea9;--text-muted:#908e89;
-  --accent:#6fb89f;--accent-hover:#8dcbb5;--accent-subtle:#1c2923;
+  --accent:${dkAc};--accent-hover:${dkAcHover};--accent-subtle:${dkAcSubtle};
   --destructive:#e8675e;--destructive-subtle:#2a1c1b;--warning:#d4a94e;--warning-subtle:#2a2418;
-  --code-bg:#232321;--cite-bg:#1c2923;--cite-border:#6fb89f;
+  --code-bg:#232321;--cite-bg:${dkCiteBg};--cite-border:${dkAc};
   --shadow-sm:0 1px 3px rgba(0,0,0,0.2);--shadow-md:0 4px 12px rgba(0,0,0,0.25);--shadow-lg:0 8px 24px rgba(0,0,0,0.3);
 }}
 *,*::before,*::after{box-sizing:border-box;margin:0}
@@ -615,9 +670,11 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
 /* ═══ SPEC MARKDOWN ═══ */
 function generateSpec(c) {
   const b = c.body, h = resolve(c), m = c.mono;
+  const ac = c.accent?.hex || '#3d6b5e';
+  const bg = c.bg?.hex || '#faf9f7';
   return `# Conversation First — App Configuration Spec
 
-> Three typeface decisions. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
+> Five decisions — three typefaces, two colours. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
 
 ---
 
@@ -718,7 +775,18 @@ Body line-height: 1.6. Max line length: 70–80 characters. Never below 14px on 
 
 ## 4 — Colour
 
-Full light/dark token system. See test page \`test-page.html\` for rendered values.
+\`\`\`css
+:root {
+  --accent: ${ac};       /* ${c.accent?.name || 'Forest'} */
+  --accent-hover: ${darken(ac)};
+  --accent-subtle: ${tint(ac)};
+  --bg: ${bg};           /* ${c.bg?.name || 'Warm Paper'} */
+  --cite-border: ${ac};
+  --cite-bg: ${tint(ac, 0.92)};
+}
+\`\`\`
+
+Full light/dark token system. See test page \`test-page.html\` for all rendered values.
 
 Core tokens: \`--bg\`, \`--surface\`, \`--border\`, \`--text\`, \`--text-secondary\`, \`--text-muted\`, \`--accent\`, \`--destructive\`, \`--warning\`. Each semantic colour has a \`-subtle\` variant for tinted backgrounds.
 
@@ -1149,12 +1217,34 @@ After form submission, the form collapses into a confirmation banner:
 
 ---
 
-*Conversation First · ${b.name} / ${h.name} / ${m.name}*
+*Conversation First · ${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'}*
 *Test page: \`test-page.html\`*
 `;
 }
 
 /* ═══ UI COMPONENTS ═══ */
+
+function ColorCard({ color, selected, onClick }) {
+  const on = selected?.hex === color.hex;
+  return (
+    <button onClick={onClick} style={{
+      display: "flex", alignItems: "center", gap: "var(--space-3)", width: "100%", textAlign: "left",
+      padding: "var(--space-3) var(--space-4)",
+      border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
+      background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
+      boxShadow: on ? "var(--shadow-md)" : "none", color: "var(--text)",
+    }}>
+      <div style={{
+        width: 36, height: 36, borderRadius: "var(--radius-md)", background: color.hex, flexShrink: 0,
+        border: "1px solid rgba(0,0,0,0.1)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.2)",
+      }} />
+      <div>
+        <div style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>{color.name}</div>
+        <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{color.hex} — {color.desc}</div>
+      </div>
+    </button>
+  );
+}
 
 function FontCard({ font, selected, onClick, previewText, previewStyle }) {
   const on = selected?.name === font.name;
@@ -1201,6 +1291,19 @@ function ProcessingPreviewDemo({ choices }) {
 function MiniPreview({ choices }) {
   const b = choices.body, h = resolve(choices), m = choices.mono;
   if (!b || !h || !m) return null;
+  const ac = choices.accent?.hex;
+  const bgHex = choices.bg?.hex;
+  const colorOverrides = {};
+  if (ac) {
+    colorOverrides['--accent'] = ac;
+    colorOverrides['--accent-hover'] = darken(ac);
+    colorOverrides['--accent-subtle'] = tint(ac);
+    colorOverrides['--cite-bg'] = tint(ac, 0.92);
+    colorOverrides['--cite-border'] = ac;
+  }
+  if (bgHex) {
+    colorOverrides['--bg'] = bgHex;
+  }
   const citeStyle = {
     display: "inline-flex", alignItems: "center", justifyContent: "center",
     fontFamily: m.family, fontSize: "var(--text-xs)", fontWeight: 600, width: "16px", height: "16px",
@@ -1210,7 +1313,7 @@ function MiniPreview({ choices }) {
     textDecoration: "none", cursor: "pointer", transition: "all 0.12s",
   };
   return (
-    <div style={{ fontFamily: b.family, fontSize: "var(--text-base)", lineHeight: 1.55, color: "var(--text)" }}>
+    <div style={{ fontFamily: b.family, fontSize: "var(--text-base)", lineHeight: 1.55, color: "var(--text)", ...colorOverrides }}>
       <div style={{ marginBottom: "var(--space-4)", padding: "var(--space-3) var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
         <div style={{ fontSize: "var(--text-xs)", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Processing</div>
         <ProcessingPreviewDemo choices={choices} />
@@ -1252,11 +1355,11 @@ function MiniPreview({ choices }) {
 
 export default function Configurator() {
   const [step, setStep] = useState(0);
-  const [choices, setChoices] = useState({ body: null, heading: null, mono: null });
+  const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null });
   const [toast, setToast] = useState(null);
   const cur = STEPS[step];
-  const all = choices.body && choices.heading && choices.mono;
-  const canNext = cur !== "review" && choices[cur] !== null;
+  const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg;
+  const canNext = cur === "colors" ? (choices.accent !== null && choices.bg !== null) : cur !== "review" && choices[cur] !== null;
   const flash = (m) => { setToast(m); setTimeout(() => setToast(null), 2200); };
   const dl = useCallback((content, name, type) => {
     const a = document.createElement("a");
@@ -1289,17 +1392,17 @@ export default function Configurator() {
       <div style={{ marginBottom: "var(--space-4)" }}>
         <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-2)" }}>
           {STEPS.map((s, i) => (
-            <button key={s} onClick={() => { if (i <= step || (i === 3 && all)) setStep(i); }}
+            <button key={s} onClick={() => { if (i <= step || (i === STEPS.length - 1 && all)) setStep(i); }}
               style={{
                 flex: 1, height: "3px", borderRadius: "2px",
                 background: i <= step ? "var(--text)" : "var(--border)",
-                border: "none", cursor: i <= step || (i === 3 && all) ? "pointer" : "default",
+                border: "none", cursor: i <= step || (i === STEPS.length - 1 && all) ? "pointer" : "default",
                 transition: "background 0.2s", padding: 0,
               }} />
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Step {step + 1}/4 — {STEP_TITLES[cur]}</span>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Step {step + 1}/{STEPS.length} — {STEP_TITLES[cur]}</span>
           <div style={{ display: "flex", gap: "var(--space-2)" }}>
             {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "var(--space-1) var(--space-2)" }}>Back</button>}
             {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
@@ -1316,6 +1419,24 @@ export default function Configurator() {
                 previewText={cur === "heading" ? "Conversation First" : cur === "mono" ? "const config = { body, heading, mono };" : undefined}
                 previewStyle={cur === "heading" ? { fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "var(--text-base)" } : undefined}
               />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {cur === "colors" && (
+        <div className="cfg-fin" key="colors">
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Accent colour</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)", marginBottom: "var(--space-6)" }}>
+            {ACCENT_OPTIONS.map(c => (
+              <ColorCard key={c.hex} color={c} selected={choices.accent} onClick={() => setChoices(p => ({ ...p, accent: c }))} />
+            ))}
+          </div>
+          <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Background colour</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)" }}>
+            {BG_OPTIONS.map(c => (
+              <ColorCard key={c.hex} color={c} selected={choices.bg} onClick={() => setChoices(p => ({ ...p, bg: c }))} />
             ))}
           </div>
         </div>
@@ -1342,7 +1463,7 @@ export default function Configurator() {
             </button>
           </div>
           <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-6)", lineHeight: 1.5, maxWidth: "540px" }}>
-            Test page includes processing states, correct/incorrect tone examples, full conversation with citations, and all app components. Dark mode automatic.
+            Test page includes processing states, correct/incorrect tone examples, full conversation with citations, and all app components. Colours are baked into the output. Dark mode automatic.
           </p>
           <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "var(--space-5) var(--space-6)" }}>
             <MiniPreview choices={choices} />
@@ -1352,7 +1473,7 @@ export default function Configurator() {
 
       {cur === "review" && !all && (
         <div style={{ textAlign: "center", padding: "var(--space-12)", color: "var(--text-muted)" }}>
-          <p>Complete all three selections.</p>
+          <p>Complete all five selections.</p>
           <button onClick={() => setStep(0)} className="btn btn-secondary" style={{ marginTop: "var(--space-3)" }}>Start over</button>
         </div>
       )}
