@@ -4,7 +4,8 @@ import './tokens.css';
 import './App.css';
 import './chat.css';
 import './prep.css';
-import App from './App.jsx';
+import './apps.css';
+import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 

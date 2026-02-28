@@ -1,0 +1,147 @@
+import { useState, useEffect, lazy, Suspense } from 'react'
+import Hero from './components/Hero'
+import VoiceRules from './components/VoiceRules'
+import ProcessingDemo from './components/ProcessingDemo'
+import CitationDemo from './components/CitationDemo'
+import ResponseDemo from './components/ResponseDemo'
+import InlineFormsDemo from './components/InlineFormsDemo'
+import ComponentShowcase from './components/ComponentShowcase'
+import Configurator from './components/Configurator'
+import Footer from './components/Footer'
+import ThemePresetBar from './components/ThemePresetBar'
+import ChatInput from './components/ChatInput'
+import AuthPage from './components/AuthPage'
+import AuthenticatedShell from './components/AuthenticatedShell'
+import PrepPasswordGate from './components/PrepPasswordGate'
+import PrepLanding from './components/PrepLanding'
+import { useAuth } from './context/AuthContext'
+
+// Lazy-load prep pages (large content)
+const PrepTextcom = lazy(() => import('./components/prep/PrepTextcom'))
+const PrepN8n = lazy(() => import('./components/prep/PrepN8n'))
+const PrepDeel = lazy(() => import('./components/prep/PrepDeel'))
+const PrepIntercom = lazy(() => import('./components/prep/PrepIntercom'))
+const PrepBreeze = lazy(() => import('./components/prep/PrepBreeze'))
+const PrepMobile = lazy(() => import('./components/prep/PrepMobile'))
+const PrepLeadership = lazy(() => import('./components/prep/PrepLeadership'))
+
+const PREP_ROUTES: Record<string, React.LazyExoticComponent<any>> = {
+  '#/prep/textcom': PrepTextcom,
+  '#/prep/n8n': PrepN8n,
+  '#/prep/deel': PrepDeel,
+  '#/prep/intercom': PrepIntercom,
+  '#/prep/breeze': PrepBreeze,
+  '#/prep/mobile': PrepMobile,
+  '#/prep/leadership': PrepLeadership,
+}
+
+// Home page send: stash message and navigate to chat
+function handleHomeSend(text: string) {
+  if (!text.trim()) return
+  sessionStorage.setItem('cf-pending-message', text.trim())
+  window.location.hash = '#/apps/chat?new'
+}
+
+const LoginButton = () => (
+  <button
+    className="chat-menu-btn"
+    onClick={() => { window.location.hash = '#/login' }}
+    title="Log in"
+    aria-label="Log in"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+      <polyline points="10 17 15 12 10 7" />
+      <line x1="15" y1="12" x2="3" y2="12" />
+    </svg>
+  </button>
+)
+
+export default function App() {
+  const [route, setRoute] = useState(window.location.hash)
+  const { user, session, loading } = useAuth()
+  const isAuthenticated = !!user
+
+  useEffect(() => {
+    const onHash = () => setRoute(window.location.hash)
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  const isLogin = route === '#/login'
+  const isPrep = route === '#/prep' || route.startsWith('#/prep/')
+  const isApps = route === '#/apps' || route.startsWith('#/apps/')
+  const isVault = route === '#/vault'
+  const isChat = route === '#/chat' || route.startsWith('#/chat?')
+  const isLanding = !route || route === '#/' || route === '#'
+
+  // Redirect: authenticated users on landing → apps homepage
+  useEffect(() => {
+    if (isAuthenticated && isLanding) {
+      window.location.hash = '#/apps'
+    }
+  }, [isAuthenticated, isLanding])
+
+  // Redirect: authenticated users on login → apps homepage
+  useEffect(() => {
+    if (isAuthenticated && isLogin) {
+      window.location.hash = '#/apps'
+    }
+  }, [isAuthenticated, isLogin])
+
+  // Show loading while auth initializes
+  if (loading) {
+    return null
+  }
+
+  // Login page
+  if (isLogin) {
+    return <AuthPage />
+  }
+
+  // Prep pages (always accessible)
+  if (isPrep) {
+    const PrepComponent = PREP_ROUTES[route]
+    return (
+      <PrepPasswordGate>
+        {PrepComponent ? (
+          <Suspense fallback={null}>
+            <PrepComponent />
+          </Suspense>
+        ) : (
+          <PrepLanding />
+        )}
+      </PrepPasswordGate>
+    )
+  }
+
+  // Authenticated platform shell: apps, vault, chat
+  if (isAuthenticated && (isApps || isVault || isChat)) {
+    return <AuthenticatedShell user={user} session={session} />
+  }
+
+  // Public landing page
+  return (
+    <div className="home-page">
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <ThemePresetBar />
+
+      <header className="chat-header home-header">
+        <LoginButton />
+      </header>
+
+      <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
+        <Hero />
+        <VoiceRules />
+        <ProcessingDemo />
+        <CitationDemo />
+        <ResponseDemo />
+        <InlineFormsDemo />
+        <ComponentShowcase />
+        <Configurator />
+        <Footer />
+      </main>
+      <ChatInput onSend={handleHomeSend} variant="floating" />
+    </div>
+  )
+}
