@@ -188,7 +188,7 @@ export default function FullyPresent({ householdId }: FullyPresentProps) {
           >
             <ArrowLeftIcon aria-hidden="true" />
           </button>
-          <div>
+          <div className="fp-header-title-group">
             <span className="cf-section-label">Presentations</span>
             <input
               className="fp-editor-title-input"
