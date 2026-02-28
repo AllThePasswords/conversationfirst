@@ -2,6 +2,7 @@ import {
   HomeIcon,
   ChatBubbleOvalLeftIcon,
   KeyIcon,
+  SwatchIcon,
 } from '@heroicons/react/24/outline'
 
 interface IconRailProps {
@@ -25,6 +26,13 @@ export default function IconRail({ currentView, onNavigate }: IconRailProps) {
         aria-label="Chat"
       >
         <ChatBubbleOvalLeftIcon aria-hidden="true" />
+      </button>
+      <button
+        className={`cf-rail-btn${currentView === 'overview' ? ' cf-rail-btn--active' : ''}`}
+        onClick={() => onNavigate('overview')}
+        aria-label="Design System"
+      >
+        <SwatchIcon aria-hidden="true" />
       </button>
       <div className="cf-icon-rail-bottom">
         <button

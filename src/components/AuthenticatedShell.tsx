@@ -6,6 +6,7 @@ import AppsHomepage from './AppsHomepage'
 import VaultPage from './VaultPage'
 import ChatPage from './ChatPage'
 import PageTransition from './PageTransition'
+import OverviewPage from './OverviewPage'
 import LifeAdmin from '../apps/lifeadmin/LifeAdmin'
 import FullyPresent from '../apps/fullypresent/FullyPresent'
 import OnPoint from '../apps/onpoint/OnPoint'
@@ -19,12 +20,13 @@ interface AuthenticatedShellProps {
   session: any
 }
 
-type AppView = 'apps' | 'chat' | 'vault' | 'lifeadmin' | 'fullypresent' | 'onpoint' | 'voicecritique' | 'spritemaker'
+type AppView = 'apps' | 'chat' | 'vault' | 'overview' | 'lifeadmin' | 'fullypresent' | 'onpoint' | 'voicecritique' | 'spritemaker'
 
 const APP_LABELS: Record<string, string> = {
   apps: 'ConversationFirst',
   chat: 'Chat',
   vault: 'Vault',
+  overview: 'Design System',
   lifeadmin: 'LifeAdmin',
   fullypresent: 'FullyPresent',
   onpoint: 'OnPoint',
@@ -35,6 +37,7 @@ const APP_LABELS: Record<string, string> = {
 function parseHashRoute(): AppView {
   const hash = window.location.hash
   if (hash === '#/vault') return 'vault'
+  if (hash === '#/apps/overview' || hash === '#/overview') return 'overview'
   if (hash === '#/apps/chat' || hash === '#/chat' || hash.startsWith('#/chat?')) return 'chat'
   if (hash === '#/apps/lifeadmin') return 'lifeadmin'
   if (hash === '#/apps/fullypresent') return 'fullypresent'
@@ -71,6 +74,8 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
       window.location.hash = '#/apps'
     } else if (view === 'vault') {
       window.location.hash = '#/vault'
+    } else if (view === 'overview') {
+      window.location.hash = '#/apps/overview'
     } else if (view === 'chat') {
       window.location.hash = '#/apps/chat'
     } else {
@@ -103,6 +108,7 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
   // Determine which IconRail button is active
   const railView = currentView === 'vault' ? 'vault'
     : currentView === 'chat' ? 'chat'
+    : currentView === 'overview' ? 'overview'
     : currentView === 'apps' ? 'apps'
     : 'apps' // individual apps highlight home
 
@@ -131,7 +137,11 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
         />
         <main className="cf-main">
           <div className="cf-main-inner">
-            {currentView === 'vault' ? (
+            {currentView === 'overview' ? (
+              <PageTransition key="overview">
+                <OverviewPage />
+              </PageTransition>
+            ) : currentView === 'vault' ? (
               <PageTransition key="vault">
                 <VaultPage householdId={householdId} />
               </PageTransition>

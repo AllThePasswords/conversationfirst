@@ -72,6 +72,7 @@ export default function App() {
   const isPrep = route === '#/prep' || route.startsWith('#/prep/')
   const isApps = route === '#/apps' || route.startsWith('#/apps/')
   const isVault = route === '#/vault'
+  const isOverview = route === '#/overview'
   const isChat = route === '#/chat' || route.startsWith('#/chat?')
   const isLanding = !route || route === '#/' || route === '#'
 
@@ -116,7 +117,7 @@ export default function App() {
   }
 
   // Authenticated platform shell: apps, vault, chat
-  if (isAuthenticated && (isApps || isVault || isChat)) {
+  if (isAuthenticated && (isApps || isVault || isOverview || isChat)) {
     return <AuthenticatedShell user={user} session={session} />
   }
 
