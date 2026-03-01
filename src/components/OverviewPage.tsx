@@ -9,6 +9,7 @@ import ListDemo from './ListDemo'
 import TableDemo from './TableDemo'
 import InlineFormsDemo from './InlineFormsDemo'
 import ComponentShowcase from './ComponentShowcase'
+import IconDemo from './IconDemo'
 import Footer from './Footer'
 import ThemePresetBar from './ThemePresetBar'
 
@@ -46,6 +47,10 @@ export default function OverviewPage() {
 
         <SectionAccordion id="inline-forms" title="Inline forms & actions" explainer="Collecting input and confirmation inside chat response bubbles.">
           <InlineFormsDemo />
+        </SectionAccordion>
+
+        <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2 — outline for UI chrome, solid for compact indicators. One library, consistent sizing.">
+          <IconDemo />
         </SectionAccordion>
 
         <SectionAccordion id="components" title="App components" explainer="Buttons, badges, alerts, cards, forms and navigation — all tokens, no custom values.">
