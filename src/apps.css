@@ -6043,7 +6043,7 @@
   font-size: var(--text-sm);
   line-height: var(--leading-base);
   color: var(--text-secondary);
-  margin-bottom: 0.75em;
+  margin-bottom: var(--paragraph-spacing);
   max-width: 68ch;
 }
 
@@ -6055,7 +6055,7 @@
 .vc-structured-output ol,
 .vc-structured-output ul {
   padding-left: 1.5em;
-  margin-bottom: 0.75em;
+  margin-bottom: var(--paragraph-spacing);
 }
 
 .vc-structured-output li {
@@ -6081,7 +6081,7 @@
   padding: var(--space-4);
   overflow-x: auto;
   border-radius: var(--radius-md);
-  margin: 0.75em 0;
+  margin: var(--paragraph-spacing) 0;
 }
 
 .vc-structured-output pre code {

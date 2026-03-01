@@ -11,7 +11,7 @@
   color: #fff;
   font-weight: 600;
   font-size: var(--text-sm);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn-md);
   text-decoration: none;
 }
 .skip-link:focus {
@@ -47,8 +47,8 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   line-height: var(--line-height-prose);
 }
 
-/* Paragraph spacing: 0.75em between paragraphs, zero on last */
-.chat-bubble p { margin: 0 0 0.75em; }
+/* Paragraph spacing: var(--paragraph-spacing) between paragraphs, zero on last */
+.chat-bubble p { margin: 0 0 var(--paragraph-spacing); }
 .chat-bubble > div > p:last-child,
 .chat-bubble > p:last-child { margin-bottom: 0; }
 
@@ -69,11 +69,11 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 .chat-bubble ul,
 .chat-bubble ol {
   margin-top: 0;
-  margin-bottom: 0.75em;
+  margin-bottom: var(--paragraph-spacing);
   padding-left: var(--space-5);
 }
 .chat-bubble p + ul,
-.chat-bubble p + ol { margin-top: -0.25em; }
+.chat-bubble p + ol { margin-top: -0.125em; }
 .chat-bubble li {
   margin-bottom: 0;
   padding-top: var(--space-1);
@@ -116,7 +116,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 
 /* Blockquote spacing */
 .chat-bubble blockquote {
-  margin: 0.5em 0 0.75em;
+  margin: 0.5em 0 var(--paragraph-spacing);
 }
 .chat-bubble > div > blockquote:last-child,
 .chat-bubble > blockquote:last-child { margin-bottom: 0; }
@@ -129,7 +129,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 /* Code blocks: consistent spacing with prose */
 .chat-bubble .code-block-wrapper {
   margin-top: 0.5em;
-  margin-bottom: 0.75em;
+  margin-bottom: var(--paragraph-spacing);
 }
 .chat-bubble > div > .code-block-wrapper:last-child { margin-bottom: 0; }
 .chat-bubble p + .code-block-wrapper { margin-top: 0; }
@@ -138,7 +138,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 
 .chat-bubble .table-scroll-wrapper {
   overflow-x: auto;
-  margin: 0.5em 0 0.75em;
+  margin: 0.5em 0 var(--paragraph-spacing);
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--bg);
@@ -326,7 +326,7 @@ h1 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 
 h2 { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 1.5em 0 0.5em; }
 h3 { font-family: var(--font-heading); font-size: var(--text-lg); font-weight: 600; line-height: 1.3; margin: 1.25em 0 0.4em; }
 h4 { font-family: var(--font-heading); font-size: var(--text-base); font-weight: 600; margin: 1em 0 0.3em; }
-p { margin: 0 0 0.75em; line-height: 1.5; }
+p { margin: 0 0 var(--paragraph-spacing); line-height: var(--line-height-prose); }
 a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 strong { font-weight: 700; }
 em { font-style: italic; }
@@ -384,7 +384,7 @@ pre code { background: none; padding: 0; font-size: var(--text-sm); line-height:
   border: none;
   cursor: pointer;
   padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-btn-sm);
   transition: color 0.12s, background 0.12s;
 }
 .code-copy-btn:hover {
@@ -402,7 +402,7 @@ blockquote {
   margin: 0 0 1em;
   font-style: italic;
 }
-ul, ol { padding-left: var(--space-5); margin: 0 0 0.75em; }
+ul, ol { padding-left: var(--space-5); margin: 0 0 var(--paragraph-spacing); }
 li { margin-bottom: var(--space-1); }
 li:last-child { margin-bottom: 0; }
 li::marker { color: var(--text-muted); }
@@ -419,6 +419,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   border-radius: var(--radius-lg);
   padding: var(--space-5) var(--space-6);
   margin-bottom: var(--space-3);
+  font-size: var(--text-base);
 }
 .chat-bubble.user {
   background: color-mix(in srgb, var(--text) 6%, var(--bg));
@@ -563,7 +564,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   font-size: var(--text-sm);
   font-weight: 600;
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn-md);
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.15s;
@@ -1107,7 +1108,7 @@ kbd {
   cursor: pointer;
   padding: 0 var(--space-1);
   line-height: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-btn-sm);
   transition: color var(--duration-fast) var(--ease-out);
 }
 .theme-bar-delete:hover {

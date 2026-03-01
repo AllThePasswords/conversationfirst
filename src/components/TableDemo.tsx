@@ -171,7 +171,7 @@ export default function TableDemo() {
           'Cells: 8px vertical, 16px horizontal padding',
           'Rows highlight with --accent-subtle on hover',
           'Tables that exceed width scroll horizontally inside a rounded wrapper',
-          'Spacing follows code blocks: 0.5em top, 0.75em bottom',
+          'Spacing follows code blocks: 0.5em top, var(--paragraph-spacing) bottom',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',

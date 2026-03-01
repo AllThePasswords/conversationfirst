@@ -161,7 +161,7 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-full:9999px;
+  --radius-sm:${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-btn-sm:${c.shape === 'pill' ? '9999px' : 'var(--radius-sm)'};--radius-btn-md:${c.shape === 'pill' ? '9999px' : 'var(--radius-md)'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-full:9999px;
   --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
@@ -183,7 +183,7 @@ html{font-size:16px}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
 .page{max-width:840px;margin:0 auto;padding:var(--space-12) var(--space-8) 96px}
 .section{margin-bottom:var(--space-12)}
-.skip-link{position:absolute;top:-100%;left:var(--space-4);z-index:100;padding:var(--space-2) var(--space-4);background:var(--accent);color:#fff;font-weight:600;font-size:var(--text-sm);border-radius:var(--radius-md);text-decoration:none}
+.skip-link{position:absolute;top:-100%;left:var(--space-4);z-index:100;padding:var(--space-2) var(--space-4);background:var(--accent);color:#fff;font-weight:600;font-size:var(--text-sm);border-radius:var(--radius-btn-md);text-decoration:none}
 .skip-link:focus{top:var(--space-4)}
 .section-label{font-family:var(--font-body);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin:0 0 var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border);line-height:1.5}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
@@ -252,7 +252,7 @@ tr:last-child td{border-bottom:none}
 .cite-footer-arrow{color:var(--text-muted);font-size:var(--text-xs);margin-left:auto;opacity:0;transition:opacity 0.12s}
 .cite-footer-link:hover .cite-footer-arrow{opacity:1}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-body);font-size:var(--text-sm);font-weight:600;padding:var(--space-2) var(--space-4);border-radius:var(--radius-md);border:1px solid transparent;cursor:pointer;transition:all 0.15s;text-decoration:none;line-height:1.4;min-height:36px}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);font-family:var(--font-body);font-size:var(--text-sm);font-weight:600;padding:var(--space-2) var(--space-4);border-radius:var(--radius-btn-md);border:1px solid transparent;cursor:pointer;transition:all 0.15s;text-decoration:none;line-height:1.4;min-height:36px}
 .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-secondary{background:var(--surface);color:var(--text);border-color:var(--border)}
 .btn-ghost{background:transparent;color:var(--text-secondary)}
@@ -837,7 +837,7 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 **Mode: ${shapeLabel(c)}**
 
-**Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-sm` (4px), `--radius-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-sm` and `--radius-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-sm` and `--radius-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
+**Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
 **Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons — `--radius-input: 9999px`.' : 'Follows container radius — `--radius-input: var(--radius-lg)`.'}
 **Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
@@ -1010,7 +1010,7 @@ Every response bubble has three regions:
 
 ### 7.4 Paragraph spacing
 
-- Paragraphs: \`margin: 0 0 0.75em\` — three-quarter line of whitespace between paragraphs
+- Paragraphs: \`margin: 0 0 var(--paragraph-spacing)\` (0.5em) — half-line gap, 2:1 ratio to inter-line spacing
 - Last paragraph in a bubble: \`margin-bottom: 0\`
 - No first-line indent (\`--paragraph-indent: 0\`)
 
@@ -1041,8 +1041,8 @@ Headings bind to their following content, not the preceding section:
 
 ### 7.9 List spacing
 
-- Lists: \`margin-top: 0; margin-bottom: 0.75em\`
-- \`p + ul\` / \`p + ol\`: \`margin-top: -0.25em\` — lists pull up to read as continuations
+- Lists: \`margin-top: 0; margin-bottom: var(--paragraph-spacing)\`
+- \`p + ul\` / \`p + ol\`: \`margin-top: -0.125em\` — lists pull up to read as continuations
 - List items: \`padding: 4px 0\`, no margin. First/last child: no top/bottom padding.
 - Nested lists: \`margin-top: 4px; margin-bottom: 0\`
 - Last list in bubble: \`margin-bottom: 0\`
@@ -1050,7 +1050,7 @@ Headings bind to their following content, not the preceding section:
 ### 7.10 Code blocks
 
 - Wrapped in \`.code-block-wrapper\` with header (language label + copy button) and \`<pre><code>\`
-- Spacing: \`margin-top: 0.5em; margin-bottom: 0.75em\`
+- Spacing: \`margin-top: 0.5em; margin-bottom: var(--paragraph-spacing)\`
 - After a paragraph: \`margin-top: 0\` (tightens to preceding prose)
 - Last code block in bubble: \`margin-bottom: 0\`
 - Font: \`--font-mono\`, \`--text-sm\`, line-height 1.55
@@ -1060,7 +1060,7 @@ Headings bind to their following content, not the preceding section:
 - Left border: 3px \`--border\`
 - Padding-left: \`--space-4\`
 - Colour: \`--text-secondary\`
-- Spacing: \`margin: 0.5em 0 0.75em\`
+- Spacing: \`margin: 0.5em 0 var(--paragraph-spacing)\`
 - Last blockquote in bubble: \`margin-bottom: 0\`
 
 ### 7.12 Horizontal rules
@@ -1134,7 +1134,7 @@ Add to any grid container to change spacing:
 ### 10.1 Prose rhythm
 
 - 2–4 sentences per paragraph. One idea per paragraph. Max ~120 words per block.
-- Paragraph spacing: 0.75em (three-quarter line). Tight enough for flow, open enough to scan.
+- Paragraph spacing: 0.5em (half-line). 2:1 ratio to inter-line gap — tight enough for flow, distinct enough to scan.
 - Short sentences. Active voice. No semicolons, no nested clauses.
 - Bold sparingly. No emoji. No mixing bullets and prose in the same block.
 - Straight quotes. Em dashes sparingly. One space after periods.
@@ -1147,7 +1147,7 @@ Add to any grid container to change spacing:
 | Line height | 1.5× body, 1.3× headings, 1.4× UI | Tight leading keeps lines readable as a unit |
 | Widow control | \`text-wrap: pretty\` on prose | Minimises short last lines, reduces rag |
 | Heading balance | \`text-wrap: balance\` | Even line lengths for headings |
-| Paragraph spacing | 0.75em bottom margin | Consistent vertical rhythm, zero on last-child |
+| Paragraph spacing | 0.5em bottom margin | 2:1 ratio to inter-line gap; zero on last-child |
 | Paragraph indent | 0 | Block spacing replaces indent in digital type |
 | Font smoothing | \`-webkit-font-smoothing: antialiased\` | Consistent rendering across browsers |
 
@@ -1155,8 +1155,8 @@ Add to any grid container to change spacing:
 
 | Transition | Rule | Effect |
 |---|---|---|
-| Paragraph → paragraph | 0.75em gap | Standard prose rhythm |
-| Paragraph → list | List pulls up 0.25em | List reads as continuation of paragraph |
+| Paragraph → paragraph | 0.5em gap | Standard prose rhythm |
+| Paragraph → list | List pulls up 0.125em | List reads as continuation of paragraph |
 | Paragraph → code block | Code top margin: 0 | Code sits tight under its introducing sentence |
 | Heading → paragraph | 8px gap | Heading binds to its content |
 | Previous content → heading | 1.25em+ gap | Heading separates from preceding section |
@@ -1362,11 +1362,11 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Radius
 
-\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-input\`: ${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
+\`--radius-sm\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-btn-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-btn-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-input\`: ${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
 
 ## Shape: ${shapeLabel(c)}
 
-**Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill — radius-sm/md set to 9999px.' : c.shape === 'square' ? 'Square — radius-sm/md set to 0.' : 'Cut corners — clip-path polygon on buttons/inputs/badges.'}
+**Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill — radius-btn-sm/md set to 9999px.' : c.shape === 'square' ? 'Square — radius-btn-sm/md set to 0.' : 'Cut corners — clip-path polygon on buttons/inputs/badges.'}
 **Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons (\`--radius-input: 9999px\`).' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
 **Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square — radius-lg set to 0.' : 'Cut corners — clip-path polygon on cards/modals/chat bubbles.'}
 ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
@@ -1412,7 +1412,7 @@ ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-m
 
 - Buttons: primary (accent bg, white text), secondary (border only), ghost (no border), destructive (red)
 - All components use design tokens — no component introduces its own colours or fonts
-- Border radius: \`--radius-md\` for inputs/buttons, \`--radius-lg\` for cards/modals
+- Border radius: \`--radius-md\` for inputs, \`--radius-btn-md\` for buttons, \`--radius-lg\` for cards/modals
 - Shadows: \`--shadow-sm\`, \`--shadow-md\`, \`--shadow-lg\` (subtle, warm-toned)
 
 ## Layout
@@ -1476,7 +1476,7 @@ Import: \`${fontsUrl(c)}\`
 
 ## Radius
 
-${c.shape === 'pill' ? '9999px sm/md (pill buttons)' : c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / ${ctr === 'square' || ctr === 'cut' ? '0 lg' : '12px lg'} / ${c.shape === 'pill' ? '9999px input (pill)' : ctr === 'square' || ctr === 'cut' ? '0 input' : '12px input'} / 9999px full
+${c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / ${c.shape === 'pill' ? '9999px btn-sm/btn-md (pill buttons)' : c.shape === 'square' || c.shape === 'cut' ? '0 btn-sm/btn-md' : '4px btn-sm / 8px btn-md'} / ${ctr === 'square' || ctr === 'cut' ? '0 lg' : '12px lg'} / ${c.shape === 'pill' ? '9999px input (pill)' : ctr === 'square' || ctr === 'cut' ? '0 input' : '12px input'} / 9999px full
 
 ## Shape: ${shapeLabel(c)}
 
@@ -1490,7 +1490,7 @@ ${c.shape === 'cut' || ctr === 'cut' ? 'Cut sizes: `--cut-sm` 4px, `--cut-md` 6p
 1. Every factual claim requires a citation: \`[cite:N](url)\`
 2. Processing states use blinking cursor + monospace status text, never spinners
 3. All components use design tokens — no custom colours or fonts
-4. Border radius: \`--radius-md\` for inputs/buttons, \`--radius-lg\` for cards
+4. Border radius: \`--radius-md\` for inputs, \`--radius-btn-md\` for buttons, \`--radius-lg\` for cards
 5. Content fills bubble width — no inner max-width on prose
 6. Line height: 1.5 body, 1.3 headings
 7. Dark mode: \`prefers-color-scheme: dark\` — accent lightens, bg inverts
@@ -1537,7 +1537,7 @@ COLOURS:
 - Citation background: ${tint(ac, 0.92)}
 
 SPACING: 4/8/12/16/20/24/32/40/48px
-RADIUS: Buttons: ${c.shape === 'pill' ? '9999px (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. Chat input: ${c.shape === 'pill' ? '9999px (pill)' : ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px'}. 9999px full.
+RADIUS: General: ${c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Buttons: ${c.shape === 'pill' ? '9999px btn-sm/btn-md (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px btn-sm, 8px btn-md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. Chat input: ${c.shape === 'pill' ? '9999px (pill)' : ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px'}. 9999px full.
 
 SHAPE: ${shapeLabel(c)}
 Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded capsules' : c.shape === 'square' ? 'Square — sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
@@ -1818,8 +1818,8 @@ function MiniPreview({ choices }) {
       </div>
 
       <div style={{ marginTop: "var(--space-3)", display: "flex", gap: "var(--space-2)", flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--surface)", background: "var(--accent)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-sm)" }}>Primary</span>
-        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text)", background: "var(--surface)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>Secondary</span>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--surface)", background: "var(--accent)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-btn-sm)" }}>Primary</span>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text)", background: "var(--surface)", padding: "var(--space-1) var(--space-3)", borderRadius: "var(--radius-btn-sm)", border: "1px solid var(--border)" }}>Secondary</span>
         <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, background: "var(--accent-subtle)", color: "var(--accent)", padding: "2px var(--space-2)", borderRadius: "var(--radius-full)" }}>Badge</span>
         <span style={{ fontFamily: m.family, fontSize: "var(--text-xs)", background: "var(--code-bg)", padding: "2px var(--space-2)", borderRadius: "var(--radius-sm)", color: "var(--text-secondary)" }}>code</span>
       </div>
@@ -1886,7 +1886,7 @@ export default function Configurator() {
           </div>
           <div style={{ display: "flex", gap: "var(--space-2)" }}>
             {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "var(--space-1) var(--space-2)" }}>Back</button>}
-            {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
+            {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-btn-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
           </div>
         </div>
       </div>

@@ -522,7 +522,7 @@
   background: var(--accent);
   color: white;
   padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn-md);
   border: none;
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out);
@@ -601,7 +601,7 @@
   border: none;
   background: none;
   color: var(--text-muted);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-btn-sm);
   cursor: pointer;
   transition: color var(--duration-fast) var(--ease-out);
 }
@@ -739,7 +739,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn-md);
   background: none;
   border: none;
   cursor: pointer;

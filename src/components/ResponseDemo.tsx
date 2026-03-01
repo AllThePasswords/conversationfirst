@@ -109,12 +109,12 @@ export default function ResponseDemo() {
 
       <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
-          'No max-width on paragraphs — content fills available width',
+          'Body font-size: var(--text-base) (1rem / 16px) — minimum for serif legibility',
           'Body line-height: 1.5 · Headings: 1.3 · UI labels: 1.4',
           'text-wrap: pretty on prose, balance on headings',
-          'Paragraph spacing: 0.75em bottom margin, last paragraph 0',
+          'Paragraph spacing: var(--paragraph-spacing) (0.5em) — 2:1 ratio to inter-line gap',
           'Headings bind to following content — tighter below than above',
-          'List items use 4px padding, not margin — pull up 0.25em after paragraphs',
+          'List items use 4px padding, not margin — pull up 0.125em after paragraphs',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
@@ -217,13 +217,14 @@ export default function ResponseDemo() {
       <h3 style={{ fontSize: 'var(--text-lg)' }}>Response rules</h3>
       <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
-          'Content fills bubble width — no inner max-width',
+          'Font size: var(--text-base) (1rem) — explicit on .chat-bubble',
           'Line height: 1.5 for body, 1.3 for headings',
+          'Paragraph spacing: var(--paragraph-spacing) (0.5em) — 2:1 vs inter-line gap',
           'text-wrap: pretty on prose, balance on headings',
           'Last paragraph in bubble has no bottom margin',
           'Code blocks use full available width',
           'Headings bind to following content, not preceding',
-          'Lists pull up 0.25em when following a paragraph',
+          'Lists pull up 0.125em when following a paragraph',
           'List items use 4px padding, not margin',
           'Last list/blockquote in bubble drops bottom margin',
           'Code blocks tighten to 0 top margin after paragraphs',

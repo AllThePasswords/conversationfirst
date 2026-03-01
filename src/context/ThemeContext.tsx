@@ -117,20 +117,34 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     }
   }
 
-  // Shape — buttons (--radius-sm, --radius-md) and containers (--radius-lg) can differ
+  // Shape — buttons (--radius-btn-sm, --radius-btn-md) and containers (--radius-lg) can differ
   const btnShape = theme.shape;
   const ctrShape = theme.containerShape ?? theme.shape;
   // Buttons / small elements
   switch (btnShape) {
     case 'pill':
-      el.style.setProperty('--radius-sm', '9999px');
-      el.style.setProperty('--radius-md', '9999px');
+      el.style.setProperty('--radius-btn-sm', '9999px');
+      el.style.setProperty('--radius-btn-md', '9999px');
       el.style.setProperty('--radius-input', '9999px');
+      // Keep base tokens at defaults (clear any previous override)
+      el.style.removeProperty('--radius-sm');
+      el.style.removeProperty('--radius-md');
       break;
     case 'square':
     case 'cut':
       el.style.setProperty('--radius-sm', '0');
       el.style.setProperty('--radius-md', '0');
+      // btn tokens inherit via var(--radius-sm/md) → 0
+      el.style.removeProperty('--radius-btn-sm');
+      el.style.removeProperty('--radius-btn-md');
+      break;
+    default:
+      // rounded — clear all overrides, let CSS defaults apply
+      el.style.removeProperty('--radius-sm');
+      el.style.removeProperty('--radius-md');
+      el.style.removeProperty('--radius-btn-sm');
+      el.style.removeProperty('--radius-btn-md');
+      el.style.removeProperty('--radius-input');
       break;
   }
   // Containers
