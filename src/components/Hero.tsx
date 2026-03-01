@@ -1,9 +1,4 @@
 export default function Hero() {
-  function scrollTo(e, id) {
-    e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  }
-
   return (
     <div className="section" style={{ marginBottom: 'var(--space-12)', paddingBottom: 'var(--space-8)', borderBottom: '1px solid var(--border)' }}>
       <div style={{ fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', fontWeight: 500, marginBottom: 'var(--space-3)' }}>
@@ -13,19 +8,11 @@ export default function Hero() {
         Conversation First
       </h1>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', lineHeight: 1.5, marginBottom: 'var(--space-6)' }}>
-        The AI is a computer. Not a person, not an assistant, not a helper. A computer with deep capabilities behind an elegant conversational interface.
+        A typographic design system for conversational AI experiences. Built on ten years of mobile chat design and two years shaping AI interfaces — grounded in type rules, flexible enough for any brand.
       </p>
-      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', marginBottom: 'var(--space-8)' }}>
-        Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library. WCAG 2.1 AA compliant.
+      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', marginBottom: 0 }}>
+        Pick three typefaces, choose an accent colour, and preview a complete, WCAG 2.1 AA compliant system — voice rules, design tokens, processing states, citation formats, and a full component library — in a couple of steps.
       </p>
-      <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-        <a href="#/chat?new" className="btn btn-primary" style={{ textDecoration: 'none' }}>
-          Try the chat
-        </a>
-        <a href="#voice" className="btn btn-ghost" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'voice')}>
-          Read the rules
-        </a>
-      </div>
     </div>
   );
 }

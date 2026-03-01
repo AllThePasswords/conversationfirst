@@ -14,7 +14,6 @@ import IconDemo from './IconDemo'
 import ChatInputDemo from './ChatInputDemo'
 import Footer from './Footer'
 import ThemePresetBar from './ThemePresetBar'
-
 type Tab = 'spec' | 'configure'
 
 export default function OverviewPage() {
@@ -22,7 +21,6 @@ export default function OverviewPage() {
 
   return (
     <div className="overview-page">
-      <ThemePresetBar />
       <div className="page">
         <Hero />
 
@@ -70,7 +68,7 @@ export default function OverviewPage() {
               <CitationDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="chat-input" title="Chat input" explainer="The primary interaction surface. Attach menu, voice waveform, auto-send.">
+            <SectionAccordion id="chat-input" title="Chat input" explainer="The primary interaction surface. Attach menu, voice waveform, auto-send." defaultOpen>
               <ChatInputDemo />
             </SectionAccordion>
 
@@ -108,6 +106,7 @@ export default function OverviewPage() {
             id="ds-panel-configure"
             aria-labelledby="ds-tab-configure"
           >
+            <ThemePresetBar />
             <Configurator />
           </div>
         )}

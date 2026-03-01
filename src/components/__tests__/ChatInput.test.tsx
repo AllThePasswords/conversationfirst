@@ -9,6 +9,9 @@ vi.mock('../../lib/imageUpload', () => ({
   validateImageCount: vi.fn(() => null),
 }));
 
+// Mock SpeechRecognition so mic button renders in tests
+(window as any).SpeechRecognition = vi.fn();
+
 describe('ChatInput', () => {
   let onSend, onAddImages, onRemoveImage;
 
@@ -46,22 +49,22 @@ describe('ChatInput', () => {
 
     it('renders textarea with placeholder', () => {
       renderInput();
-      expect(screen.getByPlaceholderText('Ask a question...')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('How can I help?')).toBeInTheDocument();
     });
 
     it('renders attach button with aria-label', () => {
       renderInput();
-      expect(screen.getByLabelText('Attach image')).toBeInTheDocument();
+      expect(screen.getByLabelText('Open attachment menu')).toBeInTheDocument();
     });
 
-    it('renders send button with aria-label', () => {
+    it('renders mic button when no text to send', () => {
       renderInput();
-      expect(screen.getByLabelText('Send message')).toBeInTheDocument();
+      expect(screen.getByLabelText('Voice input')).toBeInTheDocument();
     });
 
     it('has hidden file input for image attachment', () => {
       const { container } = renderInput();
-      const fileInput = container.querySelector('input[type="file"]');
+      const fileInput = container.querySelector('input[type="file"][accept*="image/jpeg"]');
       expect(fileInput).toBeInTheDocument();
       expect(fileInput.style.display).toBe('none');
       expect(fileInput.getAttribute('accept')).toBe('image/jpeg,image/png,image/gif,image/webp');
@@ -69,16 +72,17 @@ describe('ChatInput', () => {
   });
 
   describe('send behavior', () => {
-    it('send button is disabled when textarea is empty', () => {
+    it('send button is not rendered when textarea is empty (mic shown instead)', () => {
       renderInput();
-      expect(screen.getByLabelText('Send message')).toBeDisabled();
+      expect(screen.queryByLabelText('Send message')).not.toBeInTheDocument();
+      expect(screen.getByLabelText('Voice input')).toBeInTheDocument();
     });
 
-    it('send button is enabled when text is entered', async () => {
+    it('send button appears when text is entered', async () => {
       renderInput();
       const textarea = screen.getByLabelText('Message input');
       await userEvent.type(textarea, 'Hello');
-      expect(screen.getByLabelText('Send message')).not.toBeDisabled();
+      expect(screen.getByLabelText('Send message')).toBeInTheDocument();
     });
 
     it('calls onSend with text when send button is clicked', async () => {
@@ -149,7 +153,7 @@ describe('ChatInput', () => {
           { id: 2, file: new File(['y'], 'b.png', { type: 'image/png' }), preview: 'blob:b' },
         ],
       });
-      expect(screen.getByLabelText('Attached images')).toBeInTheDocument();
+      expect(screen.getByLabelText('Attached files')).toBeInTheDocument();
       expect(screen.getAllByRole('listitem')).toHaveLength(2);
     });
 
@@ -159,13 +163,13 @@ describe('ChatInput', () => {
           { id: 42, file: new File(['x'], 'a.png', { type: 'image/png' }), preview: 'blob:a' },
         ],
       });
-      await userEvent.click(screen.getByLabelText('Remove image 1'));
+      await userEvent.click(screen.getByLabelText('Remove attachment 1'));
       expect(onRemoveImage).toHaveBeenCalledWith(42);
     });
 
     it('does not show thumbnail strip when no images', () => {
       renderInput({ stagedImages: [] });
-      expect(screen.queryByLabelText('Attached images')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Attached files')).not.toBeInTheDocument();
     });
   });
 
@@ -212,7 +216,7 @@ describe('ChatInput', () => {
 
     it('disables attach button when disabled', () => {
       renderInput({ disabled: true });
-      expect(screen.getByLabelText('Attach image')).toBeDisabled();
+      expect(screen.getByLabelText('Open attachment menu')).toBeDisabled();
     });
   });
 });
