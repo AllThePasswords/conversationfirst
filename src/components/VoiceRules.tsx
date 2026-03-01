@@ -41,7 +41,7 @@ export default function VoiceRules() {
         <div>
           <h3 style={{ marginTop: 0 }}>Correct</h3>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+
             <p style={{ marginBottom: 'var(--space-2)' }}>
               The <code>UserService.create</code> method throws when <code>email</code> is undefined. Lines 42-47 don't validate input before the database call.
             </p>
@@ -57,7 +57,7 @@ export default function VoiceRules() {
         <div>
           <h3 style={{ marginTop: 0 }}>Incorrect</h3>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-            <div className="bubble-label">Assistant ✗</div>
+
             <p style={{ marginBottom: 0 }}>
               Great question! Let me take a look at this for you. It appears that there might be an issue with the UserService.create method. Based on my analysis, it seems like the email validation might not be working as expected. I'd recommend adding some validation logic. Let me know if you'd like me to elaborate further!
             </p>

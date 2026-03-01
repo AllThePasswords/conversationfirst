@@ -23,7 +23,7 @@ body {
   font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   height: 100%;
 }
@@ -31,20 +31,19 @@ body {
   height: 100%;
 }
 
-/* Orphan/widow control — prevent single words on last/first lines */
+/* Widow/orphan control — text-wrap: pretty minimises short last lines.
+   Note: CSS orphans/widows only apply to paged & multi-column contexts,
+   not normal flow. text-wrap: pretty is the correct tool for screen. */
 p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
-  orphans: 2;
-  widows: 2;
   text-wrap: pretty;
 }
 
 /* Response prose rhythm — legibility rules for assistant responses */
 
-/* Measure & leading */
+/* Leading — bubble width already constrains measure */
 .chat-bubble p,
 .chat-bubble li,
 .chat-bubble blockquote {
-  max-width: var(--measure);
   line-height: var(--line-height-prose);
 }
 
@@ -53,13 +52,13 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 .chat-bubble > div > p:last-child,
 .chat-bubble > p:last-child { margin-bottom: 0; }
 
-/* Headings: tighter measure, bind to following content */
+/* Headings: bind to following content */
 .chat-bubble h1,
 .chat-bubble h2,
 .chat-bubble h3,
 .chat-bubble h4 {
-  max-width: var(--measure-narrow);
   line-height: var(--line-height-tight);
+  text-wrap: balance;
 }
 .chat-bubble h1 + p,
 .chat-bubble h2 + p,
@@ -69,7 +68,6 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 /* Lists: tighter top when following a paragraph, no double-spacing */
 .chat-bubble ul,
 .chat-bubble ol {
-  max-width: var(--measure);
   margin-top: 0;
   margin-bottom: 0.75em;
   padding-left: var(--space-5);
@@ -126,7 +124,6 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 /* Horizontal rules */
 .chat-bubble hr {
   margin: var(--space-5) 0;
-  max-width: var(--measure);
 }
 
 /* Code blocks: consistent spacing with prose */
@@ -293,7 +290,7 @@ h1 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 
 h2 { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 1.5em 0 0.5em; }
 h3 { font-family: var(--font-heading); font-size: var(--text-lg); font-weight: 600; line-height: 1.3; margin: 1.25em 0 0.4em; }
 h4 { font-family: var(--font-heading); font-size: var(--text-base); font-weight: 600; margin: 1em 0 0.3em; }
-p { margin: 0 0 0.75em; line-height: 1.6; }
+p { margin: 0 0 0.75em; line-height: 1.5; }
 a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 strong { font-weight: 700; }
 em { font-style: italic; }
@@ -384,7 +381,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--space-6) var(--space-8);
+  padding: var(--space-5) var(--space-6);
   margin-bottom: var(--space-3);
 }
 .chat-bubble.user {
@@ -393,7 +390,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   width: fit-content;
   max-width: 85%;
   border-radius: 20px;
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-3) var(--space-5);
 }
 
 /* Citations — inline */
@@ -1081,7 +1078,6 @@ kbd {
   margin-top: var(--space-4);
   padding-top: var(--space-4);
   border-top: 1px solid var(--border);
-  max-width: var(--measure);
 }
 .chat-form .input-group { margin-bottom: var(--space-3); }
 .chat-form .input-label {
@@ -1215,9 +1211,9 @@ kbd {
   border-top: 1px solid var(--border);
   background: var(--accent-subtle);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
-  margin-left: calc(-1 * var(--space-8));
-  margin-right: calc(-1 * var(--space-8));
-  margin-bottom: calc(-1 * var(--space-6));
+  margin-left: calc(-1 * var(--space-6));
+  margin-right: calc(-1 * var(--space-6));
+  margin-bottom: calc(-1 * var(--space-5));
   display: flex;
   align-items: center;
   gap: var(--space-2);

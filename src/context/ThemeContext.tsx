@@ -28,6 +28,7 @@ export function darkBg(hex: string) {
 /* ── Types ── */
 
 export type ShapeMode = 'rounded' | 'pill' | 'square' | 'cut';
+export type ContainerShapeMode = 'rounded' | 'square' | 'cut';
 
 export interface SavedTheme {
   id: string;
@@ -40,6 +41,7 @@ export interface SavedTheme {
   accent: { name: string; hex: string };
   bg: { name: string; hex: string };
   shape: ShapeMode;
+  containerShape?: ContainerShapeMode;
   createdAt: number;
 }
 
@@ -115,25 +117,35 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     }
   }
 
-  // Shape
-  switch (theme.shape) {
+  // Shape — buttons (--radius-sm, --radius-md) and containers (--radius-lg) can differ
+  const btnShape = theme.shape;
+  const ctrShape = theme.containerShape ?? theme.shape;
+  // Buttons / small elements
+  switch (btnShape) {
     case 'pill':
       el.style.setProperty('--radius-sm', '9999px');
       el.style.setProperty('--radius-md', '9999px');
-      el.style.setProperty('--radius-lg', '9999px');
       break;
     case 'square':
-      el.style.setProperty('--radius-sm', '0');
-      el.style.setProperty('--radius-md', '0');
-      el.style.setProperty('--radius-lg', '0');
-      break;
     case 'cut':
       el.style.setProperty('--radius-sm', '0');
       el.style.setProperty('--radius-md', '0');
-      el.style.setProperty('--radius-lg', '0');
-      el.setAttribute('data-shape', 'cut');
       break;
-    // 'rounded' = default, no overrides needed
+  }
+  // Containers
+  switch (ctrShape) {
+    case 'square':
+    case 'cut':
+      el.style.setProperty('--radius-lg', '0');
+      break;
+    case 'rounded':
+      // default, no override needed unless btn was pill
+      if (btnShape === 'pill') el.style.setProperty('--radius-lg', '12px');
+      break;
+  }
+  // Cut corners need data attribute
+  if (btnShape === 'cut' || ctrShape === 'cut') {
+    el.setAttribute('data-shape', 'cut');
   }
 }
 

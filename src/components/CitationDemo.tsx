@@ -4,12 +4,10 @@ export default function CitationDemo() {
       <h3 style={{ marginTop: 0 }}>Full conversation example</h3>
 
       <div className="chat-bubble user">
-        <div className="bubble-label">User</div>
         <p style={{ marginBottom: 0 }}>What's the retention rate for Q3?</p>
       </div>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
         <p>
           124% net revenue retention. Up from 118% in Q2<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="Q3 Financial Report">1</a>.
         </p>

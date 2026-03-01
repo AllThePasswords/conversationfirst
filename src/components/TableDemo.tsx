@@ -15,7 +15,7 @@ export default function TableDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Here's a comparison of the three frameworks you asked about:
         </p>
@@ -48,7 +48,7 @@ export default function TableDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           The <code>createUser</code> endpoint accepts these parameters:
         </p>
@@ -102,7 +102,7 @@ export default function TableDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Here are the Q3 metrics across regions:
         </p>
@@ -153,7 +153,7 @@ export default function TableDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Your current configuration:
         </p>
@@ -252,7 +252,7 @@ export default function TableDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <p>
               The three plans differ mainly in storage and support:
             </p>
@@ -283,7 +283,7 @@ export default function TableDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-            <div className="bubble-label">Assistant &#10007;</div>
+
             <div className="table-scroll-wrapper">
               <table>
                 <thead>

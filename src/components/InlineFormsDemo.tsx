@@ -60,7 +60,7 @@ export default function InlineFormsDemo() {
       </p>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <p>
           To set up billing, I need a few details. All fields are required.
         </p>
@@ -106,7 +106,7 @@ export default function InlineFormsDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Error state</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <div className="chat-form" style={{ borderTop: 'none', paddingTop: 0, marginTop: 0 }}>
               <div className="input-group">
                 <label className="input-label" htmlFor="demo-err-amount">Amount</label>
@@ -131,7 +131,7 @@ export default function InlineFormsDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Valid state</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <div className="chat-form" style={{ borderTop: 'none', paddingTop: 0, marginTop: 0 }}>
               <div className="input-group">
                 <label className="input-label" htmlFor="demo-ok-amount">Amount</label>
@@ -161,13 +161,13 @@ export default function InlineFormsDemo() {
 
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <div className="chat-bubble user">
-          <div className="bubble-label">You</div>
+
           <p style={{ marginBottom: 0 }}>Deploy the staging branch to production.</p>
         </div>
       </div>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <p>
           This will deploy <code>staging</code> (commit <code>a3f8c21</code>) to production. The current production version is <code>v2.4.1</code> (commit <code>e7b2d09</code>).
         </p>
@@ -186,7 +186,7 @@ export default function InlineFormsDemo() {
       </p>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <p>
           This will permanently delete the <code>legacy-api</code> database and all 847 records. This action cannot be undone.
         </p>
@@ -202,7 +202,7 @@ export default function InlineFormsDemo() {
       </p>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <p>
           The test suite has 3 failures. How would you like to proceed?
         </p>
@@ -223,7 +223,7 @@ export default function InlineFormsDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Confirmed</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <p style={{ marginBottom: 0 }}>
               This will deploy <code>staging</code> to production. 13 files changed. 2 migrations pending.
             </p>
@@ -237,7 +237,7 @@ export default function InlineFormsDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Declined / destructive</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <p style={{ marginBottom: 0 }}>
               This will permanently delete the <code>legacy-api</code> database and all 847 records.
             </p>
@@ -256,7 +256,7 @@ export default function InlineFormsDemo() {
       </p>
 
       <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p style={{ marginBottom: 0 }}>
           To set up billing, I need a few details.
         </p>

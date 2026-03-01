@@ -6,7 +6,7 @@ export default function ProcessingDemo() {
         For fast responses under 2 seconds.
       </p>
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <div className="processing processing-minimal">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -19,7 +19,7 @@ export default function ProcessingDemo() {
         Typical responses. Monospace status with animated dots.
       </p>
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -33,7 +33,7 @@ export default function ProcessingDemo() {
         Complex queries. Shows what the system is doing.
       </p>
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -53,7 +53,7 @@ export default function ProcessingDemo() {
         Long responses. Shows the shape of incoming content.
       </p>
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -77,7 +77,7 @@ export default function ProcessingDemo() {
         Text streaming in, model still generating.
       </p>
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Revenue grew 18% quarter-over-quarter, reaching $4.2M<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="Q3 Financial Report">1</a>. This outpaces the industry median
           <span style={{ display: 'inline-block', width: 2, height: 16, background: 'var(--accent)', animation: 'cursor-blink 1s ease-in-out infinite', verticalAlign: 'text-bottom', marginLeft: 2, borderRadius: 1 }}></span>

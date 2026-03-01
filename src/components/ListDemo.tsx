@@ -8,7 +8,7 @@ export default function ListDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-3)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           The API supports three authentication methods:
         </p>
@@ -23,7 +23,7 @@ export default function ListDemo() {
       </div>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           To deploy the application:
         </p>
@@ -42,7 +42,7 @@ export default function ListDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Connection pooling reduces latency by reusing open database connections. The pool should be configured based on your workload and expected concurrency.
         </p>
@@ -66,7 +66,7 @@ export default function ListDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-3)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           The design system uses three spacing scales:
         </p>
@@ -93,7 +93,7 @@ export default function ListDemo() {
       </div>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Migration steps for the database upgrade:
         </p>
@@ -121,7 +121,7 @@ export default function ListDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>
           Configuration options for the rate limiter:
         </p>
@@ -204,7 +204,7 @@ export default function ListDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <p>
               Three factors improved retention this quarter:
             </p>
@@ -228,7 +228,7 @@ export default function ListDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-            <div className="bubble-label">Assistant &#10007;</div>
+
             <ul>
               <li>So basically the retention improved because contract values went up by about 31% or so because customers started using premium tiers more often than before.</li>
               <li>Also churn went down too.</li>

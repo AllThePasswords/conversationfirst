@@ -4,11 +4,10 @@ export default function ResponseDemo() {
       {/* --- Anatomy --- */}
       <h3 style={{ marginTop: 0 }}>Response anatomy</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Every response bubble has three regions: label, body, and sources.
+        Every response bubble has two regions: body and sources.
       </p>
 
       <div className="chat-bubble" style={{ position: 'relative' }}>
-        <div className="bubble-label">Assistant</div>
         <p>
           Net revenue retention reached 124% in Q3, up from 118% in Q2<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="Q3 Financial Report">1</a>. The improvement came from expansion revenue in mid-market accounts.
         </p>
@@ -55,8 +54,7 @@ export default function ResponseDemo() {
         marginBottom: 'var(--space-8)',
       }}>
         {[
-          { label: 'Label', desc: 'Role identifier. Uppercase, muted, monospace weight.' },
-          { label: 'Body', desc: 'Prose, lists, code, headings. All subject to measure and rhythm rules.' },
+          { label: 'Body', desc: 'Prose, lists, code, headings. All subject to rhythm rules.' },
           { label: 'Sources', desc: 'Footer citations. Separated by a top border. Clickable rows.' },
         ].map((item, i) => (
           <div key={i} style={{
@@ -79,7 +77,6 @@ export default function ResponseDemo() {
       </p>
 
       <div className="chat-bubble">
-        <div className="bubble-label">Assistant</div>
         <h3 style={{ marginTop: 0 }}>Database connection pooling</h3>
         <p>
           Connection pools reuse open connections instead of creating new ones for each query. This reduces latency and prevents exhausting database limits.
@@ -126,19 +123,19 @@ export default function ResponseDemo() {
       <div style={{ display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
         {[
           {
-            title: 'Measure (line length)',
-            desc: 'Prose lines are capped at 68 characters (var(--measure)). Headings cap at 55 characters. Research shows 45–75 characters per line is optimal for sustained reading.',
-            token: '--measure: 68ch',
+            title: 'Line length',
+            desc: 'The chat container and bubble padding constrain line length. No additional max-width on paragraphs — content fills the available width.',
+            token: 'no max-width on prose',
           },
           {
             title: 'Line height',
-            desc: 'Body text uses 1.6× line height. Headings use 1.3×. UI labels use 1.4×. Generous leading prevents line doubling — where the eye loses its place.',
-            token: '--line-height-prose: 1.6',
+            desc: 'Body text uses 1.5× line height. Headings use 1.3×. UI labels use 1.4×. Tight leading keeps lines close enough to read as a unit.',
+            token: '--line-height-prose: 1.5',
           },
           {
-            title: 'Widows & orphans',
-            desc: 'CSS orphans: 2 and widows: 2 prevent single words stranded on the first or last line of a paragraph. Combined with text-wrap: pretty for balanced rag.',
-            token: 'orphans: 2; widows: 2',
+            title: 'Widow control',
+            desc: 'text-wrap: pretty minimises short last lines and reduces rag. Applied to all prose elements. Headings use text-wrap: balance for even line lengths.',
+            token: 'text-wrap: pretty',
           },
           {
             title: 'Paragraph spacing',
@@ -193,7 +190,6 @@ export default function ResponseDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
             <p>
               The deployment failed because the health check endpoint returns 503 during cold starts. The container needs 4.2 seconds to initialise, but the load balancer timeout is set to 3 seconds.
             </p>
@@ -215,7 +211,6 @@ export default function ResponseDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-            <div className="bubble-label">Assistant ✗</div>
             <p style={{ marginBottom: 0, maxWidth: 'none' }}>
               The deployment failed because the health check endpoint returns 503 during cold starts because the container needs 4.2 seconds to initialise but the load balancer timeout is set to 3 seconds so you should increase the health check grace period to 10 seconds in your task definition which gives the container time to warm up before traffic arrives and then the health checks will pass and the deployment will succeed and your users will not see any downtime during deployments anymore.
             </p>
@@ -241,7 +236,6 @@ export default function ResponseDemo() {
 
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <div className="chat-bubble user">
-          <div className="bubble-label">You</div>
           <p style={{ marginBottom: 0 }}>Why is the deploy timing out?</p>
         </div>
       </div>
@@ -255,7 +249,7 @@ export default function ResponseDemo() {
           'Right-aligned, max-width 85%',
           'Background uses page colour (--bg)',
           'Plain text default — pasted markdown preserved',
-          'Same label, padding, and border-radius as assistant',
+          'Same padding and border-radius as assistant',
           'Images render inline above text',
           'No citations or footers',
         ].map((rule, i) => (
@@ -284,11 +278,9 @@ export default function ResponseDemo() {
         gap: 'var(--space-3)',
       }}>
         {[
-          'Prose capped at 68ch line length',
-          'Headings capped at 55ch',
-          'Line height: 1.6 for body, 1.3 for headings',
-          'Orphans ≥ 2, widows ≥ 2 on all paragraphs',
-          'text-wrap: pretty for balanced rag',
+          'Content fills bubble width — no inner max-width',
+          'Line height: 1.5 for body, 1.3 for headings',
+          'text-wrap: pretty on prose, balance on headings',
           'Last paragraph in bubble has no bottom margin',
           'Code blocks use full available width',
           'Headings bind to following content, not preceding',

@@ -362,7 +362,7 @@ export default function IconDemo() {
       </p>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-4)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>I&apos;ve connected your accounts. Here&apos;s what&apos;s set up:</p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
@@ -393,7 +393,7 @@ export default function IconDemo() {
       </div>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-4)' }}>
-        <div className="bubble-label">Assistant</div>
+
         <p>Your deployment completed successfully.</p>
         <div className="chat-action-confirmed">
           <span className="chat-action-confirmed-icon confirm">
@@ -429,7 +429,7 @@ export default function IconDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-            <div className="bubble-label">Assistant</div>
+    
             <p>Your files are ready:</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
               {['report-q3.pdf', 'slides-deck.pptx', 'data-export.csv'].map(name => (
@@ -454,7 +454,7 @@ export default function IconDemo() {
         <div>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
           <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-            <div className="bubble-label">Assistant ✗</div>
+
             <p style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
               <CheckCircleIcon width={16} height={16} style={{ color: 'var(--accent)' }} aria-hidden="true" />
               Great news! Your deployment went well

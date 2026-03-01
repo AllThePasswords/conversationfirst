@@ -97,7 +97,6 @@ export default function PrepChat({ companyId, placeholder }) {
 
           {isStreaming && streamingContent && (
             <div className="chat-bubble">
-              <div className="bubble-label">Assistant</div>
               <MarkdownRenderer content={streamingContent} />
               <span className="streaming-cursor" />
             </div>

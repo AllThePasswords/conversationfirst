@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { useTheme, darken, tint, darkAccent, darkBg, type ShapeMode, type SavedTheme } from "../context/ThemeContext";
+import { useTheme, darken, tint, darkAccent, darkBg, type ShapeMode, type ContainerShapeMode, type SavedTheme } from "../context/ThemeContext";
 
 const FONT_OPTIONS = {
   body: [
@@ -64,11 +64,16 @@ function rgbToHex(r,g,b) {
   return '#' + [r,g,b].map(x => Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('');
 }
 
-const SHAPE_OPTIONS: { id: ShapeMode; name: string; desc: string }[] = [
-  { id: "rounded", name: "Rounded", desc: "Standard soft corners — 4/8/12px radius" },
-  { id: "pill", name: "Pill", desc: "Fully rounded — capsule-shaped elements" },
-  { id: "square", name: "Square", desc: "Sharp edges — no rounding at all" },
-  { id: "cut", name: "Cut Corner", desc: "Chamfered — angled diagonal corners" },
+const BTN_SHAPE_OPTIONS: { id: ShapeMode; name: string; desc: string }[] = [
+  { id: "rounded", name: "Rounded", desc: "Soft corners — 4/8px radius" },
+  { id: "pill", name: "Pill", desc: "Fully rounded capsule shapes" },
+  { id: "square", name: "Square", desc: "Sharp edges — no rounding" },
+  { id: "cut", name: "Cut Corner", desc: "Chamfered diagonal corners" },
+];
+const CTR_SHAPE_OPTIONS: { id: ContainerShapeMode; name: string; desc: string }[] = [
+  { id: "rounded", name: "Rounded", desc: "Soft corners — 12px radius" },
+  { id: "square", name: "Square", desc: "Sharp edges — no rounding" },
+  { id: "cut", name: "Cut Corner", desc: "Chamfered diagonal corners" },
 ];
 
 const STEPS = ["body", "heading", "mono", "colors", "shape", "review"];
@@ -142,12 +147,12 @@ function generateTestPage(c) {
 }}
 *,*::before,*::after{box-sizing:border-box;margin:0}
 html{font-size:16px}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
 .page{max-width:840px;margin:0 auto;padding:var(--space-12) var(--space-8) 96px}
 .section{margin-bottom:var(--space-12)}
 .skip-link{position:absolute;top:-100%;left:var(--space-4);z-index:100;padding:var(--space-2) var(--space-4);background:var(--accent);color:#fff;font-weight:600;font-size:var(--text-sm);border-radius:var(--radius-md);text-decoration:none}
 .skip-link:focus{top:var(--space-4)}
-.section-label{font-family:var(--font-body);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin:0 0 var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border);line-height:1.6}
+.section-label{font-family:var(--font-body);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);font-weight:600;margin:0 0 var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--border);line-height:1.5}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)}
@@ -168,7 +173,7 @@ h1{font-family:var(--font-heading);font-size:var(--text-2xl);font-weight:700;let
 h2{font-family:var(--font-heading);font-size:var(--text-xl);font-weight:700;letter-spacing:-0.01em;line-height:1.25;margin:1.5em 0 0.5em}
 h3{font-family:var(--font-heading);font-size:var(--text-lg);font-weight:600;line-height:1.3;margin:1.25em 0 0.4em}
 h4{font-family:var(--font-heading);font-size:var(--text-base);font-weight:600;margin:1em 0 0.3em}
-p{margin:0 0 1em;line-height:1.6}
+p{margin:0 0 1em;line-height:1.5}
 a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 strong{font-weight:700}
 em{font-style:italic}
@@ -184,7 +189,7 @@ table{width:100%;border-collapse:collapse;margin:0 0 1em;font-size:var(--text-ba
 th{text-align:left;font-weight:600;padding:var(--space-3);border-bottom:2px solid var(--border)}
 td{padding:var(--space-2) var(--space-3);border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
-.chat-bubble{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-6) var(--space-8);margin-bottom:var(--space-3)}
+.chat-bubble{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-3)}
 .chat-bubble.user{background:var(--bg);margin-left:var(--space-12)}
 .bubble-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;margin-bottom:var(--space-3)}
 .cite-inline{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.625rem;font-weight:600;width:18px;height:18px;border-radius:var(--radius-full);background:var(--cite-bg);color:var(--cite-border);border:1px solid color-mix(in srgb,var(--cite-border) 50%,transparent);vertical-align:super;margin:0 1px;cursor:pointer;text-decoration:none;position:relative;top:-1px;transition:all 0.12s ease}
@@ -284,7 +289,7 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
 
 /* Document layout */
-.cf-doc{background:#fff;color:#1a1a1a;border-radius:var(--radius-md);padding:48px 56px;max-width:680px;margin:0 auto;font-size:var(--text-base);line-height:1.6;box-shadow:var(--shadow-md);overflow:hidden;position:relative}
+.cf-doc{background:#fff;color:#1a1a1a;border-radius:var(--radius-md);padding:48px 56px;max-width:680px;margin:0 auto;font-size:var(--text-base);line-height:1.5;box-shadow:var(--shadow-md);overflow:hidden;position:relative}
 @media(prefers-color-scheme:dark){.cf-doc{box-shadow:0 4px 24px rgba(0,0,0,0.4)}}
 .cf-doc h1{font-family:var(--font-heading);font-size:var(--text-2xl);font-weight:700;letter-spacing:-0.02em;line-height:1.2;margin:0 0 var(--space-2);color:#1a1a1a}
 .cf-doc h2{font-family:var(--font-heading);font-size:var(--text-lg);font-weight:700;line-height:1.3;margin:var(--space-6) 0 var(--space-2);color:#1a1a1a}
@@ -344,7 +349,7 @@ ${cutCSS}</style>
 <h3>Minimal — cursor only</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For fast responses under 2 seconds. Just a blinking cursor.</p>
 <div class="chat-bubble">
-  <div class="bubble-label">Assistant</div>
+
   <div class="processing processing-minimal">
     <div class="processing-status">
       <div class="processing-cursor"></div>
@@ -355,7 +360,7 @@ ${cutCSS}</style>
 <h3>Standard — status text</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For typical responses. Monospace status with animated dots.</p>
 <div class="chat-bubble">
-  <div class="bubble-label">Assistant</div>
+
   <div class="processing">
     <div class="processing-status">
       <div class="processing-cursor"></div>
@@ -367,7 +372,7 @@ ${cutCSS}</style>
 <h3>Detailed — with context</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For complex queries. Shows what the system is doing.</p>
 <div class="chat-bubble">
-  <div class="bubble-label">Assistant</div>
+
   <div class="processing">
     <div class="processing-status">
       <div class="processing-cursor"></div>
@@ -385,7 +390,7 @@ ${cutCSS}</style>
 <h3>Skeleton — content preview</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For long responses. Shows the shape of incoming content.</p>
 <div class="chat-bubble">
-  <div class="bubble-label">Assistant</div>
+
   <div class="processing">
     <div class="processing-status">
       <div class="processing-cursor"></div>
@@ -407,7 +412,7 @@ ${cutCSS}</style>
 <h3>Inline — mid-stream</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">When text is streaming in and the model is still generating.</p>
 <div class="chat-bubble">
-  <div class="bubble-label">Assistant</div>
+
   <p>Revenue grew 18% quarter-over-quarter, reaching $4.2M<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a>. This outpaces the industry median<span style="display:inline-block;width:2px;height:16px;background:var(--accent);animation:cursor-blink 1s ease-in-out infinite;vertical-align:text-bottom;margin-left:2px;border-radius:1px"></span></p>
 </div>
 </section>
@@ -416,12 +421,10 @@ ${cutCSS}</style>
 <section class="section" aria-labelledby="s-tone">
 <h2 class="section-label" id="s-tone">Conversation — correct tone</h2>
 
-<div class="chat-bubble user"><div class="bubble-label">User</div>
-<p>What's the retention rate for Q3?</p>
+<div class="chat-bubble user"><p>What's the retention rate for Q3?</p>
 </div>
 
-<div class="chat-bubble"><div class="bubble-label">Assistant</div>
-<p>124% net revenue retention. Up from 118% in Q2<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a>.</p>
+<div class="chat-bubble"><p>124% net revenue retention. Up from 118% in Q2<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a>.</p>
 <p>For context, the SaaS industry median is 110%<a class="cite-inline" href="https://openviewpartners.com/saas-benchmarks-2025" target="_blank" title="OpenView SaaS Benchmarks 2025">2</a>. The improvement came from expansion revenue in the mid-market segment, where average contract value increased 31%<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a>.</p>
 <div class="cite-footer">
   <div class="cite-footer-title">Sources</div>
@@ -439,7 +442,7 @@ ${cutCSS}</style>
 <h3 style="margin-top:var(--space-8)">Incorrect tone — for comparison</h3>
 
 <div class="chat-bubble" style="opacity:0.7;border-style:dashed">
-  <div class="bubble-label">Assistant ✗</div>
+
   <p>Great question! I'd be happy to help you with that. Based on my analysis of your Q3 data, it looks like the net revenue retention rate came in at a really impressive 124%, which is actually a significant improvement over the previous quarter. This is particularly noteworthy because it suggests strong product-market fit and indicates that your existing customers are finding increasing value in the platform. The industry benchmarks suggest this is well above average, which is definitely something to celebrate! Let me know if you'd like me to dig deeper into any of these metrics.</p>
 </div>
 
@@ -452,12 +455,10 @@ ${cutCSS}</style>
 <section class="section" aria-labelledby="s-complex">
 <h2 class="section-label" id="s-complex">Conversation — complex query</h2>
 
-<div class="chat-bubble user"><div class="bubble-label">User</div>
-<p>How does our Q3 margin compare to industry, and what drove the change?</p>
+<div class="chat-bubble user"><p>How does our Q3 margin compare to industry, and what drove the change?</p>
 </div>
 
-<div class="chat-bubble"><div class="bubble-label">Assistant</div>
-<p>Gross margin was 72%, versus industry median of 65%<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a><a class="cite-inline" href="https://openviewpartners.com/saas-benchmarks-2025" target="_blank" title="OpenView SaaS Benchmarks">2</a>.</p>
+<div class="chat-bubble"><p>Gross margin was 72%, versus industry median of 65%<a class="cite-inline" href="https://docs.google.com/document/d/example-q3-report" target="_blank" title="Q3 Financial Report">1</a><a class="cite-inline" href="https://openviewpartners.com/saas-benchmarks-2025" target="_blank" title="OpenView SaaS Benchmarks">2</a>.</p>
 <p>The 4-point improvement from Q2 came from two changes:</p>
 <ul>
   <li>Infrastructure migration to arm64 instances reduced compute costs 22%<a class="cite-inline" href="https://docs.google.com/document/d/example-infra-postmortem" target="_blank" title="Infra Migration Post-Mortem">3</a></li>
@@ -764,7 +765,7 @@ The AI is a computer. It has deep capabilities behind an elegant conversational 
 | \`--text-sm\` | 13px | Secondary, meta, nav |
 | \`--text-xs\` | 11px | Captions, badges, timestamps |
 
-Body line-height: 1.6. Max line length: 70–80 characters. Never below 14px on mobile.
+Body line-height: 1.5. Never below 14px on mobile.
 
 ---
 
@@ -972,30 +973,21 @@ Every response bubble has three regions:
 - Last paragraph in a bubble: \`margin-bottom: 0\`
 - No first-line indent (\`--paragraph-indent: 0\`)
 
-### 7.5 Measure (line length)
+### 7.5 Line length
 
-- Prose (\`p\`, \`li\`, \`blockquote\`): capped at \`--measure\` (68ch)
-- Headings (\`h1\`–\`h4\`): capped at \`--measure-narrow\` (55ch)
-- Lists (\`ul\`, \`ol\`): capped at \`--measure\`
-- Code blocks: full available width (scroll independently)
+Content fills the bubble width. The chat container and bubble padding constrain measure — no additional \`max-width\` on prose elements. Code blocks use full available width and scroll independently.
 
 ### 7.6 Line height
 
 | Context | Value | Token |
 |---|---|---|
-| Body text | 1.6 | \`--line-height-prose\` |
+| Body text | 1.5 | \`--line-height-prose\` |
 | Headings | 1.3 | \`--line-height-tight\` |
 | UI labels | 1.4 | \`--line-height-ui\` |
 
-### 7.7 Widow & orphan control
+### 7.7 Widow control
 
-All prose elements enforce:
-
-\`\`\`css
-orphans: 2;      /* min 2 lines at bottom of a column/page break */
-widows: 2;       /* min 2 lines at top of a column/page break */
-text-wrap: pretty; /* browser-level line balancing for even rag */
-\`\`\`
+All prose elements use \`text-wrap: pretty\` to minimise short last lines and reduce rag. Headings use \`text-wrap: balance\` for even line lengths.
 
 Applied to: \`p\`, \`li\`, \`dd\`, \`blockquote\`, \`.chat-bubble p\`, \`.cf-doc p\`, \`.cf-doc li\`.
 
@@ -1110,11 +1102,10 @@ Add to any grid container to change spacing:
 
 | Rule | Value | Why |
 |---|---|---|
-| Measure (line length) | 68ch body, 55ch headings | 45–75ch is optimal for sustained reading |
-| Line height | 1.6× body, 1.3× headings, 1.4× UI | Prevents line doubling (eye losing its place) |
-| Widows | ≥ 2 lines | No single line stranded at top of break |
-| Orphans | ≥ 2 lines | No single line stranded at bottom of break |
-| Text wrap | \`text-wrap: pretty\` | Browser-level line balancing for even rag |
+| Line length | Content fills bubble width | Container and padding constrain measure |
+| Line height | 1.5× body, 1.3× headings, 1.4× UI | Tight leading keeps lines readable as a unit |
+| Widow control | \`text-wrap: pretty\` on prose | Minimises short last lines, reduces rag |
+| Heading balance | \`text-wrap: balance\` | Even line lengths for headings |
 | Paragraph spacing | 0.75em bottom margin | Consistent vertical rhythm, zero on last-child |
 | Paragraph indent | 0 | Block spacing replaces indent in digital type |
 | Font smoothing | \`-webkit-font-smoothing: antialiased\` | Consistent rendering across browsers |
@@ -1153,7 +1144,7 @@ Forms sit inside the assistant bubble, separated from prose by a 1px \`--border\
 
 ### 11.3 Form rendering rules
 
-- Container: \`.chat-form\` — \`margin-top: var(--space-4)\`, \`padding-top: var(--space-4)\`, \`border-top: 1px solid var(--border)\`, \`max-width: var(--measure)\`
+- Container: \`.chat-form\` — \`margin-top: var(--space-4)\`, \`padding-top: var(--space-4)\`, \`border-top: 1px solid var(--border)\`
 - Inputs: \`--bg\` background (page background, not bubble surface) — creates visual depth
 - Labels: \`--font-body\`, semibold, \`--text-sm\`
 - Hints: \`--text-xs\`, \`--text-muted\`, placed between label and input
@@ -1304,7 +1295,7 @@ Google Fonts import: \`${fontsUrl(c)}\`
 | \`--text-sm\` | 13px | Secondary, meta |
 | \`--text-xs\` | 11px | Captions, badges |
 
-Body line-height: 1.6. Heading line-height: 1.3. Max measure: 68ch.
+Body line-height: 1.5. Heading line-height: 1.3. Content fills bubble width.
 
 ## Colours
 
@@ -1380,7 +1371,7 @@ ${c.shape === 'cut' ? `Cut-corner mode. All elements use \`clip-path: polygon(..
 ## Layout
 
 - Max content width: 840px
-- Prose measure: 68ch body, 55ch headings
+- Prose fills bubble width — no inner max-width constraint
 - Grid classes: \`grid-2\`, \`grid-3\`, \`grid-4\`, \`grid-2-1\`, \`grid-1-2\`
 - All grids collapse to single column below 640px
 
@@ -1449,8 +1440,8 @@ ${c.shape === 'cut' ? 'Cut corners via `clip-path: polygon(...)`. Sizes: `--cut-
 2. Processing states use blinking cursor + monospace status text, never spinners
 3. All components use design tokens — no custom colours or fonts
 4. Border radius: \`--radius-md\` for inputs/buttons, \`--radius-lg\` for cards
-5. Max prose width: 68ch. Max heading width: 55ch.
-6. Line height: 1.6 body, 1.3 headings
+5. Content fills bubble width — no inner max-width on prose
+6. Line height: 1.5 body, 1.3 headings
 7. Dark mode: \`prefers-color-scheme: dark\` — accent lightens, bg inverts
 8. Inline forms inside chat bubbles, never modals for simple input
 9. Buttons use verb labels ("Deploy", "Delete"), not "OK" or "Yes"
@@ -1480,8 +1471,8 @@ TYPOGRAPHY:
 - Heading: ${h.name} (${h.family})
 - Mono: ${m.name} (${m.family})
 - Scale: 36/28/22/18/15/13/11px
-- Body line-height: 1.6, headings: 1.3
-- Max line length: 68ch body, 55ch headings
+- Body line-height: 1.5, headings: 1.3
+- Content fills bubble width
 
 COLOURS:
 - Accent: ${ac} (${c.accent?.name || 'Forest'})
@@ -1660,13 +1651,13 @@ function MiniPreview({ choices }) {
 
 export default function Configurator() {
   const [step, setStep] = useState(0);
-  const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null, shape: null as ShapeMode | null });
+  const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null, shape: null as ShapeMode | null, containerShape: null as ContainerShapeMode | null });
   const [toast, setToast] = useState(null);
   const [themeName, setThemeName] = useState("");
   const { saveTheme, applyTheme } = useTheme();
   const cur = STEPS[step];
-  const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg && choices.shape;
-  const canNext = cur === "colors" ? (choices.accent !== null && choices.bg !== null) : cur !== "review" && choices[cur] !== null;
+  const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg && choices.shape && choices.containerShape;
+  const canNext = cur === "colors" ? (choices.accent !== null && choices.bg !== null) : cur === "shape" ? (choices.shape !== null && choices.containerShape !== null) : cur !== "review" && choices[cur] !== null;
   const flash = (m) => { setToast(m); setTimeout(() => setToast(null), 2200); };
   const dl = useCallback((content, name, type) => {
     const a = document.createElement("a");
@@ -1750,14 +1741,13 @@ export default function Configurator() {
       {cur === "shape" && (
         <div className="cfg-fin" key="shape">
           <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-3)" }}>
-            {SHAPE_OPTIONS.map(s => {
+          <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Buttons, badges & inputs</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "var(--space-3)", marginBottom: "var(--space-6)" }}>
+            {BTN_SHAPE_OPTIONS.map(s => {
               const on = choices.shape === s.id;
               const ac = choices.accent?.hex || "var(--accent)";
               const btnRadius = s.id === "rounded" ? "8px" : s.id === "pill" ? "9999px" : "0";
-              const cardRadius = s.id === "rounded" ? "12px" : s.id === "pill" ? "9999px" : "0";
               const cutClipBtn = "polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px)";
-              const cutClipCard = "polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)";
               return (
                 <button key={s.id} onClick={() => setChoices(p => ({ ...p, shape: s.id }))} style={{
                   display: "block", width: "100%", textAlign: "left", padding: "var(--space-4) var(--space-5)",
@@ -1765,11 +1755,10 @@ export default function Configurator() {
                   background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
                   boxShadow: on ? "var(--shadow-md)" : "none", color: "var(--text)",
                 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--space-2)" }}>
+                  <div style={{ marginBottom: "var(--space-2)" }}>
                     <span style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>{s.name}</span>
                   </div>
-                  {/* Mini preview: button + card outline */}
-                  <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", marginBottom: "var(--space-3)" }}>
+                  <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", marginBottom: "var(--space-2)" }}>
                     <div style={{
                       padding: "6px 16px", fontSize: "var(--text-xs)", fontWeight: 600,
                       background: ac, color: "#fff",
@@ -1783,6 +1772,27 @@ export default function Configurator() {
                       borderRadius: btnRadius,
                       clipPath: s.id === "cut" ? cutClipBtn : undefined,
                     }}>Secondary</div>
+                  </div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", lineHeight: 1.3 }}>{s.desc}</div>
+                </button>
+              );
+            })}
+          </div>
+          <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Cards, modals & containers</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "var(--space-3)" }}>
+            {CTR_SHAPE_OPTIONS.map(s => {
+              const on = choices.containerShape === s.id;
+              const cardRadius = s.id === "rounded" ? "12px" : "0";
+              const cutClipCard = "polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)";
+              return (
+                <button key={s.id} onClick={() => setChoices(p => ({ ...p, containerShape: s.id }))} style={{
+                  display: "block", width: "100%", textAlign: "left", padding: "var(--space-4) var(--space-5)",
+                  border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
+                  background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
+                  boxShadow: on ? "var(--shadow-md)" : "none", color: "var(--text)",
+                }}>
+                  <div style={{ marginBottom: "var(--space-2)" }}>
+                    <span style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>{s.name}</span>
                   </div>
                   <div style={{
                     padding: "var(--space-3) var(--space-4)",
