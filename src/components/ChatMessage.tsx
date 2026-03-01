@@ -1,4 +1,22 @@
+import { useState, useMemo } from 'react';
 import MarkdownRenderer from './MarkdownRenderer';
+
+const MAX_VISIBLE_SOURCES = 3;
+
+/** Deduplicate citations by hostname, keeping the first occurrence. */
+function dedupeCitations(citations) {
+  const seen = new Set();
+  return citations.filter(c => {
+    try {
+      const host = new URL(c.url).hostname;
+      if (seen.has(host)) return false;
+      seen.add(host);
+      return true;
+    } catch {
+      return true;
+    }
+  });
+}
 
 export default function ChatMessage({ message }) {
   const displayContent = typeof message.content === 'string'
@@ -34,25 +52,44 @@ export default function ChatMessage({ message }) {
         <>
           <MarkdownRenderer content={displayContent} />
           {message.citations && message.citations.length > 0 && (
-            <div className="web-citations">
-              <div className="web-citations-label">Sources</div>
-              {message.citations.map((c, i) => (
-                <a
-                  key={i}
-                  className="web-citation-link"
-                  href={c.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="web-citation-num">{i + 1}</span>
-                  <span className="web-citation-title">{c.title}</span>
-                  <span className="web-citation-url">{new URL(c.url).hostname}</span>
-                  <span className="web-citation-arrow">↗</span>
-                </a>
-              ))}
-            </div>
+            <CitationFooter citations={message.citations} />
           )}
         </>
+      )}
+    </div>
+  );
+}
+
+function CitationFooter({ citations }) {
+  const [expanded, setExpanded] = useState(false);
+  const unique = useMemo(() => dedupeCitations(citations), [citations]);
+  const visible = expanded ? unique : unique.slice(0, MAX_VISIBLE_SOURCES);
+  const hiddenCount = unique.length - MAX_VISIBLE_SOURCES;
+
+  return (
+    <div className="web-citations">
+      <div className="web-citations-label">Sources</div>
+      {visible.map((c, i) => (
+        <a
+          key={i}
+          className="web-citation-link"
+          href={c.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="web-citation-num">{i + 1}</span>
+          <span className="web-citation-title">{c.title}</span>
+          <span className="web-citation-url">{new URL(c.url).hostname}</span>
+          <span className="web-citation-arrow">↗</span>
+        </a>
+      ))}
+      {hiddenCount > 0 && !expanded && (
+        <button
+          className="web-citations-toggle"
+          onClick={() => setExpanded(true)}
+        >
+          Show {hiddenCount} more source{hiddenCount !== 1 ? 's' : ''}
+        </button>
       )}
     </div>
   );

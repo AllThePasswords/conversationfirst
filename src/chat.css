@@ -35,7 +35,7 @@
 .chat-input-bar {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-8) var(--space-6);
-  background: var(--bg);
+  background: linear-gradient(transparent, var(--bg) 40%);
 }
 
 .chat-input-inner {
@@ -46,7 +46,7 @@
   align-items: flex-end;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-input, var(--radius-lg));
   padding: var(--space-2);
   box-shadow: var(--shadow-lg);
   transition: border-color var(--duration-fast) var(--ease-out),
@@ -69,9 +69,9 @@
   flex: 1;
   font-family: var(--font-body);
   font-size: var(--text-base);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-2);
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-input, var(--radius-lg));
   background: transparent;
   color: var(--text);
   resize: none;

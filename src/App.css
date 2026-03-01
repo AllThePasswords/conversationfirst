@@ -1050,6 +1050,20 @@ kbd {
 .web-citation-link:hover .web-citation-num {
   color: var(--accent);
 }
+.web-citations-toggle {
+  display: block;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-2) 0 0;
+  transition: color 0.12s;
+}
+.web-citations-toggle:hover {
+  color: var(--accent);
+}
 
 /* Theme preset bar */
 .theme-bar {
