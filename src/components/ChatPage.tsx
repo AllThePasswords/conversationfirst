@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useChat } from '../hooks/useChat';
 import { useChatDB } from '../hooks/useChatDB';
 import { useBrain } from '../hooks/useBrain';
@@ -8,7 +7,6 @@ import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
 import ChatInput from './ChatInput';
-import ChatHistory from './ChatHistory';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const SUGGESTIONS = [
@@ -181,26 +179,21 @@ export default function ChatPage({
     }
   }, [addImages]);
 
-  // Handle new chat from history list
-  const handleNewChat = useCallback(() => {
-    createConversation();
-  }, [createConversation]);
+  // Auto-create a conversation if none is active
+  useEffect(() => {
+    if (!activeId && conversations.length === 0) {
+      createConversation();
+    } else if (!activeId && conversations.length > 0) {
+      setActiveId(conversations[0].id);
+    }
+  }, [activeId, conversations, createConversation, setActiveId]);
 
   const inputDisabled = isStreaming || isUploading;
 
-  // ─── LIST VIEW: show conversation history when no active conversation ───
-  if (!activeId) {
-    return (
-      <ChatHistory
-        conversations={conversations}
-        onSelect={(id) => setActiveId(id)}
-        onNew={handleNewChat}
-        onDelete={deleteConversation}
-      />
-    );
-  }
+  // Wait for an active conversation before rendering
+  if (!activeId) return null;
 
-  // ─── DETAIL VIEW: active conversation ───
+  // ─── CHAT VIEW ───
   return (
     <div
       className="chat-page"
@@ -212,14 +205,6 @@ export default function ChatPage({
       <a href="#chat-main" className="skip-link">Skip to content</a>
 
       <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-        <button
-          className="chat-menu-btn"
-          onClick={() => setActiveId(null)}
-          title="Back to conversations"
-          aria-label="Back to conversation list"
-        >
-          <ArrowLeftIcon width={18} height={18} aria-hidden="true" />
-        </button>
         {messages.length > 0 && activeConversation?.title && (
           <div className="chat-header-title">
             {activeConversation.title}

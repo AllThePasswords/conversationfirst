@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { HouseholdCtx, useHouseholdProvider } from '../lib/useHousehold'
 import SideNav from './SideNav'
-import AppsHomepage from './AppsHomepage'
+import ChatInput from './ChatInput'
 import VaultPage from './VaultPage'
 import ChatPage from './ChatPage'
 import PageTransition from './PageTransition'
@@ -19,9 +19,7 @@ interface AuthenticatedShellProps {
   session: any
 }
 
-type AppView = 'apps' | 'chat' | 'vault' | 'overview' | 'lifeadmin' | 'fullypresent' | 'onpoint' | 'voicecritique' | 'spritemaker'
-
-/* Side nav provides all navigation — no titlebar needed */
+type AppView = 'chat' | 'vault' | 'overview' | 'lifeadmin' | 'fullypresent' | 'onpoint' | 'voicecritique' | 'spritemaker'
 
 function parseHashRoute(): AppView {
   const hash = window.location.hash
@@ -33,11 +31,12 @@ function parseHashRoute(): AppView {
   if (hash === '#/apps/onpoint') return 'onpoint'
   if (hash === '#/apps/voicecritique') return 'voicecritique'
   if (hash === '#/apps/spritemaker') return 'spritemaker'
-  return 'apps'
+  return 'overview'
 }
 
 export default function AuthenticatedShell({ user, session }: AuthenticatedShellProps) {
   const [currentView, setCurrentView] = useState<AppView>(parseHashRoute)
+  const [menuOpen, setMenuOpen] = useState(false)
   const householdValue = useHouseholdProvider()
   const { householdId } = householdValue
 
@@ -58,9 +57,8 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
   }, [])
 
   const navigate = useCallback((view: string) => {
-    if (view === 'apps') {
-      window.location.hash = '#/apps'
-    } else if (view === 'vault') {
+    setMenuOpen(false)
+    if (view === 'vault') {
       window.location.hash = '#/vault'
     } else if (view === 'overview') {
       window.location.hash = '#/apps/overview'
@@ -71,22 +69,56 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
     }
   }, [])
 
-  const handleAppClick = useCallback((appId: string) => {
-    navigate(appId)
-  }, [navigate])
+  const handleSelectConversation = useCallback((id: string) => {
+    setActiveId(id)
+    navigate('chat')
+  }, [setActiveId, navigate])
+
+  const handleNewChat = useCallback(() => {
+    createConversation()
+    navigate('chat')
+  }, [createConversation, navigate])
+
+  const handleHomeSend = useCallback((text: string) => {
+    if (!text.trim()) return
+    sessionStorage.setItem('cf-pending-message', text.trim())
+    window.location.hash = '#/apps/chat?new'
+  }, [])
 
   return (
     <HouseholdCtx.Provider value={householdValue}>
-      <div className="cf-shell">
+      <div className={`cf-shell${menuOpen ? ' cf-menu-open' : ''}`}>
+        <button
+          className="cf-hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+        >
+          <span className="cf-hamburger-line" />
+          <span className="cf-hamburger-line" />
+          <span className="cf-hamburger-line" />
+        </button>
+
+        {menuOpen && (
+          <div className="cf-menu-backdrop" onClick={() => setMenuOpen(false)} />
+        )}
+
         <SideNav
           currentView={currentView}
           onNavigate={navigate}
           user={user}
+          conversations={conversations}
+          onSelectConversation={handleSelectConversation}
+          onNewChat={handleNewChat}
+          onDeleteConversation={deleteConversation}
+          activeConversationId={activeId}
         />
+
         <main className="cf-main">
           {currentView === 'overview' ? (
             <PageTransition key="overview">
               <OverviewPage />
+              <ChatInput onSend={handleHomeSend} variant="floating" />
             </PageTransition>
           ) : currentView === 'vault' ? (
             <PageTransition key="vault">
@@ -128,8 +160,9 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
               <SpriteMaker householdId={householdId} />
             </PageTransition>
           ) : (
-            <PageTransition key="home" stagger>
-              <AppsHomepage onAppClick={handleAppClick} />
+            <PageTransition key="overview">
+              <OverviewPage />
+              <ChatInput onSend={handleHomeSend} variant="floating" />
             </PageTransition>
           )}
         </main>

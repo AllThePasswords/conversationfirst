@@ -438,6 +438,69 @@
   100% { height: 6px; }
 }
 
+/* ===== Recording Entry Animations ===== */
+
+/* Buttons rotate + fade in from their centre */
+@keyframes btn-spin-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.recording:not(.dismissing) .chat-cancel-btn,
+.recording:not(.dismissing) .chat-send-btn.recording {
+  animation: btn-spin-in 350ms var(--ease-spring) both;
+}
+
+.recording:not(.dismissing) .chat-send-btn.recording {
+  animation-delay: 60ms;
+}
+
+/* Waveform sweeps in right → left (clip reveals from send toward cancel) */
+@keyframes waveform-reveal {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+.recording:not(.dismissing) .chat-voice-waveform {
+  animation: waveform-reveal 400ms var(--ease-out) 100ms both;
+}
+
+/* ===== Recording Exit (Dismiss) Animations ===== */
+
+@keyframes btn-spin-out {
+  to {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+}
+
+@keyframes waveform-dismiss {
+  to {
+    opacity: 0;
+    transform: scaleY(0.7);
+  }
+}
+
+/* Buttons spin out */
+.dismissing .chat-cancel-btn,
+.dismissing .chat-send-btn.recording {
+  animation: btn-spin-out 250ms var(--ease-out) both;
+}
+
+/* Bars freeze, container fades away */
+.dismissing .chat-voice-waveform {
+  animation: waveform-dismiss 280ms var(--ease-out) both;
+}
+.dismissing .voice-bar {
+  animation-play-state: paused;
+}
+
 /* ===== Send Button ===== */
 .chat-send-btn {
   background: var(--text);

@@ -67,17 +67,17 @@ export default function App() {
   const isChat = route === '#/chat' || route.startsWith('#/chat?')
   const isLanding = !route || route === '#/' || route === '#'
 
-  // Redirect: authenticated users on landing → apps homepage
+  // Redirect: authenticated users on landing → Design System
   useEffect(() => {
     if (isAuthenticated && isLanding) {
-      window.location.hash = '#/apps'
+      window.location.hash = '#/apps/overview'
     }
   }, [isAuthenticated, isLanding])
 
-  // Redirect: authenticated users on login → apps homepage
+  // Redirect: authenticated users on login → Design System
   useEffect(() => {
     if (isAuthenticated && isLogin) {
-      window.location.hash = '#/apps'
+      window.location.hash = '#/apps/overview'
     }
   }, [isAuthenticated, isLogin])
 

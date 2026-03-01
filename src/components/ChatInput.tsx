@@ -13,6 +13,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   const [text, setText] = useState('');
   const [dragging, setDragging] = useState(false);
   const [listening, setListening] = useState(false);
+  const [dismissing, setDismissing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -21,6 +22,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   const dragCounter = useRef(0);
   const recognitionRef = useRef(null);
   const menuRef = useRef(null);
+  const cancelledRef = useRef(false);
 
   const resize = useCallback(() => {
     const el = textareaRef.current;
@@ -69,27 +71,44 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
 
     recognition.onstart = () => setListening(true);
     recognition.onend = () => {
-      setListening(false);
       recognitionRef.current = null;
-      // Auto-send: dispatch the transcribed text directly
+      const isCancelled = cancelledRef.current;
+      cancelledRef.current = false;
+
+      // Animate out before clearing
+      setDismissing(true);
+
       const fullText = (baseText + (baseText && finalTranscript ? ' ' : '') + finalTranscript).trim();
-      if (fullText) {
-        // Defer to next tick so state settles
-        setTimeout(() => {
+      setTimeout(() => {
+        setListening(false);
+        setDismissing(false);
+        if (!isCancelled && fullText) {
           onSend(fullText, []);
-          setText('');
-          if (textareaRef.current) textareaRef.current.style.height = 'auto';
-        }, 100);
-      }
+        }
+        setText('');
+        if (textareaRef.current) textareaRef.current.style.height = 'auto';
+      }, 320);
     };
     recognition.onerror = (e) => {
-      if (e.error !== 'aborted') setListening(false);
+      if (e.error !== 'aborted') {
+        setListening(false);
+        setDismissing(false);
+      }
       recognitionRef.current = null;
     };
 
     recognitionRef.current = recognition;
     recognition.start();
   }, [speechSupported, resize, onSend]);
+
+  const handleCancelRecording = useCallback(() => {
+    cancelledRef.current = true;
+    recognitionRef.current?.stop();
+  }, []);
+
+  const handleSendRecording = useCallback(() => {
+    recognitionRef.current?.stop();
+  }, []);
 
   // Clean up recognition on unmount
   useEffect(() => {
@@ -196,7 +215,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${dragging ? 'dragging' : ''} ${listening ? 'recording' : ''}`}
+        className={`chat-input-inner ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
@@ -231,12 +250,13 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
           aria-hidden="true"
         />
 
-        {listening ? (
+        {(listening || dismissing) ? (
           <>
             {/* Recording state: [X] [waveform] [send] */}
             <button
               className="chat-icon-btn chat-cancel-btn"
-              onClick={toggleListening}
+              onClick={handleCancelRecording}
+              disabled={dismissing}
               title="Cancel recording"
               aria-label="Cancel recording"
               type="button"
@@ -252,7 +272,8 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
 
             <button
               className="chat-icon-btn chat-send-btn recording"
-              onClick={handleSend}
+              onClick={handleSendRecording}
+              disabled={dismissing}
               title="Send"
               aria-label="Send recording"
               type="button"

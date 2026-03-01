@@ -17,13 +17,22 @@ import {
 export default function ChatInputDemo() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [showWaveform, setShowWaveform] = useState(false)
+  const [dismissing, setDismissing] = useState(false)
   const [showThumbs, setShowThumbs] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   const toggleMenu = useCallback(() => setMenuOpen(p => !p), [])
-  const toggleWaveform = useCallback(() => {
-    setShowWaveform(p => !p)
+  const startWaveform = useCallback(() => {
+    setShowWaveform(true)
     setMenuOpen(false)
+  }, [])
+  const stopWaveform = useCallback(() => {
+    setDismissing(true)
+    setMenuOpen(false)
+    setTimeout(() => {
+      setShowWaveform(false)
+      setDismissing(false)
+    }, 320)
   }, [])
   const toggleThumbs = useCallback(() => {
     setShowThumbs(p => !p)
@@ -44,7 +53,7 @@ export default function ChatInputDemo() {
         <button className="btn btn-ghost" onClick={toggleMenu} style={{ fontSize: 'var(--text-sm)' }}>
           {menuOpen ? 'Close menu' : 'Open attach menu'}
         </button>
-        <button className="btn btn-ghost" onClick={toggleWaveform} style={{ fontSize: 'var(--text-sm)' }}>
+        <button className="btn btn-ghost" onClick={showWaveform ? stopWaveform : startWaveform} style={{ fontSize: 'var(--text-sm)' }}>
           {showWaveform ? 'Stop recording' : 'Show waveform'}
         </button>
         <button className="btn btn-ghost" onClick={toggleThumbs} style={{ fontSize: 'var(--text-sm)' }}>
@@ -55,14 +64,15 @@ export default function ChatInputDemo() {
       {/* ── Live demo input ── */}
       <div style={{ marginBottom: 'var(--space-10)' }}>
         <div className="chat-input-bar" style={{ position: 'relative' }}>
-          <div className={`chat-input-inner ${showWaveform ? 'recording' : ''}`}>
+          <div className={`chat-input-inner ${showWaveform ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}>
 
             {showWaveform ? (
               <>
                 {/* Recording state: [X] [waveform] [send] */}
                 <button
                   className="chat-icon-btn chat-cancel-btn"
-                  onClick={toggleWaveform}
+                  onClick={stopWaveform}
+                  disabled={dismissing}
                   title="Cancel recording"
                   aria-label="Cancel recording"
                   type="button"
@@ -81,7 +91,8 @@ export default function ChatInputDemo() {
                   title="Send"
                   aria-label="Send recording"
                   type="button"
-                  onClick={toggleWaveform}
+                  onClick={stopWaveform}
+                  disabled={dismissing}
                 >
                   <ArrowUpIcon width={20} height={20} aria-hidden="true" />
                 </button>
@@ -152,7 +163,7 @@ export default function ChatInputDemo() {
                 {/* Mic */}
                 <button
                   className="chat-icon-btn chat-mic-btn"
-                  onClick={toggleWaveform}
+                  onClick={startWaveform}
                   title="Voice input"
                   aria-label="Voice input"
                   type="button"
