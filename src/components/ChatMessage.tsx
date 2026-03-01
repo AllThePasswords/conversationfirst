@@ -9,9 +9,6 @@ export default function ChatMessage({ message }) {
 
   return (
     <div className={`chat-bubble ${message.role === 'user' ? 'user' : ''}`}>
-      <div className="bubble-label">
-        {message.role === 'user' ? 'You' : 'Assistant'}
-      </div>
       {message.role === 'user' ? (
         <div>
           {Array.isArray(message.content) ? (

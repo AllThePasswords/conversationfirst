@@ -482,6 +482,8 @@
 .chat-sidebar-list {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
 }
 
 .chat-sidebar-list .nav-item {
@@ -489,6 +491,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ===== Streaming Cursor ===== */

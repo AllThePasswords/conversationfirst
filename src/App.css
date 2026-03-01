@@ -236,14 +236,13 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   padding: var(--space-6) var(--space-8);
   margin-bottom: var(--space-3);
 }
-.chat-bubble.user { background: var(--bg); margin-left: auto; width: fit-content; max-width: 85%; }
-.bubble-label {
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  font-weight: 600;
-  margin-bottom: var(--space-3);
+.chat-bubble.user {
+  background: var(--bg);
+  margin-left: auto;
+  width: fit-content;
+  max-width: 85%;
+  border-radius: 20px;
+  padding: var(--space-4) var(--space-6);
 }
 
 /* Citations — inline */
