@@ -1867,10 +1867,8 @@ export default function Configurator() {
         }}>{toast}</div>
       )}
 
-      <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 0, marginBottom: "var(--space-6)" }}>Configure Your Spec</h2>
-
-      <div style={{ marginBottom: "var(--space-4)" }}>
-        <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-2)" }}>
+      <div style={{ marginBottom: "var(--space-4)", marginTop: "var(--space-8)" }}>
+        <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-4)" }}>
           {STEPS.map((s, i) => (
             <button key={s} onClick={() => { if (i <= step || (i === STEPS.length - 1 && all)) setStep(i); }}
               style={{
@@ -1881,8 +1879,11 @@ export default function Configurator() {
               }} />
           ))}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{step === 0 ? "Step 1" : `Step ${step + 1}`}/{STEPS.length} — {STEP_TITLES[cur]}</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--space-2)" }}>
+          <div>
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", display: "block", marginBottom: "var(--space-1)" }}>Step {step + 1} of {STEPS.length}</span>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>{STEP_TITLES[cur]}</h2>
+          </div>
           <div style={{ display: "flex", gap: "var(--space-2)" }}>
             {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "var(--space-1) var(--space-2)" }}>Back</button>}
             {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}

@@ -1067,17 +1067,12 @@ kbd {
 
 /* Theme preset bar */
 .theme-bar {
-  position: sticky;
-  top: 0;
-  z-index: 55;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
-  background: var(--surface);
+  padding: var(--space-3) 0;
+  margin-bottom: var(--space-4);
   border-bottom: 1px solid var(--border);
-  min-height: 40px;
 }
 .theme-bar-label {
   font-family: var(--font-body);
