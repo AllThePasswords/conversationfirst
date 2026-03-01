@@ -42,19 +42,25 @@
   max-width: 840px;
   margin: 0 auto;
   display: flex;
-  gap: var(--space-2);
-  align-items: flex-end;
+  gap: var(--space-1);
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-input, var(--radius-lg));
-  padding: var(--space-2);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-2);
   box-shadow: var(--shadow-lg);
+  min-height: 56px;
   transition: border-color var(--duration-fast) var(--ease-out),
               box-shadow var(--duration-fast) var(--ease-out);
 }
 .chat-input-inner:focus-within {
   border-color: var(--accent);
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+/* Recording state */
+.chat-input-inner.recording {
+  padding: var(--space-1) var(--space-1);
 }
 
 /* Input body wrapper — holds thumbnails + textarea/waveform */
@@ -69,9 +75,9 @@
   flex: 1;
   font-family: var(--font-body);
   font-size: var(--text-base);
-  padding: var(--space-3) var(--space-2);
+  padding: var(--space-2) var(--space-4);
   border: none;
-  border-radius: var(--radius-input, var(--radius-lg));
+  border-radius: var(--radius-full);
   background: transparent;
   color: var(--text);
   resize: none;
@@ -97,7 +103,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   background: none;
   border: none;
   color: var(--text-muted);
@@ -119,11 +125,22 @@
   cursor: not-allowed;
 }
 
+/* Cancel button (recording state) — dark filled circle */
+.chat-cancel-btn {
+  background: var(--text);
+  color: var(--bg);
+  width: 44px;
+  height: 44px;
+}
+.chat-cancel-btn:hover {
+  color: var(--bg);
+  opacity: 0.85;
+}
+
 /* ===== Attach Button & Menu ===== */
 .chat-attach-wrapper {
   position: relative;
   flex-shrink: 0;
-  align-self: flex-end;
 }
 
 .chat-attach-btn svg {
@@ -140,7 +157,7 @@
 .chat-attach-menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));
-  left: 0;
+  right: 0;
   min-width: 180px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -394,56 +411,55 @@
   transform: scale(1.08);
 }
 
-/* Active listening — accent colour + subtle pulse */
-.chat-mic-btn.listening {
-  color: var(--accent);
-  animation: mic-pulse 2s ease-in-out infinite;
-}
-
-@keyframes mic-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-
 /* ===== Voice Waveform ===== */
 .chat-voice-waveform {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: var(--space-3) var(--space-4);
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 var(--space-2);
 }
 
 .voice-bar {
-  width: 3px;
+  width: 2.5px;
   height: 4px;
-  background: var(--accent);
+  background: var(--text);
   border-radius: var(--radius-full);
-  animation: voice-bar 1.2s var(--ease-spring) infinite;
+  animation: voice-bar 1.2s ease-in-out infinite alternate;
+  flex-shrink: 0;
 }
-.voice-bar:nth-child(1) { animation-delay: 0s; }
-.voice-bar:nth-child(2) { animation-delay: 0.15s; }
-.voice-bar:nth-child(3) { animation-delay: 0.3s; }
-.voice-bar:nth-child(4) { animation-delay: 0.45s; }
-.voice-bar:nth-child(5) { animation-delay: 0.6s; }
 
 @keyframes voice-bar {
-  0%, 100% { height: 4px; }
-  50% { height: 24px; }
+  0% { height: 4px; }
+  50% { height: 22px; }
+  100% { height: 6px; }
 }
 
 /* ===== Send Button ===== */
 .chat-send-btn {
-  background: var(--accent);
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
 }
 .chat-send-btn:hover {
-  background: var(--accent-hover);
-  color: #fff;
+  color: var(--bg);
+  opacity: 0.85;
 }
 .chat-send-btn:active {
   transform: scale(0.95);
+}
+.chat-send-btn:disabled {
+  background: var(--text-muted);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Send button in recording state */
+.chat-send-btn.recording {
+  background: var(--text);
+  color: var(--bg);
 }
 
 /* ===== Chat History (list view) ===== */

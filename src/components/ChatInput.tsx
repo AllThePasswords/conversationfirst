@@ -3,6 +3,7 @@ import {
   PlusIcon,
   MicrophoneIcon,
   ArrowUpIcon,
+  XMarkIcon,
   CameraIcon,
   PhotoIcon,
   DocumentTextIcon,
@@ -190,59 +191,17 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
 
   const canSend = !disabled && (text.trim() || stagedImages.length > 0);
 
+  const waveformBars = 30;
+
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${dragging ? 'dragging' : ''}`}
+        className={`chat-input-inner ${dragging ? 'dragging' : ''} ${listening ? 'recording' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        {/* Attach button — rotates to ✕ when menu open */}
-        <div className="chat-attach-wrapper" ref={menuRef}>
-          <button
-            className={`chat-icon-btn chat-attach-btn ${menuOpen ? 'active' : ''}`}
-            onClick={() => setMenuOpen(prev => !prev)}
-            disabled={disabled}
-            title={menuOpen ? 'Close menu' : 'Attach'}
-            aria-label={menuOpen ? 'Close attachment menu' : 'Open attachment menu'}
-            aria-expanded={menuOpen}
-            type="button"
-          >
-            <PlusIcon width={20} height={20} aria-hidden="true" />
-          </button>
-
-          {menuOpen && (
-            <div className="chat-attach-menu" role="menu">
-              <button
-                className="chat-attach-menu-item"
-                role="menuitem"
-                onClick={() => cameraInputRef.current?.click()}
-              >
-                <CameraIcon width={18} height={18} aria-hidden="true" />
-                Take photo
-              </button>
-              <button
-                className="chat-attach-menu-item"
-                role="menuitem"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <PhotoIcon width={18} height={18} aria-hidden="true" />
-                Photo library
-              </button>
-              <button
-                className="chat-attach-menu-item"
-                role="menuitem"
-                onClick={() => docInputRef.current?.click()}
-              >
-                <DocumentTextIcon width={18} height={18} aria-hidden="true" />
-                Document
-              </button>
-            </div>
-          )}
-        </div>
-
         {/* Hidden file inputs */}
         <input
           ref={cameraInputRef}
@@ -272,72 +231,144 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
           aria-hidden="true"
         />
 
-        <div className="chat-input-body">
-          {stagedImages.length > 0 && (
-            <div className="chat-thumbnails" role="list" aria-label="Attached files">
-              {stagedImages.map((img, i) => (
-                <div key={img.id} className="chat-thumb" role="listitem">
-                  <img src={img.preview} alt={`Attachment ${i + 1}`} />
-                  <button
-                    className="chat-thumb-remove"
-                    onClick={() => onRemoveImage && onRemoveImage(img.id)}
-                    aria-label={`Remove attachment ${i + 1}`}
-                    type="button"
-                  >
-                    ✕
-                  </button>
-                </div>
+        {listening ? (
+          <>
+            {/* Recording state: [X] [waveform] [send] */}
+            <button
+              className="chat-icon-btn chat-cancel-btn"
+              onClick={toggleListening}
+              title="Cancel recording"
+              aria-label="Cancel recording"
+              type="button"
+            >
+              <XMarkIcon width={20} height={20} aria-hidden="true" />
+            </button>
+
+            <div className="chat-voice-waveform" aria-label="Recording voice" role="status">
+              {Array.from({ length: waveformBars }, (_, i) => (
+                <div key={i} className="voice-bar" style={{ animationDelay: `${(i * 0.08) % 1.2}s` }} />
               ))}
             </div>
-          )}
 
-          {listening ? (
-            <div className="chat-voice-waveform" aria-label="Recording voice" role="status">
-              <div className="voice-bar" />
-              <div className="voice-bar" />
-              <div className="voice-bar" />
-              <div className="voice-bar" />
-              <div className="voice-bar" />
+            <button
+              className="chat-icon-btn chat-send-btn recording"
+              onClick={handleSend}
+              title="Send"
+              aria-label="Send recording"
+              type="button"
+            >
+              <ArrowUpIcon width={20} height={20} aria-hidden="true" />
+            </button>
+          </>
+        ) : (
+          <>
+            {/* Inactive/typing state: [textarea] [+] [mic] */}
+            <div className="chat-input-body">
+              {stagedImages.length > 0 && (
+                <div className="chat-thumbnails" role="list" aria-label="Attached files">
+                  {stagedImages.map((img, i) => (
+                    <div key={img.id} className="chat-thumb" role="listitem">
+                      <img src={img.preview} alt={`Attachment ${i + 1}`} />
+                      <button
+                        className="chat-thumb-remove"
+                        onClick={() => onRemoveImage && onRemoveImage(img.id)}
+                        aria-label={`Remove attachment ${i + 1}`}
+                        type="button"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <textarea
+                ref={textareaRef}
+                className="chat-input-field"
+                placeholder="How can I help?"
+                aria-label="Message input"
+                value={text}
+                onChange={(e) => { setText(e.target.value); resize(); }}
+                onKeyDown={handleKeyDown}
+                onPaste={handlePaste}
+                disabled={disabled}
+                rows={1}
+              />
             </div>
-          ) : (
-            <textarea
-              ref={textareaRef}
-              className="chat-input-field"
-              placeholder="Ask a question..."
-              aria-label="Message input"
-              value={text}
-              onChange={(e) => { setText(e.target.value); resize(); }}
-              onKeyDown={handleKeyDown}
-              onPaste={handlePaste}
-              disabled={disabled}
-              rows={1}
-            />
-          )}
-        </div>
 
-        {speechSupported && (
-          <button
-            className={`chat-icon-btn chat-mic-btn ${listening ? 'listening' : ''}`}
-            onClick={toggleListening}
-            disabled={disabled}
-            title={listening ? 'Stop recording' : 'Voice input'}
-            aria-label={listening ? 'Stop recording' : 'Voice input'}
-            type="button"
-          >
-            <MicrophoneIcon width={20} height={20} aria-hidden="true" />
-          </button>
+            {/* Attach button */}
+            <div className="chat-attach-wrapper" ref={menuRef}>
+              <button
+                className={`chat-icon-btn chat-attach-btn ${menuOpen ? 'active' : ''}`}
+                onClick={() => setMenuOpen(prev => !prev)}
+                disabled={disabled}
+                title={menuOpen ? 'Close menu' : 'Attach'}
+                aria-label={menuOpen ? 'Close attachment menu' : 'Open attachment menu'}
+                aria-expanded={menuOpen}
+                type="button"
+              >
+                <PlusIcon width={20} height={20} aria-hidden="true" />
+              </button>
+
+              {menuOpen && (
+                <div className="chat-attach-menu" role="menu">
+                  <button
+                    className="chat-attach-menu-item"
+                    role="menuitem"
+                    onClick={() => cameraInputRef.current?.click()}
+                  >
+                    <CameraIcon width={18} height={18} aria-hidden="true" />
+                    Take photo
+                  </button>
+                  <button
+                    className="chat-attach-menu-item"
+                    role="menuitem"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <PhotoIcon width={18} height={18} aria-hidden="true" />
+                    Photo library
+                  </button>
+                  <button
+                    className="chat-attach-menu-item"
+                    role="menuitem"
+                    onClick={() => docInputRef.current?.click()}
+                  >
+                    <DocumentTextIcon width={18} height={18} aria-hidden="true" />
+                    Document
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Mic button — visible when no text to send */}
+            {speechSupported && !canSend && (
+              <button
+                className="chat-icon-btn chat-mic-btn"
+                onClick={toggleListening}
+                disabled={disabled}
+                title="Voice input"
+                aria-label="Voice input"
+                type="button"
+              >
+                <MicrophoneIcon width={20} height={20} aria-hidden="true" />
+              </button>
+            )}
+
+            {/* Send button — visible only when there's content to send */}
+            {canSend && (
+              <button
+                className="chat-icon-btn chat-send-btn"
+                onClick={handleSend}
+                disabled={!canSend}
+                title="Send"
+                aria-label="Send message"
+                type="button"
+              >
+                <ArrowUpIcon width={20} height={20} aria-hidden="true" />
+              </button>
+            )}
+          </>
         )}
-
-        <button
-          className="chat-icon-btn chat-send-btn"
-          onClick={handleSend}
-          disabled={!canSend}
-          title="Send"
-          aria-label="Send message"
-          type="button"
-        >
-          <ArrowUpIcon width={20} height={20} aria-hidden="true" />
-        </button>
       </div>
     </div>
   );
