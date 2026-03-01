@@ -1,8 +1,7 @@
 import { useTheme } from '../context/ThemeContext';
 
 export default function ThemePresetBar() {
-  const { activePresetId, setActivePresetId, presets } = useTheme();
-  const active = presets.find(p => p.id === activePresetId);
+  const { activeThemeId, savedThemes, applyTheme, deleteTheme } = useTheme();
 
   return (
     <div className="theme-bar">
@@ -10,17 +9,35 @@ export default function ThemePresetBar() {
       <select
         id="theme-select"
         className="theme-bar-select"
-        value={activePresetId}
-        onChange={(e) => setActivePresetId(e.target.value)}
+        value={activeThemeId || 'default'}
+        onChange={(e) => {
+          const id = e.target.value;
+          if (id === 'default') {
+            applyTheme(null);
+          } else {
+            const theme = savedThemes.find(t => t.id === id);
+            if (theme) applyTheme(theme);
+          }
+        }}
       >
-        {presets.map(p => (
-          <option key={p.id} value={p.id}>
-            {p.name}
-          </option>
+        <option value="default">Default</option>
+        {savedThemes.map(t => (
+          <option key={t.id} value={t.id}>{t.name}</option>
         ))}
       </select>
-      {active && active.id !== 'default' && (
-        <span className="theme-bar-desc">{active.description}</span>
+      {activeThemeId && savedThemes.length > 0 && (
+        <button
+          className="theme-bar-delete"
+          onClick={() => {
+            if (confirm('Delete this saved theme?')) {
+              deleteTheme(activeThemeId);
+            }
+          }}
+          title="Delete theme"
+          aria-label="Delete theme"
+        >
+          &times;
+        </button>
       )}
     </div>
   );

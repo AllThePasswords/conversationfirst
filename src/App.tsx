@@ -1,15 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import Hero from './components/Hero'
-import VoiceRules from './components/VoiceRules'
-import ProcessingDemo from './components/ProcessingDemo'
-import CitationDemo from './components/CitationDemo'
-import ResponseDemo from './components/ResponseDemo'
-import ListDemo from './components/ListDemo'
-import InlineFormsDemo from './components/InlineFormsDemo'
-import ComponentShowcase from './components/ComponentShowcase'
-import Configurator from './components/Configurator'
-import Footer from './components/Footer'
-import ThemePresetBar from './components/ThemePresetBar'
+import OverviewPage from './components/OverviewPage'
 import ChatInput from './components/ChatInput'
 import AuthPage from './components/AuthPage'
 import AuthenticatedShell from './components/AuthenticatedShell'
@@ -126,23 +116,13 @@ export default function App() {
   return (
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>
-      <ThemePresetBar />
 
       <header className="chat-header home-header">
         <LoginButton />
       </header>
 
-      <main id="main-content" className="page" style={{ paddingBottom: 120 }}>
-        <Hero />
-        <VoiceRules />
-        <ProcessingDemo />
-        <CitationDemo />
-        <ResponseDemo />
-        <ListDemo />
-        <InlineFormsDemo />
-        <ComponentShowcase />
-        <Configurator />
-        <Footer />
+      <main id="main-content">
+        <OverviewPage />
       </main>
       <ChatInput onSend={handleHomeSend} variant="floating" />
     </div>

@@ -36,6 +36,11 @@
   --radius-lg: 12px;
   --radius-full: 9999px;
 
+  /* Cut-corner sizes (used when data-shape="cut") */
+  --cut-sm: 4px;
+  --cut-md: 6px;
+  --cut-lg: 10px;
+
   --bg: #faf9f7;
   --surface: #fff;
   --surface-raised: #fff;

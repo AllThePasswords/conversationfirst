@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useTheme, darken, tint, darkAccent, darkBg, type ShapeMode, type SavedTheme } from "../context/ThemeContext";
 
 const FONT_OPTIONS = {
   body: [
@@ -62,30 +63,22 @@ function hexToRgb(hex) {
 function rgbToHex(r,g,b) {
   return '#' + [r,g,b].map(x => Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('');
 }
-function darken(hex, amt=0.18) {
-  const [r,g,b] = hexToRgb(hex);
-  return rgbToHex(r*(1-amt), g*(1-amt), b*(1-amt));
-}
-function tint(hex, amt=0.90) {
-  const [r,g,b] = hexToRgb(hex);
-  return rgbToHex(r+(255-r)*amt, g+(255-g)*amt, b+(255-b)*amt);
-}
-function darkAccent(hex) {
-  const [r,g,b] = hexToRgb(hex);
-  return rgbToHex(Math.min(255,r+80), Math.min(255,g+80), Math.min(255,b+80));
-}
-function darkBg(hex) {
-  const [r,g,b] = hexToRgb(hex);
-  return rgbToHex(Math.round(r*0.08), Math.round(g*0.08), Math.round(b*0.08));
-}
 
-const STEPS = ["body", "heading", "mono", "colors", "review"];
-const STEP_TITLES = { body: "Body typeface", heading: "Heading typeface", mono: "Code typeface", colors: "Colours", review: "Review & export" };
+const SHAPE_OPTIONS: { id: ShapeMode; name: string; desc: string }[] = [
+  { id: "rounded", name: "Rounded", desc: "Standard soft corners — 4/8/12px radius" },
+  { id: "pill", name: "Pill", desc: "Fully rounded — capsule-shaped elements" },
+  { id: "square", name: "Square", desc: "Sharp edges — no rounding at all" },
+  { id: "cut", name: "Cut Corner", desc: "Chamfered — angled diagonal corners" },
+];
+
+const STEPS = ["body", "heading", "mono", "colors", "shape", "review"];
+const STEP_TITLES = { body: "Body typeface", heading: "Heading typeface", mono: "Code typeface", colors: "Colours", shape: "Shape", review: "Review & save" };
 const STEP_DESCS = {
   body: "The foundation. Chat messages, UI labels, forms, navigation, cards, and all reading surfaces.",
   heading: "Hierarchy. Page titles, section heads, modal titles, card titles, chat headings.",
   mono: "Precision. Code blocks, inline code, technical identifiers, terminal output, data.",
   colors: "Identity. Your accent colour for buttons, links, and citations. Your background colour for the overall canvas.",
+  shape: "Structure. The fundamental geometry of every element — buttons, cards, inputs, badges, and more.",
 };
 
 function resolve(c) { return c.heading?.family ? c.heading : c.body; }
@@ -108,8 +101,17 @@ function generateTestPage(c) {
   const dkAcHover = darkAccent(darken(ac, 0.1));
   const dkAcSubtle = rgbToHex(...hexToRgb(dkAc).map(v => Math.round(v * 0.25)));
   const dkCiteBg = dkAcSubtle;
+  const shapeAttr = c.shape === 'cut' ? ' data-shape="cut"' : '';
+  const cutCSS = c.shape === 'cut' ? `
+[data-shape="cut"] code,[data-shape="cut"] kbd,[data-shape="cut"] .badge,[data-shape="cut"] .cite-inline,[data-shape="cut"] .nav-item,[data-shape="cut"] .nav-item.active,[data-shape="cut"] .skeleton-line{border-radius:0;clip-path:polygon(var(--cut-sm) 0,calc(100% - var(--cut-sm)) 0,100% var(--cut-sm),100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,var(--cut-sm) 100%,0 calc(100% - var(--cut-sm)),0 var(--cut-sm))}
+[data-shape="cut"] .btn,[data-shape="cut"] .input,[data-shape="cut"] textarea.input,[data-shape="cut"] select.input,[data-shape="cut"] .alert,[data-shape="cut"] pre,[data-shape="cut"] .toast,[data-shape="cut"] .cite-block,[data-shape="cut"] .skip-link{border-radius:0;clip-path:polygon(var(--cut-md) 0,calc(100% - var(--cut-md)) 0,100% var(--cut-md),100% calc(100% - var(--cut-md)),calc(100% - var(--cut-md)) 100%,var(--cut-md) 100%,0 calc(100% - var(--cut-md)),0 var(--cut-md))}
+[data-shape="cut"] .card,[data-shape="cut"] .modal,[data-shape="cut"] .chat-bubble,[data-shape="cut"] .chat-bubble.user,[data-shape="cut"] .sidebar,[data-shape="cut"] .cf-doc{border-radius:0;clip-path:polygon(var(--cut-lg) 0,calc(100% - var(--cut-lg)) 0,100% var(--cut-lg),100% calc(100% - var(--cut-lg)),calc(100% - var(--cut-lg)) 100%,var(--cut-lg) 100%,0 calc(100% - var(--cut-lg)),0 var(--cut-lg))}
+[data-shape="cut"] .card{box-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.04))}
+[data-shape="cut"] .modal{box-shadow:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.12))}
+[data-shape="cut"] .toast{box-shadow:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15))}
+` : '';
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en"${shapeAttr}>
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Conversation First — Test Page</title>
@@ -121,7 +123,8 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-full:9999px;
+  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '12px'};--radius-full:9999px;
+  --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
   --accent:${ac};--accent-hover:${acHover};--accent-subtle:${acSubtle};
@@ -315,7 +318,7 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
 .cf-doc ul,.cf-doc ol{padding-left:var(--space-5);margin:0 0 var(--space-3)}
 .cf-doc li{margin-bottom:var(--space-1);font-size:var(--text-sm)}
 @media(prefers-color-scheme:dark){.cf-doc .doc-aside{color:var(--text-secondary)}}
-</style>
+${cutCSS}</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
@@ -331,6 +334,7 @@ kbd{font-family:var(--font-mono);font-size:var(--text-xs);padding:2px 6px;border
   <div><dt>Body</dt><dd style="font-family:var(--font-body)">${b.name}</dd></div>
   <div><dt>Heading</dt><dd style="font-family:var(--font-heading)">${h.name}</dd></div>
   <div><dt>Mono</dt><dd style="font-family:var(--font-mono)">${m.name}</dd></div>
+  <div><dt>Shape</dt><dd>${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}</dd></div>
 </dl>
 
 <!-- PROCESSING STATES -->
@@ -794,7 +798,32 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 ---
 
-## 5 — Processing States
+## 5 — Shape
+
+**Mode: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}**
+
+${c.shape === 'rounded' ? 'Standard rounded corners using `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (12px).' : ''}${c.shape === 'pill' ? 'Fully rounded capsule shapes. All radius tokens set to `9999px`.' : ''}${c.shape === 'square' ? 'Sharp edges. All radius tokens set to `0`.' : ''}${c.shape === 'cut' ? `Chamfered diagonal corners using \`clip-path: polygon(...)\`. All radius tokens set to \`0\`. The \`<html>\` element has \`data-shape="cut"\`.
+
+Three cut sizes:
+- \`--cut-sm\`: 4px — badges, inline code, small controls
+- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts
+- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar
+
+Clip-path polygon (example for --cut-md):
+\\\`\\\`\\\`css
+clip-path: polygon(
+  var(--cut-md) 0, calc(100% - var(--cut-md)) 0,
+  100% var(--cut-md), 100% calc(100% - var(--cut-md)),
+  calc(100% - var(--cut-md)) 100%, var(--cut-md) 100%,
+  0 calc(100% - var(--cut-md)), 0 var(--cut-md)
+);
+\\\`\\\`\\\`
+
+Shadows on cut elements use \`filter: drop-shadow()\` instead of \`box-shadow\` to follow the clip-path shape.` : ''}
+
+---
+
+## 6 — Processing States
 
 Processing indicators are typography-based. No spinners. No bouncing dots. A blinking cursor and monospace status text.
 
@@ -1217,7 +1246,7 @@ After form submission, the form collapses into a confirmation banner:
 
 ---
 
-*Conversation First · ${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'}*
+*Conversation First · ${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
 *Test page: \`test-page.html\`*
 `;
 }
@@ -1298,7 +1327,11 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Radius
 
-\`--radius-sm\`: 4px, \`--radius-md\`: 8px, \`--radius-lg\`: 12px, \`--radius-full\`: 9999px
+\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
+
+## Shape: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
+
+${c.shape === 'cut' ? `Cut-corner mode. All elements use \`clip-path: polygon(...)\` for chamfered corners. Three sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : c.shape === 'pill' ? 'Pill mode. All radius tokens set to 9999px for fully rounded capsule shapes.' : c.shape === 'square' ? 'Square mode. All radius tokens set to 0 for sharp edges.' : 'Standard rounded corners.'}
 
 ## CSS tokens (full set)
 
@@ -1353,7 +1386,7 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ---
 *Generated with the ConversationFirst Configurator — conversationfirst.xyz*
-*${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'}*
+*${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
 `;
 }
 
@@ -1404,7 +1437,11 @@ Import: \`${fontsUrl(c)}\`
 
 ## Radius
 
-4px sm / 8px md / 12px lg / 9999px full
+${c.shape === 'pill' ? '9999px all (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 all' : '4px sm / 8px md / 12px lg'} / 9999px full
+
+## Shape: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
+
+${c.shape === 'cut' ? 'Cut corners via `clip-path: polygon(...)`. Sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : c.shape === 'pill' ? 'Fully rounded capsule shapes on all elements.' : c.shape === 'square' ? 'Sharp edges, no rounding.' : 'Standard rounded corners.'}
 
 ## Rules
 
@@ -1419,7 +1456,7 @@ Import: \`${fontsUrl(c)}\`
 9. Buttons use verb labels ("Deploy", "Delete"), not "OK" or "Yes"
 
 ---
-*Generated with the ConversationFirst Configurator — conversationfirst.xyz*
+*Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
 `;
 }
 
@@ -1457,7 +1494,10 @@ COLOURS:
 - Citation background: ${tint(ac, 0.92)}
 
 SPACING: 4/8/12/16/20/24/32/40/48px
-RADIUS: 4px sm, 8px md, 12px lg, 9999px full
+RADIUS: ${c.shape === 'pill' ? '9999px all (pill mode)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md, 12px lg'}, 9999px full
+
+SHAPE: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
+${c.shape === 'cut' ? '- Cut-corner mode: use clip-path polygon for chamfered corners\n- Three sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : c.shape === 'pill' ? '- Fully rounded capsule shapes on all elements' : c.shape === 'square' ? '- Sharp edges, no border-radius' : '- Standard rounded corners'}
 
 COMPONENTS:
 - Buttons: primary (accent bg), secondary (border), ghost, destructive (red)
@@ -1483,7 +1523,7 @@ CSS CUSTOM PROPERTIES:
 
 Google Fonts: ${fontsUrl(c)}
 
-Generated with the ConversationFirst Configurator — conversationfirst.xyz
+Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape
 `;
 }
 
@@ -1620,10 +1660,12 @@ function MiniPreview({ choices }) {
 
 export default function Configurator() {
   const [step, setStep] = useState(0);
-  const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null });
+  const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null, shape: null as ShapeMode | null });
   const [toast, setToast] = useState(null);
+  const [themeName, setThemeName] = useState("");
+  const { saveTheme, applyTheme } = useTheme();
   const cur = STEPS[step];
-  const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg;
+  const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg && choices.shape;
   const canNext = cur === "colors" ? (choices.accent !== null && choices.bg !== null) : cur !== "review" && choices[cur] !== null;
   const flash = (m) => { setToast(m); setTimeout(() => setToast(null), 2200); };
   const dl = useCallback((content, name, type) => {
@@ -1634,9 +1676,7 @@ export default function Configurator() {
   }, []);
 
   return (
-    <section className="section" id="configurator" aria-labelledby="configurator-heading">
-      <h2 className="section-label" id="configurator-heading">Configurator — build your spec</h2>
-
+    <div className="section" id="configurator">
       <style>{`
         @keyframes toastUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -1707,8 +1747,106 @@ export default function Configurator() {
         </div>
       )}
 
+      {cur === "shape" && (
+        <div className="cfg-fin" key="shape">
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-3)" }}>
+            {SHAPE_OPTIONS.map(s => {
+              const on = choices.shape === s.id;
+              const ac = choices.accent?.hex || "var(--accent)";
+              const btnRadius = s.id === "rounded" ? "8px" : s.id === "pill" ? "9999px" : "0";
+              const cardRadius = s.id === "rounded" ? "12px" : s.id === "pill" ? "9999px" : "0";
+              const cutClipBtn = "polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px)";
+              const cutClipCard = "polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)";
+              return (
+                <button key={s.id} onClick={() => setChoices(p => ({ ...p, shape: s.id }))} style={{
+                  display: "block", width: "100%", textAlign: "left", padding: "var(--space-4) var(--space-5)",
+                  border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
+                  background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
+                  boxShadow: on ? "var(--shadow-md)" : "none", color: "var(--text)",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--space-2)" }}>
+                    <span style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>{s.name}</span>
+                  </div>
+                  {/* Mini preview: button + card outline */}
+                  <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", marginBottom: "var(--space-3)" }}>
+                    <div style={{
+                      padding: "6px 16px", fontSize: "var(--text-xs)", fontWeight: 600,
+                      background: ac, color: "#fff",
+                      borderRadius: btnRadius,
+                      clipPath: s.id === "cut" ? cutClipBtn : undefined,
+                    }}>Primary</div>
+                    <div style={{
+                      padding: "6px 16px", fontSize: "var(--text-xs)", fontWeight: 600,
+                      background: "var(--surface)", color: "var(--text)",
+                      border: "1px solid var(--border)",
+                      borderRadius: btnRadius,
+                      clipPath: s.id === "cut" ? cutClipBtn : undefined,
+                    }}>Secondary</div>
+                  </div>
+                  <div style={{
+                    padding: "var(--space-3) var(--space-4)",
+                    background: "var(--surface)", border: "1px solid var(--border)",
+                    borderRadius: cardRadius,
+                    clipPath: s.id === "cut" ? cutClipCard : undefined,
+                    marginBottom: "var(--space-2)",
+                  }}>
+                    <div style={{ fontSize: "var(--text-xs)", fontWeight: 600, marginBottom: "2px" }}>Card title</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Description text</div>
+                  </div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", lineHeight: 1.3 }}>{s.desc}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {cur === "review" && all && (
         <div className="cfg-fin" key="review">
+          {/* Save & apply to site */}
+          <div style={{ marginBottom: "var(--space-8)", padding: "var(--space-5) var(--space-6)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Save & apply theme</h3>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+              Name your theme and apply it across the entire Conversation First site. Saved themes appear in the dropdown at the top.
+            </p>
+            <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "stretch", maxWidth: "440px" }}>
+              <input
+                type="text"
+                className="input"
+                placeholder="Theme name..."
+                value={themeName}
+                onChange={e => setThemeName(e.target.value)}
+                style={{ flex: 1, fontSize: "var(--text-sm)" }}
+              />
+              <button
+                className="btn btn-primary"
+                disabled={!themeName.trim()}
+                style={{ opacity: themeName.trim() ? 1 : 0.5 }}
+                onClick={() => {
+                  const theme: SavedTheme = {
+                    id: crypto.randomUUID(),
+                    name: themeName.trim(),
+                    fonts: {
+                      body: { name: choices.body.name, family: choices.body.family },
+                      heading: { name: resolve(choices).name, family: resolve(choices).family },
+                      mono: { name: choices.mono.name, family: choices.mono.family },
+                    },
+                    accent: { name: choices.accent.name, hex: choices.accent.hex },
+                    bg: { name: choices.bg.name, hex: choices.bg.hex },
+                    shape: choices.shape,
+                    createdAt: Date.now(),
+                  };
+                  saveTheme(theme);
+                  applyTheme(theme);
+                  flash(`"${themeName.trim()}" saved & applied`);
+                }}
+              >
+                Save & apply
+              </button>
+            </div>
+          </div>
+
           <div style={{ marginBottom: "var(--space-6)" }}>
             <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Use in your project</h3>
             <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
@@ -1763,6 +1901,6 @@ export default function Configurator() {
           <button onClick={() => setStep(0)} className="btn btn-secondary" style={{ marginTop: "var(--space-3)" }}>Start over</button>
         </div>
       )}
-    </section>
+    </div>
   );
 }

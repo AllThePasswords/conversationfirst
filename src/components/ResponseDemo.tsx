@@ -1,12 +1,6 @@
 export default function ResponseDemo() {
   return (
-    <section className="section" id="responses" aria-labelledby="responses-heading">
-      <h2 className="section-label" id="responses-heading">Responses — anatomy, rhythm &amp; legibility</h2>
-
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: 560 }}>
-        Every assistant response follows the same structure. The bubble contains a role label, prose content with enforced typographic rules, and optional citations. Responses are never raw text — they are typeset.
-      </p>
-
+    <>
       {/* --- Anatomy --- */}
       <h3 style={{ marginTop: 0 }}>Response anatomy</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
@@ -320,6 +314,6 @@ export default function ResponseDemo() {
           </div>
         ))}
       </div>
-    </section>
+    </>
   );
 }

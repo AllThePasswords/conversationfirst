@@ -1,12 +1,6 @@
 export default function CitationDemo() {
   return (
-    <section className="section" id="citations" aria-labelledby="citations-heading">
-      <h2 className="section-label" id="citations-heading">Citation system — every claim has a source</h2>
-
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: 560 }}>
-        Three citation formats. Inline superscripts for quick references. Block cards for key sources. Footer lists for complete attribution. Every citation is a clickable link.
-      </p>
-
+    <>
       <h3 style={{ marginTop: 0 }}>Full conversation example</h3>
 
       <div className="chat-bubble user">
@@ -80,6 +74,6 @@ export default function CitationDemo() {
           </div>
         ))}
       </div>
-    </section>
+    </>
   );
 }

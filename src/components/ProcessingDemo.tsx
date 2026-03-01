@@ -1,8 +1,6 @@
 export default function ProcessingDemo() {
   return (
-    <section className="section" id="processing" aria-labelledby="processing-heading">
-      <h2 className="section-label" id="processing-heading">Processing states — typography only, no spinners</h2>
-
+    <>
       <h3 style={{ marginTop: 0 }}>Minimal — cursor only</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         For fast responses under 2 seconds.
@@ -85,6 +83,6 @@ export default function ProcessingDemo() {
           <span style={{ display: 'inline-block', width: 2, height: 16, background: 'var(--accent)', animation: 'cursor-blink 1s ease-in-out infinite', verticalAlign: 'text-bottom', marginLeft: 2, borderRadius: 1 }}></span>
         </p>
       </div>
-    </section>
+    </>
   );
 }

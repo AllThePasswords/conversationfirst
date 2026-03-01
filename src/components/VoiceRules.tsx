@@ -10,9 +10,7 @@ const RULES = [
 
 export default function VoiceRules() {
   return (
-    <section className="section" id="voice" aria-labelledby="voice-heading">
-      <h2 className="section-label" id="voice-heading">Voice &amp; behaviour — 7 mandatory rules</h2>
-
+    <>
       <div style={{ display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-8)' }}>
         {RULES.map((r, i) => (
           <div key={i} style={{
@@ -69,6 +67,6 @@ export default function VoiceRules() {
           </p>
         </div>
       </div>
-    </section>
+    </>
   );
 }

@@ -1,8 +1,6 @@
 export default function ComponentShowcase() {
   return (
-    <section className="section" id="components" aria-labelledby="components-heading">
-      <h2 className="section-label" id="components-heading">App components — all tokens, no custom values</h2>
-
+    <>
       <h3 style={{ marginTop: 0 }}>Buttons</h3>
       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-6)', alignItems: 'center' }}>
         <button className="btn btn-primary">Primary</button>
@@ -121,6 +119,6 @@ export default function ComponentShowcase() {
       <div style={{ marginBottom: 'var(--space-6)' }}>
         <span className="toast">✓ Exported</span>
       </div>
-    </section>
+    </>
   );
 }

@@ -1,12 +1,6 @@
 export default function ListDemo() {
   return (
-    <section className="section" id="lists" aria-labelledby="lists-heading">
-      <h2 className="section-label" id="lists-heading">Lists — bullets, numbers &amp; nesting</h2>
-
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: 560 }}>
-        Lists structure information into scannable sequences. Bullets for unordered sets, numbers for sequences. Sub-bullets create hierarchy. Every level has distinct markers, muted chrome, and tight rhythm so the content — not the decoration — dominates.
-      </p>
-
+    <>
       {/* --- Simple lists --- */}
       <h3 style={{ marginTop: 0 }}>Unordered &amp; ordered lists</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
@@ -253,6 +247,6 @@ export default function ListDemo() {
           </p>
         </div>
       </div>
-    </section>
+    </>
   );
 }

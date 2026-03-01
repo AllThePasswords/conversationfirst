@@ -52,13 +52,7 @@ function NumberInput({ id, label, hint, placeholder, defaultValue }) {
 
 export default function InlineFormsDemo() {
   return (
-    <section className="section" id="inline-forms" aria-labelledby="inline-forms-heading">
-      <h2 className="section-label" id="inline-forms-heading">Inline forms &amp; actions — collecting input inside chat</h2>
-
-      <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: 560 }}>
-        When the assistant needs information or confirmation, it renders forms and action buttons directly inside the response bubble. Forms follow the same typographic rules as prose. Validation is immediate, inline, and non-blocking.
-      </p>
-
+    <>
       {/* --- Form inside a bubble --- */}
       <h3 style={{ marginTop: 0 }}>Form inside a response</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
@@ -312,6 +306,6 @@ export default function InlineFormsDemo() {
           </div>
         ))}
       </div>
-    </section>
+    </>
   );
 }

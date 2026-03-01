@@ -89,15 +89,9 @@ export interface PlatformService {
 }
 
 export async function fetchPlatformServices(): Promise<PlatformService[]> {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) throw new Error('Not authenticated')
-
-  const response = await supabase.functions.invoke('platform-services', {
-    headers: { Authorization: `Bearer ${session.access_token}` },
-  })
-
-  if (response.error) throw new Error(response.error.message)
-  return response.data?.services ?? []
+  // Platform services are built-in integrations configured server-side.
+  // Return empty until a platform-services endpoint is deployed.
+  return []
 }
 
 // ─── API key connections ────────────────────────
@@ -108,30 +102,23 @@ export async function createApiKeyConnection(params: {
   apiSecret?: string
   displayName?: string
 }): Promise<Connection> {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) throw new Error('Not authenticated')
+  const householdId = await fetchUserHouseholdId()
+  if (!householdId) throw new Error('No household found')
 
-  const response = await supabase.functions.invoke('add-api-key', {
-    headers: { Authorization: `Bearer ${session.access_token}` },
-    body: {
+  const { data, error } = await supabase
+    .from('connections')
+    .insert({
+      household_id: householdId,
+      provider_type: 'api' as const,
       provider_name: params.providerName,
-      api_key: params.apiKey,
-      api_secret: params.apiSecret || undefined,
-      display_name: params.displayName || undefined,
-    },
-  })
+      display_name: params.displayName || null,
+      status: 'active',
+      access_token: params.apiKey,
+      metadata: params.apiSecret ? { api_secret: params.apiSecret } : {},
+    })
+    .select()
+    .single()
 
-  if (response.error) {
-    let detail = response.error.message
-    try {
-      const ctx = (response.error as unknown as { context?: Response }).context
-      if (ctx) {
-        const body = await ctx.json()
-        if (body?.error) detail = body.error
-      }
-    } catch { /* use default message */ }
-    throw new Error(detail)
-  }
-
-  return response.data as Connection
+  if (error) throw error
+  return data as Connection
 }

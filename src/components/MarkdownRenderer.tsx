@@ -12,6 +12,24 @@ function escapeHtml(str) {
 
 marked.use({
   renderer: {
+    table(token) {
+      const ths = token.header.map((cell, i) => {
+        const content = this.parser.parseInline(cell.tokens);
+        const align = token.align[i];
+        const style = align ? ` style="text-align:${align}"` : '';
+        return `<th${style}>${content}</th>`;
+      }).join('');
+      const trs = token.rows.map(row => {
+        const tds = row.map((cell, i) => {
+          const content = this.parser.parseInline(cell.tokens);
+          const align = token.align[i];
+          const style = align ? ` style="text-align:${align}"` : '';
+          return `<td${style}>${content}</td>`;
+        }).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('\n');
+      return `<div class="table-scroll-wrapper"><table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`;
+    },
     code(token) {
       if (token.lang === 'cf-preview') {
         return `<div class="cf-preview">${token.text}</div>`;

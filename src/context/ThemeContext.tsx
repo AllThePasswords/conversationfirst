@@ -1,7 +1,62 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import THEME_PRESETS from '../themePresets';
 
-const ThemeContext = createContext(null);
+/* ── Colour math (shared with Configurator) ── */
+
+function hexToRgb(hex: string): [number, number, number] {
+  return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+}
+function rgbToHex(r: number, g: number, b: number) {
+  return '#' + [r, g, b].map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join('');
+}
+export function darken(hex: string, amt = 0.18) {
+  const [r, g, b] = hexToRgb(hex);
+  return rgbToHex(r * (1 - amt), g * (1 - amt), b * (1 - amt));
+}
+export function tint(hex: string, amt = 0.90) {
+  const [r, g, b] = hexToRgb(hex);
+  return rgbToHex(r + (255 - r) * amt, g + (255 - g) * amt, b + (255 - b) * amt);
+}
+export function darkAccent(hex: string) {
+  const [r, g, b] = hexToRgb(hex);
+  return rgbToHex(Math.min(255, r + 80), Math.min(255, g + 80), Math.min(255, b + 80));
+}
+export function darkBg(hex: string) {
+  const [r, g, b] = hexToRgb(hex);
+  return rgbToHex(Math.round(r * 0.08), Math.round(g * 0.08), Math.round(b * 0.08));
+}
+
+/* ── Types ── */
+
+export type ShapeMode = 'rounded' | 'pill' | 'square' | 'cut';
+
+export interface SavedTheme {
+  id: string;
+  name: string;
+  fonts: {
+    body: { name: string; family: string };
+    heading: { name: string; family: string | null };
+    mono: { name: string; family: string };
+  };
+  accent: { name: string; hex: string };
+  bg: { name: string; hex: string };
+  shape: ShapeMode;
+  createdAt: number;
+}
+
+interface ThemeContextValue {
+  activeThemeId: string | null;
+  savedThemes: SavedTheme[];
+  applyTheme: (theme: SavedTheme | null) => void;
+  saveTheme: (theme: SavedTheme) => void;
+  deleteTheme: (id: string) => void;
+}
+
+const STORAGE_KEY_THEMES = 'cf-saved-themes';
+const STORAGE_KEY_ACTIVE = 'cf-active-theme';
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+/* ── CSS variables to clear when resetting ── */
 
 const ALL_VARS = [
   '--font-body', '--font-heading', '--font-mono',
@@ -13,51 +68,138 @@ const ALL_VARS = [
   '--warning', '--warning-subtle',
   '--code-bg', '--cite-bg', '--cite-border',
   '--shadow-sm', '--shadow-md', '--shadow-lg',
+  '--radius-sm', '--radius-md', '--radius-lg',
 ];
 
-function applyPreset(preset, isDark) {
+/* ── Apply a theme to the document ── */
+
+function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
   const el = document.documentElement;
 
-  if (!preset || preset.id === 'default') {
-    ALL_VARS.forEach(v => el.style.removeProperty(v));
-    return;
+  // Reset everything
+  ALL_VARS.forEach(v => el.style.removeProperty(v));
+  el.removeAttribute('data-shape');
+
+  if (!theme) return;
+
+  // Fonts
+  if (theme.fonts.body?.family) el.style.setProperty('--font-body', theme.fonts.body.family);
+  const headingFamily = theme.fonts.heading?.family || theme.fonts.body?.family;
+  if (headingFamily) el.style.setProperty('--font-heading', headingFamily);
+  if (theme.fonts.mono?.family) el.style.setProperty('--font-mono', theme.fonts.mono.family);
+
+  // Colours
+  const ac = theme.accent?.hex;
+  const bg = theme.bg?.hex;
+  if (ac) {
+    if (isDark) {
+      const dkAc = darkAccent(ac);
+      el.style.setProperty('--accent', dkAc);
+      el.style.setProperty('--accent-hover', darkAccent(darken(ac, 0.1)));
+      el.style.setProperty('--accent-subtle', rgbToHex(...hexToRgb(dkAc).map(v => Math.round(v * 0.25)) as [number, number, number]));
+      el.style.setProperty('--cite-bg', rgbToHex(...hexToRgb(dkAc).map(v => Math.round(v * 0.25)) as [number, number, number]));
+      el.style.setProperty('--cite-border', dkAc);
+    } else {
+      el.style.setProperty('--accent', ac);
+      el.style.setProperty('--accent-hover', darken(ac));
+      el.style.setProperty('--accent-subtle', tint(ac));
+      el.style.setProperty('--cite-bg', tint(ac, 0.92));
+      el.style.setProperty('--cite-border', ac);
+    }
+  }
+  if (bg) {
+    if (isDark) {
+      el.style.setProperty('--bg', darkBg(bg));
+    } else {
+      el.style.setProperty('--bg', bg);
+    }
   }
 
-  const palette = isDark ? preset.dark : preset.light;
-  if (palette) {
-    Object.entries(palette).forEach(([k, v]) => el.style.setProperty(k, v));
-  }
-
-  if (preset.fonts) {
-    el.style.setProperty('--font-body', preset.fonts.body);
-    el.style.setProperty('--font-heading', preset.fonts.heading);
-    el.style.setProperty('--font-mono', preset.fonts.mono);
+  // Shape
+  switch (theme.shape) {
+    case 'pill':
+      el.style.setProperty('--radius-sm', '9999px');
+      el.style.setProperty('--radius-md', '9999px');
+      el.style.setProperty('--radius-lg', '9999px');
+      break;
+    case 'square':
+      el.style.setProperty('--radius-sm', '0');
+      el.style.setProperty('--radius-md', '0');
+      el.style.setProperty('--radius-lg', '0');
+      break;
+    case 'cut':
+      el.style.setProperty('--radius-sm', '0');
+      el.style.setProperty('--radius-md', '0');
+      el.style.setProperty('--radius-lg', '0');
+      el.setAttribute('data-shape', 'cut');
+      break;
+    // 'rounded' = default, no overrides needed
   }
 }
 
-export function ThemeProvider({ children }) {
-  const [activePresetId, setActivePresetId] = useState('default');
+/* ── Provider ── */
 
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [savedThemes, setSavedThemes] = useState<SavedTheme[]>(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_THEMES);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
+
+  const [activeThemeId, setActiveThemeId] = useState<string | null>(() => {
+    return localStorage.getItem(STORAGE_KEY_ACTIVE) || null;
+  });
+
+  // Persist themes to localStorage
   useEffect(() => {
-    const preset = THEME_PRESETS.find(p => p.id === activePresetId) || THEME_PRESETS[0];
+    localStorage.setItem(STORAGE_KEY_THEMES, JSON.stringify(savedThemes));
+  }, [savedThemes]);
+
+  // Persist active theme ID
+  useEffect(() => {
+    if (activeThemeId) {
+      localStorage.setItem(STORAGE_KEY_ACTIVE, activeThemeId);
+    } else {
+      localStorage.removeItem(STORAGE_KEY_ACTIVE);
+    }
+  }, [activeThemeId]);
+
+  // Apply active theme + respond to OS dark mode changes
+  useEffect(() => {
+    const theme = activeThemeId ? savedThemes.find(t => t.id === activeThemeId) || null : null;
     const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    applyPreset(preset, darkQuery.matches);
+    applyThemeToDOM(theme, darkQuery.matches);
 
-    const onChange = (e) => applyPreset(preset, e.matches);
+    const onChange = (e: MediaQueryListEvent) => applyThemeToDOM(theme, e.matches);
     darkQuery.addEventListener('change', onChange);
+    return () => darkQuery.removeEventListener('change', onChange);
+  }, [activeThemeId, savedThemes]);
 
-    return () => {
-      darkQuery.removeEventListener('change', onChange);
-    };
-  }, [activePresetId]);
+  const applyTheme = useCallback((theme: SavedTheme | null) => {
+    setActiveThemeId(theme?.id || null);
+  }, []);
 
-  const resetTheme = useCallback(() => {
-    setActivePresetId('default');
+  const saveTheme = useCallback((theme: SavedTheme) => {
+    setSavedThemes(prev => {
+      const existing = prev.findIndex(t => t.id === theme.id);
+      if (existing >= 0) {
+        const updated = [...prev];
+        updated[existing] = theme;
+        return updated;
+      }
+      return [...prev, theme];
+    });
+  }, []);
+
+  const deleteTheme = useCallback((id: string) => {
+    setSavedThemes(prev => prev.filter(t => t.id !== id));
+    setActiveThemeId(prev => prev === id ? null : prev);
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ activePresetId, setActivePresetId, resetTheme, presets: THEME_PRESETS }}>
+    <ThemeContext.Provider value={{ activeThemeId, savedThemes, applyTheme, saveTheme, deleteTheme }}>
       {children}
     </ThemeContext.Provider>
   );
