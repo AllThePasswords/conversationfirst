@@ -33,7 +33,7 @@ export default function OverviewPage() {
           <CitationDemo />
         </SectionAccordion>
 
-        <SectionAccordion id="responses" title="Responses" explainer="Anatomy, rhythm and legibility rules for every assistant message.">
+        <SectionAccordion id="responses" title="Responses" explainer="Anatomy, rhythm and legibility rules for every response message.">
           <ResponseDemo />
         </SectionAccordion>
 

@@ -2,13 +2,9 @@ export default function ListDemo() {
   return (
     <>
       {/* --- Simple lists --- */}
-      <h3 style={{ marginTop: 0 }}>Unordered &amp; ordered lists</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Simple lists with an introductory sentence. Markers are muted; items use padding, not margin.
-      </p>
+      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Unordered &amp; ordered lists</h3>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-3)' }}>
-
         <p>
           The API supports three authentication methods:
         </p>
@@ -22,8 +18,7 @@ export default function ListDemo() {
         </p>
       </div>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           To deploy the application:
         </p>
@@ -36,13 +31,9 @@ export default function ListDemo() {
       </div>
 
       {/* --- Paragraph-to-list flow --- */}
-      <h3>Paragraph-to-list transition</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        When a list follows a paragraph, it pulls up by 0.25em so the list reads as a continuation of the sentence — not a separate block.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Paragraph-to-list transition</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Connection pooling reduces latency by reusing open database connections. The pool should be configured based on your workload and expected concurrency.
         </p>
@@ -60,13 +51,9 @@ export default function ListDemo() {
       </div>
 
       {/* --- Nested lists --- */}
-      <h3>Nested lists — sub-bullets</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Each nesting level uses a distinct marker: disc &rarr; circle &rarr; square for bullets, decimal &rarr; lower-alpha &rarr; lower-roman for numbers. Deeper markers fade visually so content stays dominant.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Nested lists</h3>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-3)' }}>
-
         <p>
           The design system uses three spacing scales:
         </p>
@@ -92,8 +79,7 @@ export default function ListDemo() {
         </ul>
       </div>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Migration steps for the database upgrade:
         </p>
@@ -115,13 +101,9 @@ export default function ListDemo() {
       </div>
 
       {/* --- Rich list items --- */}
-      <h3>Rich list items — bold, code, inline formatting</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        List items can contain bold labels, inline code, and mixed formatting without breaking rhythm.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Rich list items</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Configuration options for the rate limiter:
         </p>
@@ -134,77 +116,41 @@ export default function ListDemo() {
       </div>
 
       {/* --- Spacing rules --- */}
-      <h3>List spacing rules</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
-        Six rules govern list layout. These are enforced in CSS and apply uniformly to all lists in chat bubbles.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>List rules</h3>
 
-      <div style={{ display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
-          {
-            title: 'Marker hierarchy',
-            desc: 'Level 1 uses disc, level 2 uses circle, level 3 uses square. Ordered lists follow decimal, lower-alpha, lower-roman. Each level is visually distinct without being loud.',
-            token: 'list-style: disc \u2192 circle \u2192 square',
-          },
-          {
-            title: 'Paragraph pull-up',
-            desc: 'When a list follows a paragraph, the list pulls up by 0.25em. This creates continuity \u2014 the list reads as an extension of the sentence, not a separate block.',
-            token: 'p + ul: margin-top: -0.25em',
-          },
-          {
-            title: 'Padding rhythm',
-            desc: 'List items use 4px vertical padding, not margin. First and last items strip their outer padding. No margin-collapse surprises.',
-            token: 'li: padding: 4px 0',
-          },
-          {
-            title: 'Nested indentation',
-            desc: 'Root lists indent 20px. Nested lists indent 16px. The reduction prevents excessive horizontal drift while maintaining clear hierarchy.',
-            token: 'padding-left: 20px \u2192 16px',
-          },
-          {
-            title: 'Marker muting',
-            desc: 'Root markers use --text-muted. Each nesting level fades further via color-mix, creating a receding visual hierarchy that draws the eye to content, not chrome.',
-            token: '::marker: muted \u2192 70% \u2192 50%',
-          },
-          {
-            title: 'Terminal margin',
-            desc: 'The last list in a bubble has zero bottom margin. No trailing whitespace before the bubble edge. Consistent with paragraph behavior.',
-            token: '*:last-child: margin-bottom: 0',
-          },
+          'Markers: disc → circle → square · Ordered: decimal → lower-alpha → lower-roman',
+          'List after paragraph pulls up 0.25em for continuity',
+          'Items use 4px vertical padding, not margin — first/last strip outer padding',
+          'Root indent 20px, nested 16px — prevents excessive drift',
+          'Markers use --text-muted, fading further at each nesting level',
+          'Last list in a bubble has zero bottom margin',
         ].map((rule, i) => (
           <div key={i} style={{
-            display: 'flex',
-            gap: 'var(--space-4)',
-            padding: 'var(--space-4) var(--space-5)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            gap: 'var(--space-2)',
+            alignItems: 'baseline',
           }}>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 600,
-              color: 'var(--accent)',
-              minWidth: 20,
-              paddingTop: 1,
-            }}>{i + 1}</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, marginBottom: 2 }}>{rule.title}</div>
-              <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 'var(--space-2)' }}>{rule.desc}</div>
-              <code style={{ fontSize: 'var(--text-xs)' }}>{rule.token}</code>
-            </div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--accent)', fontWeight: 600 }}>✓</span>
+            {rule}
           </div>
         ))}
       </div>
 
       {/* --- Do / Don't --- */}
-      <h3>Correct vs. incorrect list usage</h3>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Correct vs. incorrect</h3>
 
       <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-    
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', flex: 1 }}>
             <p>
               Three factors improved retention this quarter:
             </p>
@@ -222,13 +168,12 @@ export default function ListDemo() {
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--text-secondary)' }}>Why:</strong> Introductory sentence sets context. Items are parallel in structure. Each is one clear statement. Rhythm is tight and scannable.
+            Intro sentence sets context. Parallel structure. Tight rhythm.
           </p>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed', flex: 1 }}>
             <ul>
               <li>So basically the retention improved because contract values went up by about 31% or so because customers started using premium tiers more often than before.</li>
               <li>Also churn went down too.</li>
@@ -243,7 +188,7 @@ export default function ListDemo() {
             border: '1px solid color-mix(in srgb, var(--destructive) 15%, transparent)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--destructive)' }}>Why this fails:</strong> No introductory sentence. Items vary wildly in length. First item is a run-on. Unparallel structure. Reads as an afterthought.
+            No intro. Items vary wildly in length. Unparallel structure.
           </p>
         </div>
       </div>

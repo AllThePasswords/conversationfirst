@@ -31,7 +31,6 @@ export default function CitationDemo() {
                 <span className="cite-inline">1</span>
                 Q3 Financial Report
                 <span className="cite-footer-source">· Google Drive · Document</span>
-                <span className="cite-footer-arrow">↗</span>
               </a>
             </li>
             <li className="cite-footer-item">
@@ -39,7 +38,6 @@ export default function CitationDemo() {
                 <span className="cite-inline">2</span>
                 OpenView SaaS Benchmarks 2025
                 <span className="cite-footer-source">· openviewpartners.com · Web</span>
-                <span className="cite-footer-arrow">↗</span>
               </a>
             </li>
           </ul>
@@ -47,7 +45,7 @@ export default function CitationDemo() {
       </div>
 
       <h3>Citation rules</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 'var(--space-3)' }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
           "Every factual claim needs a citation",
           "Every citation must link to its source",
@@ -59,7 +57,7 @@ export default function CitationDemo() {
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
             color: 'var(--text-secondary)',
-            padding: 'var(--space-3) var(--space-4)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',

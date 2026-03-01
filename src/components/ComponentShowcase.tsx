@@ -1,8 +1,10 @@
+import { PlusIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+
 export default function ComponentShowcase() {
   return (
     <>
-      <h3 style={{ marginTop: 0 }}>Buttons</h3>
-      <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-6)', alignItems: 'center' }}>
+      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Buttons</h3>
+      <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-10)', alignItems: 'center' }}>
         <button className="btn btn-primary">Primary</button>
         <button className="btn btn-secondary">Secondary</button>
         <button className="btn btn-ghost">Ghost</button>
@@ -10,21 +12,23 @@ export default function ComponentShowcase() {
         <button className="btn btn-primary btn-sm">Small</button>
       </div>
 
-      <h3>Badges</h3>
-      <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Badges</h3>
+      <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginBottom: 'var(--space-10)' }}>
         <span className="badge badge-accent">Active</span>
         <span className="badge badge-warning">Pending</span>
         <span className="badge badge-destructive">Error</span>
         <span className="badge badge-muted">Draft</span>
       </div>
 
-      <h3>Alerts</h3>
-      <div className="alert alert-accent"><div><strong>Info:</strong> Press <kbd>⌘K</kbd> to open command palette.</div></div>
-      <div className="alert alert-warning"><div><strong>Warning:</strong> API key expires in 3 days.</div></div>
-      <div className="alert alert-destructive"><div><strong>Error:</strong> Deployment failed. Check build logs.</div></div>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Alerts</h3>
+      <div style={{ marginBottom: 'var(--space-10)' }}>
+        <div className="alert alert-accent"><div><strong>Info:</strong> Press <kbd>⌘K</kbd> to open command palette.</div></div>
+        <div className="alert alert-warning"><div><strong>Warning:</strong> API key expires in 3 days.</div></div>
+        <div className="alert alert-destructive"><div><strong>Error:</strong> Deployment failed. Check build logs.</div></div>
+      </div>
 
-      <h3>Cards</h3>
-      <div className="grid-3" style={{ marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Cards</h3>
+      <div className="grid-3" style={{ marginBottom: 'var(--space-10)' }}>
         <div className="card">
           <div className="card-title">Weekly Summary</div>
           <div className="card-desc">AI digest of team activity and blockers.</div>
@@ -42,8 +46,8 @@ export default function ComponentShowcase() {
         </div>
       </div>
 
-      <h3>Stats</h3>
-      <div className="grid-3" style={{ marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Stats</h3>
+      <div className="grid-3" style={{ marginBottom: 'var(--space-10)' }}>
         <div className="card stat">
           <div className="stat-value">2,847</div>
           <div className="stat-label">Messages</div>
@@ -58,8 +62,8 @@ export default function ComponentShowcase() {
         </div>
       </div>
 
-      <h3>Forms</h3>
-      <div style={{ maxWidth: 440, marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Forms</h3>
+      <div style={{ maxWidth: 440, marginBottom: 'var(--space-10)' }}>
         <div className="input-group">
           <label className="input-label" htmlFor="demo-project">Project name</label>
           <input id="demo-project" className="input" defaultValue="Conversation First" />
@@ -79,8 +83,8 @@ export default function ComponentShowcase() {
         </div>
       </div>
 
-      <h3>Navigation</h3>
-      <div className="grid-2" style={{ marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Navigation</h3>
+      <div className="grid-2" style={{ marginBottom: 'var(--space-10)' }}>
         <div className="sidebar">
           <div className="sidebar-title">Workspace</div>
           <button className="nav-item active">◆ Dashboard</button>
@@ -90,19 +94,20 @@ export default function ComponentShowcase() {
           <button className="nav-item">◇ Configuration</button>
           <button className="nav-item">◇ API keys</button>
         </div>
-        <div>
-          <h4>Empty state</h4>
-          <div className="card">
-            <div className="empty-state">
-              <p>No conversations yet.</p>
-              <button className="btn btn-primary">New conversation</button>
-            </div>
+        <div className="card">
+          <div className="empty-state">
+            <DocumentTextIcon width={32} height={32} style={{ color: 'var(--text-muted)', marginBottom: 'var(--space-2)' }} aria-hidden="true" />
+            <p style={{ margin: 0, color: 'var(--text-muted)' }}>No conversations yet.</p>
+            <button className="btn btn-primary" type="button" style={{ marginTop: 'var(--space-3)' }}>
+              <PlusIcon width={14} height={14} aria-hidden="true" style={{ marginRight: 4 }} />
+              New conversation
+            </button>
           </div>
         </div>
       </div>
 
-      <h3>Modal</h3>
-      <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Modal</h3>
+      <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: 'var(--space-10)' }}>
         <div style={{ background: 'color-mix(in srgb, var(--bg) 60%, transparent)', padding: 'var(--space-8)', display: 'flex', justifyContent: 'center' }}>
           <div className="modal" style={{ position: 'static' }}>
             <h2>Delete conversation?</h2>
@@ -115,8 +120,8 @@ export default function ComponentShowcase() {
         </div>
       </div>
 
-      <h3>Toast</h3>
-      <div style={{ marginBottom: 'var(--space-6)' }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Toast</h3>
+      <div>
         <span className="toast">✓ Exported</span>
       </div>
     </>

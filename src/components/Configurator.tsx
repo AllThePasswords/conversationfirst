@@ -1857,6 +1857,8 @@ export default function Configurator() {
         }}>{toast}</div>
       )}
 
+      <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em", marginTop: 0, marginBottom: "var(--space-6)" }}>Configure Your Spec</h2>
+
       <div style={{ marginBottom: "var(--space-4)" }}>
         <div style={{ display: "flex", gap: "3px", marginBottom: "var(--space-2)" }}>
           {STEPS.map((s, i) => (
@@ -1870,7 +1872,7 @@ export default function Configurator() {
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>Step {step + 1}/{STEPS.length} — {STEP_TITLES[cur]}</span>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{step === 0 ? "Step 1" : `Step ${step + 1}`}/{STEPS.length} — {STEP_TITLES[cur]}</span>
           <div style={{ display: "flex", gap: "var(--space-2)" }}>
             {step > 0 && <button onClick={() => setStep(step - 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "var(--space-1) var(--space-2)" }}>Back</button>}
             {canNext && <button onClick={() => setStep(step + 1)} style={{ fontSize: "var(--text-xs)", color: "var(--text)", background: "var(--border)", border: "none", borderRadius: "var(--radius-sm)", padding: "var(--space-2) var(--space-3)", cursor: "pointer", fontWeight: 600 }}>Next →</button>}
@@ -1880,10 +1882,10 @@ export default function Configurator() {
 
       {(cur === "body" || cur === "heading" || cur === "mono") && (
         <div className="cfg-fin" key={cur}>
-          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "none" }}>{STEP_DESCS[cur]}</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "var(--space-2)" }}>
             {FONT_OPTIONS[cur].map(f => (
-              <FontCard key={f.name} font={f} selected={choices[cur]} onClick={() => setChoices(p => ({ ...p, [cur]: f }))}
+              <FontCard key={f.name} font={f} selected={choices[cur]} onClick={() => { setChoices(p => ({ ...p, [cur]: f })); setTimeout(() => setStep(s => Math.min(s + 1, STEPS.length - 1)), 350); }}
                 previewText={cur === "heading" ? "Conversation First" : cur === "mono" ? "const config = { body, heading, mono };" : undefined}
                 previewStyle={cur === "heading" ? { fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "var(--text-base)" } : undefined}
               />
@@ -1892,7 +1894,7 @@ export default function Configurator() {
           <GoogleFontPicker
             category={cur}
             selected={choices[cur]}
-            onSelect={f => setChoices(p => ({ ...p, [cur]: f }))}
+            onSelect={f => { setChoices(p => ({ ...p, [cur]: f })); setTimeout(() => setStep(s => Math.min(s + 1, STEPS.length - 1)), 350); }}
             previewText={cur === "heading" ? "Conversation First" : cur === "mono" ? "const config = { body, heading, mono };" : undefined}
             previewStyle={cur === "heading" ? { fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "var(--text-base)" } : undefined}
           />
@@ -1901,7 +1903,7 @@ export default function Configurator() {
 
       {cur === "colors" && (
         <div className="cfg-fin" key="colors">
-          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "none" }}>{STEP_DESCS[cur]}</p>
           <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Accent colour</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
             {ACCENT_OPTIONS.map(c => (
@@ -1977,7 +1979,7 @@ export default function Configurator() {
 
       {cur === "shape" && (
         <div className="cfg-fin" key="shape">
-          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "none" }}>{STEP_DESCS[cur]}</p>
           <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Buttons, badges & inputs</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "var(--space-3)", marginBottom: "var(--space-6)" }}>
             {BTN_SHAPE_OPTIONS.map(s => {
@@ -2054,10 +2056,10 @@ export default function Configurator() {
           {/* Save & apply to site */}
           <div style={{ marginBottom: "var(--space-8)", padding: "var(--space-5) var(--space-6)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
             <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Save & apply theme</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
               Name your theme and apply it across the entire Conversation First site. Saved themes appear in the dropdown at the top.
             </p>
-            <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "stretch", maxWidth: "440px" }}>
+            <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "stretch" }}>
               <input
                 type="text"
                 className="input"
@@ -2069,7 +2071,7 @@ export default function Configurator() {
               <button
                 className="btn btn-primary"
                 disabled={!themeName.trim()}
-                style={{ opacity: themeName.trim() ? 1 : 0.5 }}
+                style={{ opacity: themeName.trim() ? 1 : 0.5, whiteSpace: "nowrap" }}
                 onClick={() => {
                   const theme: SavedTheme = {
                     id: crypto.randomUUID(),
@@ -2097,7 +2099,7 @@ export default function Configurator() {
 
           <div style={{ marginBottom: "var(--space-6)" }}>
             <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Use in your project</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
               Drop these into any project to apply your design system. The CLAUDE.md rules make every Claude Code conversation follow your spec automatically.
             </p>
             <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
@@ -2118,7 +2120,7 @@ export default function Configurator() {
 
           <div style={{ marginBottom: "var(--space-6)" }}>
             <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Full spec & test page</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "540px" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
               Complete specification with all rendering rules, plus an interactive test page with every component. Dark mode automatic.
             </p>
             <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
@@ -2129,6 +2131,15 @@ export default function Configurator() {
               <button onClick={() => { dl(generateTestPage(choices), "test-page.html", "text/html"); flash("Test page downloaded"); }}
                 className="btn btn-secondary">
                 Download test page (.html)
+              </button>
+              <button onClick={() => {
+                const html = generateTestPage(choices);
+                const blob = new Blob([html], { type: "text/html" });
+                const url = URL.createObjectURL(blob);
+                window.open(url, "_blank");
+              }}
+                className="btn btn-secondary">
+                View test page
               </button>
               <button onClick={() => { navigator.clipboard.writeText(generateSpec(choices)).then(() => flash("Copied")); }}
                 className="btn btn-secondary">

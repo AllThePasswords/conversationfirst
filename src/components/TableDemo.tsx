@@ -9,13 +9,9 @@ export default function TableDemo() {
   return (
     <>
       {/* --- Simple comparison table --- */}
-      <h3 style={{ marginTop: 0 }}>Simple comparison table</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Tables appear when structured data is clearer than prose. An introductory sentence sets context before the table.
-      </p>
+      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Simple comparison table</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Here's a comparison of the three frameworks you asked about:
         </p>
@@ -42,13 +38,9 @@ export default function TableDemo() {
       </div>
 
       {/* --- API parameter table --- */}
-      <h3>API parameter table</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        The most common table type in AI chat — documenting function parameters with inline <code>code</code> for names and types.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>API parameter table</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           The <code>createUser</code> endpoint accepts these parameters:
         </p>
@@ -96,13 +88,9 @@ export default function TableDemo() {
       </div>
 
       {/* --- Numeric data table --- */}
-      <h3>Numeric data table</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Numeric columns use right alignment, tabular numerals, and monospace font for scannable columns. Apply these styles to individual cells.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Numeric data table</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Here are the Q3 metrics across regions:
         </p>
@@ -147,13 +135,9 @@ export default function TableDemo() {
       </div>
 
       {/* --- Key-value table --- */}
-      <h3>Key-value table</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        A narrow two-column table for configuration summaries and system specs. Works well in both wide and narrow chat layouts.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Key-value table</h3>
 
-      <div className="chat-bubble" style={{ marginBottom: 'var(--space-6)' }}>
-
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
           Your current configuration:
         </p>
@@ -177,82 +161,42 @@ export default function TableDemo() {
       </div>
 
       {/* --- Styling rules --- */}
-      <h3>Table styling rules</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
-        Seven rules govern table layout inside chat bubbles. These are enforced in CSS and apply to all GFM markdown tables rendered through the chat.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Table rules</h3>
 
-      <div style={{ display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
-          {
-            title: 'Font choice',
-            desc: 'Table content uses DM Sans (--font-app) for structured data. Headers use JetBrains Mono for hierarchy. This separates tables from prose typographically.',
-            token: 'font-family: var(--font-app)',
-          },
-          {
-            title: 'Inset background',
-            desc: 'Tables use --bg background inside bubbles (which use --surface). This creates a subtle inset effect that visually groups the data without adding weight.',
-            token: 'background: var(--bg)',
-          },
-          {
-            title: 'Row separators',
-            desc: 'Bottom border on each row, no vertical lines. The last row drops its border. Cleaner than a full grid, less busy for conversational context.',
-            token: 'border-bottom: 1px solid var(--border)',
-          },
-          {
-            title: 'Compact padding',
-            desc: 'Cells use 8px vertical and 16px horizontal padding. Tighter than app tables since chat tables should feel lightweight, not like a spreadsheet.',
-            token: 'padding: var(--space-2) var(--space-4)',
-          },
-          {
-            title: 'Hover feedback',
-            desc: 'Rows highlight with --accent-subtle on hover, helping track the eye across wide rows. The transition uses --duration-fast for responsive feel.',
-            token: 'tr:hover td: var(--accent-subtle)',
-          },
-          {
-            title: 'Overflow handling',
-            desc: 'Tables that exceed bubble width scroll horizontally inside a rounded wrapper. The bubble itself never scrolls — only the table region.',
-            token: 'overflow-x: auto',
-          },
-          {
-            title: 'Prose rhythm',
-            desc: 'Tables follow the same spacing as code blocks: 0.5em top, 0.75em bottom. When preceded by a paragraph, top margin collapses. Last table in a bubble drops bottom margin.',
-            token: 'margin: 0.5em 0 0.75em',
-          },
+          'Table content uses --font-app · Headers use --font-mono',
+          'Tables use --bg background inside bubbles for subtle inset effect',
+          'Bottom border on each row, no vertical lines · Last row drops its border',
+          'Cells: 8px vertical, 16px horizontal padding',
+          'Rows highlight with --accent-subtle on hover',
+          'Tables that exceed width scroll horizontally inside a rounded wrapper',
+          'Spacing follows code blocks: 0.5em top, 0.75em bottom',
         ].map((rule, i) => (
           <div key={i} style={{
-            display: 'flex',
-            gap: 'var(--space-4)',
-            padding: 'var(--space-4) var(--space-5)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            gap: 'var(--space-2)',
+            alignItems: 'baseline',
           }}>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 600,
-              color: 'var(--accent)',
-              minWidth: 20,
-              paddingTop: 1,
-            }}>{i + 1}</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, marginBottom: 2 }}>{rule.title}</div>
-              <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 'var(--space-2)' }}>{rule.desc}</div>
-              <code style={{ fontSize: 'var(--text-xs)' }}>{rule.token}</code>
-            </div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--accent)', fontWeight: 600 }}>✓</span>
+            {rule}
           </div>
         ))}
       </div>
 
       {/* --- Correct vs. incorrect --- */}
-      <h3>Correct vs. incorrect table usage</h3>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Correct vs. incorrect</h3>
 
       <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
-    
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', flex: 1 }}>
             <p>
               The three plans differ mainly in storage and support:
             </p>
@@ -277,13 +221,12 @@ export default function TableDemo() {
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--text-secondary)' }}>Why:</strong> Introductory sentence explains what varies. Columns are consistent types. Data is scannable and concise. Table adds clarity over prose.
+            Intro explains what varies. Consistent column types. Scannable.
           </p>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
-
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed', flex: 1 }}>
             <div className="table-scroll-wrapper">
               <table>
                 <thead>
@@ -305,7 +248,7 @@ export default function TableDemo() {
             border: '1px solid color-mix(in srgb, var(--destructive) 15%, transparent)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--destructive)' }}>Why this fails:</strong> No introductory sentence. Columns are vague ("Info", "Details"). Cell content varies wildly — one is prose, another is terse. First column mixes naming styles. A list would serve this content better.
+            No intro. Vague columns. Cell content varies wildly.
           </p>
         </div>
       </div>

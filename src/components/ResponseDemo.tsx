@@ -2,10 +2,7 @@ export default function ResponseDemo() {
   return (
     <>
       {/* --- Anatomy --- */}
-      <h3 style={{ marginTop: 0 }}>Response anatomy</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Every response bubble has two regions: body and sources.
-      </p>
+      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Response anatomy</h3>
 
       <div className="chat-bubble" style={{ position: 'relative' }}>
         <p>
@@ -31,7 +28,6 @@ export default function ResponseDemo() {
                 <span className="cite-inline">1</span>
                 Q3 Financial Report
                 <span className="cite-footer-source">· Google Drive</span>
-                <span className="cite-footer-arrow">↗</span>
               </a>
             </li>
             <li className="cite-footer-item">
@@ -39,44 +35,38 @@ export default function ResponseDemo() {
                 <span className="cite-inline">2</span>
                 OpenView SaaS Benchmarks 2025
                 <span className="cite-footer-source">· Web</span>
-                <span className="cite-footer-arrow">↗</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-        gap: 'var(--space-3)',
-        marginTop: 'var(--space-4)',
-        marginBottom: 'var(--space-8)',
-      }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)', marginTop: 'var(--space-4)', marginBottom: 'var(--space-10)' }}>
         {[
-          { label: 'Body', desc: 'Prose, lists, code, headings. All subject to rhythm rules.' },
-          { label: 'Sources', desc: 'Footer citations. Separated by a top border. Clickable rows.' },
+          { label: 'Body', desc: 'Prose, lists, code, headings — all subject to rhythm rules' },
+          { label: 'Sources', desc: 'Footer citations separated by a top border — clickable rows' },
         ].map((item, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
-            padding: 'var(--space-3) var(--space-4)',
+            color: 'var(--text-secondary)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            gap: 'var(--space-2)',
+            alignItems: 'baseline',
           }}>
-            <div style={{ fontWeight: 700, marginBottom: 2 }}>{item.label}</div>
-            <div style={{ color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</div>
+            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{item.label}</span>
+            {item.desc}
           </div>
         ))}
       </div>
 
       {/* --- Rich content --- */}
-      <h3>Rich response — headings, code, lists</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        Responses can contain any markdown element. The typographic rules apply uniformly.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Rich response — headings, code, lists</h3>
 
-      <div className="chat-bubble">
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <h3 style={{ marginTop: 0 }}>Database connection pooling</h3>
         <p>
           Connection pools reuse open connections instead of creating new ones for each query. This reduces latency and prevents exhausting database limits.
@@ -115,81 +105,41 @@ export default function ResponseDemo() {
       </div>
 
       {/* --- Typography rules --- */}
-      <h3>Typography &amp; legibility rules</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-4)' }}>
-        Response text follows strict typographic rules for readability. These are enforced in CSS and cannot be overridden per-response.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Typography rules</h3>
 
-      <div style={{ display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
-          {
-            title: 'Line length',
-            desc: 'The chat container and bubble padding constrain line length. No additional max-width on paragraphs — content fills the available width.',
-            token: 'no max-width on prose',
-          },
-          {
-            title: 'Line height',
-            desc: 'Body text uses 1.5× line height. Headings use 1.3×. UI labels use 1.4×. Tight leading keeps lines close enough to read as a unit.',
-            token: '--line-height-prose: 1.5',
-          },
-          {
-            title: 'Widow control',
-            desc: 'text-wrap: pretty minimises short last lines and reduces rag. Applied to all prose elements. Headings use text-wrap: balance for even line lengths.',
-            token: 'text-wrap: pretty',
-          },
-          {
-            title: 'Paragraph spacing',
-            desc: 'Paragraphs use 0.75em bottom margin — three-quarter line of whitespace. Enough to separate ideas, tight enough to maintain flow. The last paragraph in a bubble has no bottom margin.',
-            token: 'margin: 0 0 0.75em',
-          },
-          {
-            title: 'Text wrap',
-            desc: 'text-wrap: pretty enables browser-level line balancing. It avoids short last lines and reduces rag. Applied to all prose elements.',
-            token: 'text-wrap: pretty',
-          },
-          {
-            title: 'Heading proximity',
-            desc: 'Headings use tighter spacing below (8px) than above (1.25em+). This groups headings with their content rather than the previous section.',
-            token: 'h + p: margin-top: var(--space-2)',
-          },
-          {
-            title: 'List rhythm',
-            desc: 'List items use 4px vertical padding. No bottom margin between items — padding alone creates rhythm. Paragraphs before lists pull up by 0.25em so the list reads as a continuation.',
-            token: 'li: padding 4px 0; p + ul: margin-top -0.25em',
-          },
+          'No max-width on paragraphs — content fills available width',
+          'Body line-height: 1.5 · Headings: 1.3 · UI labels: 1.4',
+          'text-wrap: pretty on prose, balance on headings',
+          'Paragraph spacing: 0.75em bottom margin, last paragraph 0',
+          'Headings bind to following content — tighter below than above',
+          'List items use 4px padding, not margin — pull up 0.25em after paragraphs',
         ].map((rule, i) => (
           <div key={i} style={{
-            display: 'flex',
-            gap: 'var(--space-4)',
-            padding: 'var(--space-4) var(--space-5)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
+            display: 'flex',
+            gap: 'var(--space-2)',
+            alignItems: 'baseline',
           }}>
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-sm)',
-              fontWeight: 600,
-              color: 'var(--accent)',
-              minWidth: 20,
-              paddingTop: 1,
-            }}>{i + 1}</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, marginBottom: 2 }}>{rule.title}</div>
-              <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 'var(--space-2)' }}>{rule.desc}</div>
-              <code style={{ fontSize: 'var(--text-xs)' }}>{rule.token}</code>
-            </div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--accent)', fontWeight: 600 }}>✓</span>
+            {rule}
           </div>
         ))}
       </div>
 
       {/* --- Do / Don't --- */}
-      <h3>Typographic quality — correct vs. incorrect</h3>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Correct vs. incorrect</h3>
 
-      <div className="grid-2" style={{ gap: 'var(--space-4)' }}>
-        <div>
+      <div className="grid-2" style={{ gap: 'var(--space-4)', marginBottom: 'var(--space-10)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Correct</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', flex: 1 }}>
             <p>
               The deployment failed because the health check endpoint returns 503 during cold starts. The container needs 4.2 seconds to initialise, but the load balancer timeout is set to 3 seconds.
             </p>
@@ -205,12 +155,12 @@ export default function ResponseDemo() {
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--text-secondary)' }}>Why:</strong> Lines stay within measure. Two clear paragraphs. No orphans. Natural reading rhythm.
+            Two clear paragraphs. No orphans. Natural reading rhythm.
           </p>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h4 style={{ marginTop: 0 }}>Incorrect</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
+          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed', flex: 1 }}>
             <p style={{ marginBottom: 0, maxWidth: 'none' }}>
               The deployment failed because the health check endpoint returns 503 during cold starts because the container needs 4.2 seconds to initialise but the load balancer timeout is set to 3 seconds so you should increase the health check grace period to 10 seconds in your task definition which gives the container time to warm up before traffic arrives and then the health checks will pass and the deployment will succeed and your users will not see any downtime during deployments anymore.
             </p>
@@ -223,16 +173,13 @@ export default function ResponseDemo() {
             border: '1px solid color-mix(in srgb, var(--destructive) 15%, transparent)',
             borderRadius: 'var(--radius-md)',
           }}>
-            <strong style={{ color: 'var(--destructive)' }}>Why this fails:</strong> Single run-on paragraph. Exceeds measure. No structure. Eye loses its place. Fatiguing to read.
+            Single run-on paragraph. No structure. Eye loses its place.
           </p>
         </div>
       </div>
 
       {/* --- User bubble rules --- */}
-      <h3>User messages</h3>
-      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        User messages are right-aligned, use the page background colour, and cap at 85% width. Text is displayed as plain text by default, but pasted content may contain markdown formatting.
-      </p>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>User messages</h3>
 
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <div className="chat-bubble user">
@@ -240,23 +187,19 @@ export default function ResponseDemo() {
         </div>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: 'var(--space-3)',
-      }}>
+      <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
           'Right-aligned, max-width 85%',
           'Background uses page colour (--bg)',
           'Plain text default — pasted markdown preserved',
-          'Same padding and border-radius as assistant',
+          'Same padding and border-radius as response bubbles',
           'Images render inline above text',
           'No citations or footers',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
             color: 'var(--text-secondary)',
-            padding: 'var(--space-3) var(--space-4)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
@@ -271,12 +214,8 @@ export default function ResponseDemo() {
       </div>
 
       {/* --- Response rules summary --- */}
-      <h3>Response rules</h3>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: 'var(--space-3)',
-      }}>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Response rules</h3>
+      <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
           'Content fills bubble width — no inner max-width',
           'Line height: 1.5 for body, 1.3 for headings',
@@ -285,7 +224,7 @@ export default function ResponseDemo() {
           'Code blocks use full available width',
           'Headings bind to following content, not preceding',
           'Lists pull up 0.25em when following a paragraph',
-          'List items use 4px padding, not margin — no stacking',
+          'List items use 4px padding, not margin',
           'Last list/blockquote in bubble drops bottom margin',
           'Code blocks tighten to 0 top margin after paragraphs',
           'No horizontal scrolling — code blocks scroll independently',
@@ -293,7 +232,7 @@ export default function ResponseDemo() {
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
             color: 'var(--text-secondary)',
-            padding: 'var(--space-3) var(--space-4)',
+            padding: 'var(--space-2) var(--space-4)',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',

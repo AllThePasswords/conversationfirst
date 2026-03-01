@@ -3,10 +3,9 @@ export default function ProcessingDemo() {
     <>
       <h3 style={{ marginTop: 0 }}>Minimal — cursor only</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
-        For fast responses under 2 seconds.
+        Fast responses under 2 seconds.
       </p>
-      <div className="chat-bubble">
-
+      <div className="chat-bubble" style={{ padding: 'var(--space-4) var(--space-5)' }}>
         <div className="processing processing-minimal">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -18,8 +17,7 @@ export default function ProcessingDemo() {
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Typical responses. Monospace status with animated dots.
       </p>
-      <div className="chat-bubble">
-
+      <div className="chat-bubble" style={{ padding: 'var(--space-4) var(--space-5)' }}>
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -32,8 +30,7 @@ export default function ProcessingDemo() {
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Complex queries. Shows what the system is doing.
       </p>
-      <div className="chat-bubble">
-
+      <div className="chat-bubble" style={{ padding: 'var(--space-4) var(--space-5)' }}>
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -52,8 +49,7 @@ export default function ProcessingDemo() {
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Long responses. Shows the shape of incoming content.
       </p>
-      <div className="chat-bubble">
-
+      <div className="chat-bubble" style={{ padding: 'var(--space-4) var(--space-5)' }}>
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
@@ -76,8 +72,7 @@ export default function ProcessingDemo() {
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Text streaming in, model still generating.
       </p>
-      <div className="chat-bubble">
-
+      <div className="chat-bubble" style={{ padding: 'var(--space-4) var(--space-5)' }}>
         <p>
           Revenue grew 18% quarter-over-quarter, reaching $4.2M<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="Q3 Financial Report">1</a>. This outpaces the industry median
           <span style={{ display: 'inline-block', width: 2, height: 16, background: 'var(--accent)', animation: 'cursor-blink 1s ease-in-out infinite', verticalAlign: 'text-bottom', marginLeft: 2, borderRadius: 1 }}></span>

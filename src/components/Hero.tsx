@@ -12,18 +12,15 @@ export default function Hero() {
       <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'var(--text-3xl)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: 'var(--space-4)', marginTop: 0 }}>
         Conversation First
       </h1>
-      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', maxWidth: 560, lineHeight: 1.5, marginBottom: 'var(--space-6)' }}>
+      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', lineHeight: 1.5, marginBottom: 'var(--space-6)' }}>
         The AI is a computer. Not a person, not an assistant, not a helper. A computer with deep capabilities behind an elegant conversational interface.
       </p>
-      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', maxWidth: 560, marginBottom: 'var(--space-8)' }}>
+      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', marginBottom: 'var(--space-8)' }}>
         Three typeface decisions. Everything else is fixed. Voice rules, design tokens, citation system, processing states, and a complete component library. WCAG 2.1 AA compliant.
       </p>
       <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
         <a href="#/chat?new" className="btn btn-primary" style={{ textDecoration: 'none' }}>
           Try the chat
-        </a>
-        <a href="#configurator" className="btn btn-secondary" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'configurator')}>
-          Configure your spec
         </a>
         <a href="#voice" className="btn btn-ghost" style={{ textDecoration: 'none' }} onClick={(e) => scrollTo(e, 'voice')}>
           Read the rules

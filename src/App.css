@@ -201,6 +201,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 /* ===== Section Accordion ===== */
 .section-accordion {
   border-bottom: 1px solid var(--border);
+  margin-top: var(--space-6);
 }
 .section-accordion-header {
   margin: 0;
@@ -213,7 +214,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: var(--space-5) 0;
+  padding: var(--space-8) 0;
   background: none;
   border: none;
   cursor: pointer;
@@ -235,9 +236,9 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 }
 .section-accordion-title {
   font-family: var(--font-heading);
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: var(--line-height-tight);
 }
 .section-accordion-explainer {
@@ -252,7 +253,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   flex-shrink: 0;
   color: var(--text-muted);
   transition: transform var(--duration-base) var(--ease-out);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
 }
 .section-accordion[data-open="true"] .section-accordion-chevron {
   transform: rotate(90deg);
@@ -269,7 +270,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   overflow: hidden;
 }
 .section-accordion[data-open="true"] .section-accordion-inner {
-  padding-bottom: var(--space-8);
+  padding-bottom: var(--space-12);
 }
 
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
