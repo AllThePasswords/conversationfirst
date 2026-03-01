@@ -184,6 +184,133 @@ Five tiers, all typography-based:
 - Status: `--font-mono`, `--text-sm`, `--text-muted`
 - No spinners. No bouncing dots. Typography only.
 
+## Chat input
+
+The chat input is the primary interaction surface. Every element uses design system tokens. No inline SVGs — Heroicons only.
+
+### Anatomy
+
+```
+┌─────────────────────────────────────────────────────┐
+│  [+]  │  textarea (auto-grows)           │  [🎤] [↑] │
+│       │  ┌──────────────────────────────┐ │           │
+│       │  │ attachment thumbnails (if any)│ │           │
+│       │  └──────────────────────────────┘ │           │
+└─────────────────────────────────────────────────────┘
+```
+
+Three icon buttons sit inside the input container:
+- **Attach** (left) — `PlusIcon` 24/outline, `--text-muted`, 44×44px
+- **Mic** (right) — `MicrophoneIcon` 24/outline, `--text-muted`, 44×44px
+- **Send** (right) — `ArrowUpIcon` 24/outline, white on `--accent`, 44×44px
+
+All three use the same base class `chat-icon-btn` (44px square, `--radius-md`, centred flex, `focus-visible` ring). Send adds `chat-send-btn` for the filled accent background.
+
+### Attach button & menu
+
+The attach button is a `PlusIcon` that **rotates 45° to become a close ✕** when the attachment menu is open. The rotation uses `transform: rotate(45deg)` with `--duration-base` and `--ease-spring`.
+
+The attachment menu animates **up from the button's position**:
+- Origin: bottom-left, aligned with the + button
+- Enter: `translateY(8px) → translateY(0)`, `opacity 0 → 1`, `--duration-base`, `--ease-out`
+- Exit: reverse with `--duration-fast`
+- Contains: Camera, Photo Library, Document (each row is a ghost button with a Heroicon + label)
+
+```html
+<div class="chat-attach-menu">
+  <button class="chat-attach-menu-item">
+    <CameraIcon /> Take photo
+  </button>
+  <button class="chat-attach-menu-item">
+    <PhotoIcon /> Photo library
+  </button>
+  <button class="chat-attach-menu-item">
+    <DocumentTextIcon /> Document
+  </button>
+</div>
+```
+
+Menu items: `--font-body`, `--text-sm`, `--space-3` padding, full-width, left-aligned. Hover: `--accent-subtle` background.
+
+### Attachment thumbnails
+
+When files are staged before sending, they appear as a horizontal strip above the textarea inside the input container.
+
+- Each thumbnail: 56×56px, `--radius-md`, `object-fit: cover`, `1px solid --border`
+- Remove button: 18px circle, top-right, `--text` background, `--bg` colour, appears on hover with `opacity 0 → 1`
+- Strip scrolls horizontally if more than ~5 images
+- Thumbnails use `role="list"` and each item `role="listitem"` for accessibility
+
+### Drag and drop
+
+Two layers of drag-and-drop:
+
+1. **Input-level** — dragging over the input container highlights it: `border-color: --accent`, `background: --accent-subtle`
+2. **Page-level** — dragging anywhere on the chat page shows a full-page overlay:
+   - `--accent-subtle` at 90% opacity, `2px dashed --accent` border
+   - Mic icon drops in with bounce animation (`--ease-spring`)
+   - "Drop it" label in `--font-mono`, `--text-sm`, `--accent`
+   - On successful drop: brief `--accent` flash (0.15 → 0 opacity over 500ms)
+
+### Voice recording
+
+Tapping the mic button starts speech recognition. The input transforms to show a **waveform visualisation**.
+
+#### Waveform behaviour
+
+- 5 vertical bars centred in a row, each 3px wide, `--accent` fill, `--radius-full` caps
+- Bars animate at staggered intervals (`0s, 0.15s, 0.3s, 0.45s, 0.6s`)
+- Each bar oscillates between 4px and 24px height using `--ease-spring`
+- Animation: `@keyframes voice-bar` — `0% { height: 4px }`, `50% { height: 24px }`, `100% { height: 4px }`
+- Duration: `1.2s infinite` per bar
+
+The waveform replaces the textarea content area while recording. No transcription preview is shown — just the elegant waveform.
+
+#### Mic button active state
+
+- Icon colour: `--accent`
+- Subtle scale pulse: `1.0 → 1.08 → 1.0` over `2s infinite`
+- No ripple rings — the waveform is the visual indicator
+
+#### Auto-send on stop
+
+When recording stops (user taps mic again):
+1. Waveform fades out (`opacity 1 → 0`, `--duration-fast`)
+2. Speech is transcribed and added directly to the prompt
+3. The message sends automatically — no review step
+4. Send button pulses briefly to confirm dispatch
+
+### Send button
+
+- Default: `--accent` background, white `ArrowUpIcon`
+- Disabled: `opacity: 0.4`, `cursor: not-allowed`
+- Hover: `--accent-hover` background
+- Active send: brief scale pulse `1.0 → 0.95 → 1.0`
+- Focus: `2px solid --accent`, `outline-offset: 2px`
+
+### Keyboard
+
+- `Enter` sends the message
+- `Shift+Enter` inserts a newline
+- `Escape` closes the attachment menu (if open)
+
+### Token compliance
+
+Every value in the chat input must come from the token system:
+
+| Property | Token |
+|---|---|
+| Font | `--font-body` (textarea), `--font-mono` (status) |
+| Text size | `--text-base` (input), `--text-sm` (menu items) |
+| Spacing | `--space-2` (inner padding), `--space-3` (button padding) |
+| Radius | `--radius-lg` (container), `--radius-md` (buttons, thumbnails) |
+| Colour | `--surface` (bg), `--border` (stroke), `--accent` (focus, send) |
+| Shadow | `--shadow-lg` (container) |
+| Motion | `--duration-fast`, `--duration-base`, `--ease-out`, `--ease-spring` |
+| Icons | Heroicons 24/outline only — no inline SVGs |
+
+---
+
 ## Components
 
 All components use the token system. None introduces its own typeface, colour, or spacing.

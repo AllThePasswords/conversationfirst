@@ -8,7 +8,7 @@ let _gfPromise: Promise<string[]> | null = null;
 function fetchGoogleFonts(): Promise<string[]> {
   if (_gfCache) return Promise.resolve(_gfCache);
   if (_gfPromise) return _gfPromise;
-  _gfPromise = fetch("https://fonts.google.com/metadata/fonts")
+  _gfPromise = fetch("/api/gfonts")
     .then(r => r.json())
     .then(data => {
       const list = (data.familyMetadataList || []) as { family: string; popularity: number }[];
@@ -110,7 +110,7 @@ const STEP_DESCS = {
 };
 
 function resolve(c) { return c.heading?.family ? c.heading : c.body; }
-function btnShapeName(c) { return BTN_shapeLabel(c); }
+function btnShapeName(c) { return BTN_SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'; }
 function ctrShapeName(c) { return CTR_SHAPE_OPTIONS.find(s => s.id === (c.containerShape ?? c.shape))?.name || 'Rounded'; }
 function shapeLabel(c) { const b = btnShapeName(c), ct = ctrShapeName(c); return b === ct ? b : `${b} buttons, ${ct} containers`; }
 function fontsUrl(c) {

@@ -49,14 +49,15 @@
   border-radius: var(--radius-lg);
   padding: var(--space-2);
   box-shadow: var(--shadow-lg);
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
 }
 .chat-input-inner:focus-within {
   border-color: var(--accent);
   box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
-/* Input body wrapper — holds thumbnails + textarea */
+/* Input body wrapper — holds thumbnails + textarea/waveform */
 .chat-input-body {
   flex: 1;
   display: flex;
@@ -76,14 +77,9 @@
   resize: none;
   min-height: 44px;
   max-height: 200px;
-  line-height: 1.5;
+  line-height: var(--line-height-prose);
   overflow-y: auto;
-  transition: max-height 0.2s ease;
-}
-
-/* When dictating, allow up to ~8 lines before scrolling */
-.chat-input-field.dictating {
-  max-height: 320px;
+  transition: max-height var(--duration-base) var(--ease-out);
 }
 
 .chat-input-field:focus {
@@ -94,8 +90,8 @@
   color: var(--text-muted);
 }
 
-/* Attach button (+ icon) */
-.chat-attach-btn {
+/* ===== Shared Icon Button Base ===== */
+.chat-icon-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,22 +102,93 @@
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  transition: color 0.15s;
   flex-shrink: 0;
+  transition: color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
 }
-.chat-attach-btn:hover {
-  color: var(--accent);
+.chat-icon-btn:hover {
+  color: var(--text);
 }
-.chat-attach-btn:focus-visible {
+.chat-icon-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-.chat-attach-btn:disabled {
+.chat-icon-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Thumbnail strip */
+/* ===== Attach Button & Menu ===== */
+.chat-attach-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.chat-attach-btn svg {
+  transition: transform var(--duration-base) var(--ease-spring);
+}
+.chat-attach-btn.active svg {
+  transform: rotate(45deg);
+}
+.chat-attach-btn:hover {
+  color: var(--accent);
+}
+
+/* Attachment menu — animates up from button */
+.chat-attach-menu {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 0;
+  min-width: 180px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  animation: attach-menu-in var(--duration-base) var(--ease-out) both;
+  z-index: 10;
+}
+
+@keyframes attach-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-attach-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.chat-attach-menu-item:hover {
+  background: var(--accent-subtle);
+}
+.chat-attach-menu-item svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ===== Thumbnail Strip ===== */
 .chat-thumbnails {
   display: flex;
   gap: var(--space-2);
@@ -149,7 +216,7 @@
   right: 2px;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--text);
   color: var(--bg);
   border: none;
@@ -160,7 +227,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.12s;
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 .chat-thumb:hover .chat-thumb-remove {
   opacity: 1;
@@ -318,111 +385,65 @@
   padding: var(--space-1) var(--space-3);
 }
 
-/* Mic (speech-to-text) button */
+/* ===== Mic Button ===== */
 .chat-mic-btn {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
-  flex-shrink: 0;
 }
 .chat-mic-btn:hover {
   color: var(--text);
   transform: scale(1.08);
 }
-.chat-mic-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.chat-mic-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
 
-/* Active listening state — green with ripple waves */
+/* Active listening — accent colour + subtle pulse */
 .chat-mic-btn.listening {
   color: var(--accent);
-}
-.chat-mic-btn.listening svg {
-  animation: mic-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: mic-pulse 2s ease-in-out infinite;
 }
 
-/* Ripple rings that emanate from the mic when listening */
-.mic-ripple {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  opacity: 0;
-  pointer-events: none;
-  animation: mic-ripple-wave 1.6s ease-out infinite;
-}
-.mic-ripple:nth-child(2) {
-  animation-delay: 0.5s;
-}
-.mic-ripple:nth-child(3) {
-  animation-delay: 1s;
+@keyframes mic-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
-@keyframes mic-ripple-wave {
-  0% {
-    opacity: 0.5;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(2);
-  }
-}
-
-@keyframes mic-bounce {
-  0% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-.chat-send-btn {
+/* ===== Voice Waveform ===== */
+.chat-voice-waveform {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
+  gap: 4px;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+}
+
+.voice-bar {
+  width: 3px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: var(--radius-full);
+  animation: voice-bar 1.2s var(--ease-spring) infinite;
+}
+.voice-bar:nth-child(1) { animation-delay: 0s; }
+.voice-bar:nth-child(2) { animation-delay: 0.15s; }
+.voice-bar:nth-child(3) { animation-delay: 0.3s; }
+.voice-bar:nth-child(4) { animation-delay: 0.45s; }
+.voice-bar:nth-child(5) { animation-delay: 0.6s; }
+
+@keyframes voice-bar {
+  0%, 100% { height: 4px; }
+  50% { height: 24px; }
+}
+
+/* ===== Send Button ===== */
+.chat-send-btn {
   background: var(--accent);
   color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: background 0.15s;
-  flex-shrink: 0;
 }
-
 .chat-send-btn:hover {
   background: var(--accent-hover);
+  color: #fff;
 }
-
-.chat-send-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.chat-send-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.chat-send-btn:active {
+  transform: scale(0.95);
 }
 
 /* ===== Chat History (list view) ===== */
