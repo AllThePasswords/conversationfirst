@@ -4,6 +4,7 @@ import VoiceRules from './components/VoiceRules'
 import ProcessingDemo from './components/ProcessingDemo'
 import CitationDemo from './components/CitationDemo'
 import ResponseDemo from './components/ResponseDemo'
+import ListDemo from './components/ListDemo'
 import InlineFormsDemo from './components/InlineFormsDemo'
 import ComponentShowcase from './components/ComponentShowcase'
 import Configurator from './components/Configurator'
@@ -137,6 +138,7 @@ export default function App() {
         <ProcessingDemo />
         <CitationDemo />
         <ResponseDemo />
+        <ListDemo />
         <InlineFormsDemo />
         <ComponentShowcase />
         <Configurator />

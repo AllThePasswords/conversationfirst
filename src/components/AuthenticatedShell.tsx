@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { HouseholdCtx, useHouseholdProvider } from '../lib/useHousehold'
 import SideNav from './SideNav'
 import AppsHomepage from './AppsHomepage'
@@ -22,17 +21,7 @@ interface AuthenticatedShellProps {
 
 type AppView = 'apps' | 'chat' | 'vault' | 'overview' | 'lifeadmin' | 'fullypresent' | 'onpoint' | 'voicecritique' | 'spritemaker'
 
-const APP_LABELS: Record<string, string> = {
-  apps: 'ConversationFirst',
-  chat: 'Chat',
-  vault: 'Vault',
-  overview: 'Design System',
-  lifeadmin: 'LifeAdmin',
-  fullypresent: 'FullyPresent',
-  onpoint: 'OnPoint',
-  voicecritique: 'VoiceCritique',
-  spritemaker: 'SpriteMaker',
-}
+/* Side nav provides all navigation — no titlebar needed */
 
 function parseHashRoute(): AppView {
   const hash = window.location.hash
@@ -86,85 +75,63 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
     navigate(appId)
   }, [navigate])
 
-  const handleNavigateHome = useCallback(() => {
-    navigate('apps')
-  }, [navigate])
-
-  const showBackButton = currentView !== 'apps'
-
   return (
     <HouseholdCtx.Provider value={householdValue}>
       <div className="cf-shell">
-        <header className="cf-titlebar">
-          {showBackButton && (
-            <button
-              className="cf-titlebar-back"
-              onClick={handleNavigateHome}
-              aria-label="Back to home"
-            >
-              <ArrowLeftIcon aria-hidden="true" />
-            </button>
-          )}
-          <span className="cf-titlebar-title">
-            {APP_LABELS[currentView] || 'ConversationFirst'}
-          </span>
-        </header>
         <SideNav
           currentView={currentView}
           onNavigate={navigate}
           user={user}
         />
         <main className="cf-main">
-          <div className="cf-main-inner">
-            {currentView === 'overview' ? (
-              <PageTransition key="overview">
-                <OverviewPage />
-              </PageTransition>
-            ) : currentView === 'vault' ? (
-              <PageTransition key="vault">
-                <VaultPage householdId={householdId} />
-              </PageTransition>
-            ) : currentView === 'chat' ? (
-              <PageTransition key="chat">
-                <ChatPage
-                  conversations={conversations}
-                  activeId={activeId}
-                  setActiveId={setActiveId}
-                  createConversation={createConversation}
-                  updateTitle={updateTitle}
-                  deleteConversation={deleteConversation}
-                  isAuthenticated={true}
-                  useDB={useDB}
-                  user={user}
-                  session={session}
-                />
-              </PageTransition>
-            ) : currentView === 'lifeadmin' ? (
-              <PageTransition key="lifeadmin">
-                <LifeAdmin householdId={householdId} />
-              </PageTransition>
-            ) : currentView === 'fullypresent' ? (
-              <PageTransition key="fullypresent">
-                <FullyPresent householdId={householdId} />
-              </PageTransition>
-            ) : currentView === 'onpoint' ? (
-              <PageTransition key="onpoint">
-                <OnPoint householdId={householdId} />
-              </PageTransition>
-            ) : currentView === 'voicecritique' ? (
-              <PageTransition key="voicecritique">
-                <VoiceCritique householdId={householdId} />
-              </PageTransition>
-            ) : currentView === 'spritemaker' ? (
-              <PageTransition key="spritemaker">
-                <SpriteMaker householdId={householdId} />
-              </PageTransition>
-            ) : (
-              <PageTransition key="home" stagger>
-                <AppsHomepage onAppClick={handleAppClick} />
-              </PageTransition>
-            )}
-          </div>
+          {currentView === 'overview' ? (
+            <PageTransition key="overview">
+              <OverviewPage />
+            </PageTransition>
+          ) : currentView === 'vault' ? (
+            <PageTransition key="vault">
+              <VaultPage householdId={householdId} />
+            </PageTransition>
+          ) : currentView === 'chat' ? (
+            <PageTransition key="chat">
+              <ChatPage
+                conversations={conversations}
+                activeId={activeId}
+                setActiveId={setActiveId}
+                createConversation={createConversation}
+                updateTitle={updateTitle}
+                deleteConversation={deleteConversation}
+                isAuthenticated={true}
+                useDB={useDB}
+                user={user}
+                session={session}
+              />
+            </PageTransition>
+          ) : currentView === 'lifeadmin' ? (
+            <PageTransition key="lifeadmin">
+              <LifeAdmin householdId={householdId} />
+            </PageTransition>
+          ) : currentView === 'fullypresent' ? (
+            <PageTransition key="fullypresent">
+              <FullyPresent householdId={householdId} />
+            </PageTransition>
+          ) : currentView === 'onpoint' ? (
+            <PageTransition key="onpoint">
+              <OnPoint householdId={householdId} />
+            </PageTransition>
+          ) : currentView === 'voicecritique' ? (
+            <PageTransition key="voicecritique">
+              <VoiceCritique householdId={householdId} />
+            </PageTransition>
+          ) : currentView === 'spritemaker' ? (
+            <PageTransition key="spritemaker">
+              <SpriteMaker householdId={householdId} />
+            </PageTransition>
+          ) : (
+            <PageTransition key="home" stagger>
+              <AppsHomepage onAppClick={handleAppClick} />
+            </PageTransition>
+          )}
         </main>
       </div>
     </HouseholdCtx.Provider>

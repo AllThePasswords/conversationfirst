@@ -8,64 +8,17 @@
 .cf-shell {
   display: grid;
   grid-template-columns: 200px 1fr;
-  grid-template-rows: 40px 1fr;
+  grid-template-rows: 1fr;
   height: 100%;
   overflow: hidden;
   font-family: var(--font-app);
-}
-
-/* --- Title Bar --- */
-
-.cf-titlebar {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  height: 40px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  position: relative;
-}
-
-.cf-titlebar-back {
-  position: absolute;
-  left: var(--space-3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  color: var(--text-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color var(--duration-fast) var(--ease-out);
-}
-
-.cf-titlebar-back:hover {
-  color: var(--accent);
-}
-
-.cf-titlebar-back svg {
-  width: 16px;
-  height: 16px;
-}
-
-.cf-titlebar-title {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
 }
 
 /* --- Side Nav --- */
 
 .cf-sidenav {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
   width: 200px;
   background: var(--surface);
   border-right: 1px solid var(--border);
@@ -148,16 +101,12 @@
 
 .cf-main {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
   background: var(--bg);
-  overflow-y: auto;
-  padding: var(--space-8);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
-}
-
-.cf-main-inner {
-  max-width: 1080px;
-  margin: 0 auto;
 }
 
 /* --- Page Transitions --- */
@@ -175,6 +124,19 @@
 
 .page-transition {
   animation: page-enter var(--duration-slow) var(--ease-out) both;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-transition-stagger {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: var(--space-8);
 }
 
 .page-transition-stagger > * {
@@ -195,6 +157,14 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* --- Overview Page (Design System) --- */
+
+.overview-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 /* --- App Cards & Grid --- */
@@ -829,6 +799,10 @@
 /* --- Vault Page --- */
 
 .vault-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-8);
   max-width: 1080px;
   display: flex;
   flex-direction: column;
@@ -1096,6 +1070,18 @@
   margin: 0;
 }
 
+.cf-section-header {
+  margin-bottom: var(--space-6);
+}
+
+.cf-section-desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-base);
+  margin-top: var(--space-2);
+  max-width: 52ch;
+}
+
 /* --- Vault: Add service form --- */
 
 .vault-add-form-wrapper {
@@ -1219,12 +1205,12 @@
 @media (max-width: 768px) {
   .cf-shell {
     grid-template-columns: 1fr;
-    grid-template-rows: 40px 1fr 48px;
+    grid-template-rows: 1fr 48px;
   }
 
   .cf-sidenav {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     width: 100%;
     height: 48px;
     flex-direction: row;
@@ -1259,8 +1245,7 @@
 
   .cf-main {
     grid-column: 1;
-    grid-row: 2;
-    padding: var(--space-4);
+    grid-row: 1;
   }
 }
 
@@ -1635,6 +1620,10 @@
    LifeAdmin
 ═══════════════════════════════════════════════════════ */
 .la-container {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-8);
   max-width: 1080px;
 }
 
@@ -3207,10 +3196,14 @@
 .fp-presentations {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   max-width: 1080px;
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding: var(--space-8);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .fp-presentations-header {
@@ -3470,24 +3463,13 @@
 .fp-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  max-width: none;
-}
-
-/* When FullyPresent is in the shell, remove main padding/max-width */
-.cf-main:has(.fp-container) {
-  padding: 0;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
-}
-
-.cf-main:has(.fp-container) > .cf-main-inner {
   max-width: none;
-  height: 100%;
 }
 
-.cf-main:has(.fp-container) .page-transition {
-  height: 100%;
-}
+/* cf-main is now overflow:hidden with no padding — apps control their own scroll */
 
 /* Standalone window — no padding for FullyPresent */
 .cf-standalone-content:has(.fp-container) {
@@ -5003,9 +4985,14 @@
 .op-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-8);
   max-width: 1080px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ─── Loading state ──────────────────────────── */
@@ -5888,9 +5875,14 @@
 .vc-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-8);
   max-width: 1080px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ─── Loading ───────────────────────────────── */
@@ -6424,7 +6416,8 @@
 ═══════════════════════════════════════════════════════ */
 .sm-container {
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
 

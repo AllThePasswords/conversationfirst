@@ -85,6 +85,25 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 .chat-bubble li > ol {
   margin-top: var(--space-1);
   margin-bottom: 0;
+  padding-left: var(--space-4); /* 16px vs 20px root — tighter nesting */
+}
+
+/* List marker hierarchy — typographic convention for nesting depth */
+.chat-bubble ul { list-style-type: disc; }
+.chat-bubble ul ul { list-style-type: circle; }
+.chat-bubble ul ul ul { list-style-type: square; }
+.chat-bubble ol { list-style-type: decimal; }
+.chat-bubble ol ol { list-style-type: lower-alpha; }
+.chat-bubble ol ol ol { list-style-type: lower-roman; }
+
+/* Nested marker muting — deeper levels recede visually */
+.chat-bubble li > ul li::marker,
+.chat-bubble li > ol li::marker {
+  color: color-mix(in srgb, var(--text-muted) 70%, transparent);
+}
+.chat-bubble li > ul li > ul li::marker,
+.chat-bubble li > ol li > ol li::marker {
+  color: color-mix(in srgb, var(--text-muted) 50%, transparent);
 }
 
 /* Last list in a bubble drops bottom margin */
@@ -226,6 +245,10 @@ ul, ol { padding-left: var(--space-5); margin: 0 0 0.75em; }
 li { margin-bottom: var(--space-1); }
 li:last-child { margin-bottom: 0; }
 li::marker { color: var(--text-muted); }
+ul ul { list-style-type: circle; }
+ul ul ul { list-style-type: square; }
+ol ol { list-style-type: lower-alpha; }
+ol ol ol { list-style-type: lower-roman; }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 
 /* Chat bubbles */

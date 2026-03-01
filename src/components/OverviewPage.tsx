@@ -3,6 +3,7 @@ import VoiceRules from './VoiceRules'
 import ProcessingDemo from './ProcessingDemo'
 import CitationDemo from './CitationDemo'
 import ResponseDemo from './ResponseDemo'
+import ListDemo from './ListDemo'
 import InlineFormsDemo from './InlineFormsDemo'
 import ComponentShowcase from './ComponentShowcase'
 import Configurator from './Configurator'
@@ -19,6 +20,7 @@ export default function OverviewPage() {
         <ProcessingDemo />
         <CitationDemo />
         <ResponseDemo />
+        <ListDemo />
         <InlineFormsDemo />
         <ComponentShowcase />
         <Configurator />
