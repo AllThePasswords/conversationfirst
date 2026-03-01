@@ -236,8 +236,8 @@ export default function InlineFormsDemo() {
       <h3 style={{ fontSize: 'var(--text-lg)' }}>Form &amp; action rules</h3>
       <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
-          'Forms sit below a border separator inside the bubble',
-          'Inputs use page background (--bg), not bubble surface',
+          'Forms are centred on a --bg panel inside the bubble (max-width 400px)',
+          'Inputs use --surface background to pop against the recessed panel',
           'Labels use body font, semibold, text-sm',
           'Validation is immediate — no submit-then-error',
           'Error messages name the problem and the fix',

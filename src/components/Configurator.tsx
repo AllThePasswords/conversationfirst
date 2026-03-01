@@ -161,7 +161,7 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-full:9999px;
+  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-full:9999px;
   --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
@@ -223,7 +223,7 @@ th{text-align:left;font-weight:600;padding:var(--space-3);border-bottom:2px soli
 td{padding:var(--space-2) var(--space-3);border-bottom:1px solid var(--border)}
 tr:last-child td{border-bottom:none}
 .chat-bubble{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-3)}
-.chat-bubble.user{background:var(--bg);margin-left:var(--space-12)}
+.chat-bubble.user{background:color-mix(in srgb,var(--text) 6%,var(--bg));margin-left:var(--space-12)}
 .bubble-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;margin-bottom:var(--space-3)}
 .cite-inline{display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.625rem;font-weight:600;width:18px;height:18px;border-radius:var(--radius-full);background:var(--cite-bg);color:var(--cite-border);border:1px solid color-mix(in srgb,var(--cite-border) 50%,transparent);vertical-align:super;margin:0 1px;cursor:pointer;text-decoration:none;position:relative;top:-1px;transition:all 0.12s ease}
 .cite-inline:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -838,6 +838,7 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 **Mode: ${shapeLabel(c)}**
 
 **Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-sm` (4px), `--radius-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-sm` and `--radius-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-sm` and `--radius-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
+**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons — `--radius-input: 9999px`.' : 'Follows container radius — `--radius-input: var(--radius-lg)`.'}
 **Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
@@ -995,7 +996,7 @@ Every response bubble has three regions:
 
 ### 7.3 User bubbles
 
-- Background: \`--bg\` (page background, not surface)
+- Background: \`color-mix(in srgb, var(--text) 6%, var(--bg))\` — always filled with a subtle tint to distinguish from the page background
 - Right-aligned: \`margin-left: auto\`
 - Width: \`fit-content\`, max 85% of container
 - Plain text by default — pasted markdown is preserved
@@ -1169,19 +1170,21 @@ When the assistant needs information or confirmation, it renders forms and actio
 
 ### 11.2 Form structure
 
-Forms sit inside the assistant bubble, separated from prose by a 1px \`--border\` top:
+Forms sit inside the assistant bubble on a centred recessed panel:
 
 \`\`\`
 [Prose explanation — why the form is needed]
-─────────────────────────────────────
-[Form: labels, inputs, hints]
-[Actions: Submit / Cancel]
+
+    ┌──────── --bg panel (max-width 400px, centred) ────────┐
+    │  [Form: labels, inputs, hints]                        │
+    │  [Actions: Submit / Cancel — centred]                 │
+    └───────────────────────────────────────────────────────┘
 \`\`\`
 
 ### 11.3 Form rendering rules
 
-- Container: \`.chat-form\` — \`margin-top: var(--space-4)\`, \`padding-top: var(--space-4)\`, \`border-top: 1px solid var(--border)\`
-- Inputs: \`--bg\` background (page background, not bubble surface) — creates visual depth
+- Container: \`.chat-form\` — \`background: var(--bg)\`, \`border-radius: var(--radius-md)\`, \`max-width: 400px\`, centred with auto margins, \`padding: var(--space-5)\`
+- Inputs: \`--surface\` background (bubble surface) — pops against recessed \`--bg\` panel
 - Labels: \`--font-body\`, semibold, \`--text-sm\`
 - Hints: \`--text-xs\`, \`--text-muted\`, placed between label and input
 - Input groups: \`margin-bottom: var(--space-3)\`
@@ -1355,11 +1358,12 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Radius
 
-\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
+\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-input\`: ${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
 
 ## Shape: ${shapeLabel(c)}
 
 **Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill — radius-sm/md set to 9999px.' : c.shape === 'square' ? 'Square — radius-sm/md set to 0.' : 'Cut corners — clip-path polygon on buttons/inputs/badges.'}
+**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons (\`--radius-input: 9999px\`).' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
 **Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square — radius-lg set to 0.' : 'Cut corners — clip-path polygon on cards/modals/chat bubbles.'}
 ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
 
@@ -1468,11 +1472,12 @@ Import: \`${fontsUrl(c)}\`
 
 ## Radius
 
-${c.shape === 'pill' ? '9999px sm/md (pill buttons)' : c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / ${ctr === 'square' || ctr === 'cut' ? '0 lg' : '12px lg'} / 9999px full
+${c.shape === 'pill' ? '9999px sm/md (pill buttons)' : c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / ${ctr === 'square' || ctr === 'cut' ? '0 lg' : '12px lg'} / ${c.shape === 'pill' ? '9999px input (pill)' : ctr === 'square' || ctr === 'cut' ? '0 input' : '12px input'} / 9999px full
 
 ## Shape: ${shapeLabel(c)}
 
 Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded.' : c.shape === 'square' ? 'Square — sharp edges.' : c.shape === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
+Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons.' : 'Follows container radius.'}
 Containers: ${ctr === 'square' ? 'Square — sharp edges.' : ctr === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
 ${c.shape === 'cut' || ctr === 'cut' ? 'Cut sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : ''}
 
@@ -1528,10 +1533,11 @@ COLOURS:
 - Citation background: ${tint(ac, 0.92)}
 
 SPACING: 4/8/12/16/20/24/32/40/48px
-RADIUS: Buttons: ${c.shape === 'pill' ? '9999px (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. 9999px full.
+RADIUS: Buttons: ${c.shape === 'pill' ? '9999px (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. Chat input: ${c.shape === 'pill' ? '9999px (pill)' : ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px'}. 9999px full.
 
 SHAPE: ${shapeLabel(c)}
 Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded capsules' : c.shape === 'square' ? 'Square — sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
+Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons' : 'Follows container radius'}
 Containers: ${ctr === 'square' ? 'Square — sharp edges' : ctr === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
 ${c.shape === 'cut' || ctr === 'cut' ? '- Cut sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : ''}
 
