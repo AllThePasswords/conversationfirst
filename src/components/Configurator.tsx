@@ -1,5 +1,27 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useTheme, darken, tint, darkAccent, darkBg, type ShapeMode, type ContainerShapeMode, type SavedTheme } from "../context/ThemeContext";
+
+/* ═══ GOOGLE FONTS CACHE ═══ */
+let _gfCache: string[] | null = null;
+let _gfPromise: Promise<string[]> | null = null;
+
+function fetchGoogleFonts(): Promise<string[]> {
+  if (_gfCache) return Promise.resolve(_gfCache);
+  if (_gfPromise) return _gfPromise;
+  _gfPromise = fetch("https://fonts.google.com/metadata/fonts")
+    .then(r => r.json())
+    .then(data => {
+      const list = (data.familyMetadataList || []) as { family: string; popularity: number }[];
+      list.sort((a, b) => (a.popularity || 999) - (b.popularity || 999));
+      _gfCache = list.map(f => f.family);
+      return _gfCache;
+    })
+    .catch(() => {
+      _gfCache = [];
+      return [];
+    });
+  return _gfPromise;
+}
 
 const FONT_OPTIONS = {
   body: [
@@ -45,6 +67,7 @@ const ACCENT_OPTIONS = [
   { name: "Slate", hex: "#525252", desc: "Neutral, understated" },
   { name: "Teal", hex: "#0d9488", desc: "Fresh, modern" },
   { name: "Indigo", hex: "#4f46e5", desc: "Deep, trustworthy" },
+  { name: "Black", hex: "#000000", desc: "Pure black — stark, minimal" },
 ];
 
 const BG_OPTIONS = [
@@ -87,6 +110,9 @@ const STEP_DESCS = {
 };
 
 function resolve(c) { return c.heading?.family ? c.heading : c.body; }
+function btnShapeName(c) { return BTN_shapeLabel(c); }
+function ctrShapeName(c) { return CTR_SHAPE_OPTIONS.find(s => s.id === (c.containerShape ?? c.shape))?.name || 'Rounded'; }
+function shapeLabel(c) { const b = btnShapeName(c), ct = ctrShapeName(c); return b === ct ? b : `${b} buttons, ${ct} containers`; }
 function fontsUrl(c) {
   const h = resolve(c);
   const n = [...new Set([c.body.name, h.name, c.mono.name])];
@@ -106,15 +132,22 @@ function generateTestPage(c) {
   const dkAcHover = darkAccent(darken(ac, 0.1));
   const dkAcSubtle = rgbToHex(...hexToRgb(dkAc).map(v => Math.round(v * 0.25)));
   const dkCiteBg = dkAcSubtle;
-  const shapeAttr = c.shape === 'cut' ? ' data-shape="cut"' : '';
-  const cutCSS = c.shape === 'cut' ? `
-[data-shape="cut"] code,[data-shape="cut"] kbd,[data-shape="cut"] .badge,[data-shape="cut"] .cite-inline,[data-shape="cut"] .nav-item,[data-shape="cut"] .nav-item.active,[data-shape="cut"] .skeleton-line{border-radius:0;clip-path:polygon(var(--cut-sm) 0,calc(100% - var(--cut-sm)) 0,100% var(--cut-sm),100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,var(--cut-sm) 100%,0 calc(100% - var(--cut-sm)),0 var(--cut-sm))}
+  const ctr = c.containerShape ?? c.shape;
+  const hasCut = c.shape === 'cut' || ctr === 'cut';
+  const shapeAttr = hasCut ? ' data-shape="cut"' : '';
+  let cutCSS = '';
+  if (c.shape === 'cut') {
+    cutCSS += `[data-shape="cut"] code,[data-shape="cut"] kbd,[data-shape="cut"] .badge,[data-shape="cut"] .cite-inline,[data-shape="cut"] .nav-item,[data-shape="cut"] .nav-item.active,[data-shape="cut"] .skeleton-line{border-radius:0;clip-path:polygon(var(--cut-sm) 0,calc(100% - var(--cut-sm)) 0,100% var(--cut-sm),100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,var(--cut-sm) 100%,0 calc(100% - var(--cut-sm)),0 var(--cut-sm))}
 [data-shape="cut"] .btn,[data-shape="cut"] .input,[data-shape="cut"] textarea.input,[data-shape="cut"] select.input,[data-shape="cut"] .alert,[data-shape="cut"] pre,[data-shape="cut"] .toast,[data-shape="cut"] .cite-block,[data-shape="cut"] .skip-link{border-radius:0;clip-path:polygon(var(--cut-md) 0,calc(100% - var(--cut-md)) 0,100% var(--cut-md),100% calc(100% - var(--cut-md)),calc(100% - var(--cut-md)) 100%,var(--cut-md) 100%,0 calc(100% - var(--cut-md)),0 var(--cut-md))}
-[data-shape="cut"] .card,[data-shape="cut"] .modal,[data-shape="cut"] .chat-bubble,[data-shape="cut"] .chat-bubble.user,[data-shape="cut"] .sidebar,[data-shape="cut"] .cf-doc{border-radius:0;clip-path:polygon(var(--cut-lg) 0,calc(100% - var(--cut-lg)) 0,100% var(--cut-lg),100% calc(100% - var(--cut-lg)),calc(100% - var(--cut-lg)) 100%,var(--cut-lg) 100%,0 calc(100% - var(--cut-lg)),0 var(--cut-lg))}
+`;
+  }
+  if (ctr === 'cut') {
+    cutCSS += `[data-shape="cut"] .card,[data-shape="cut"] .modal,[data-shape="cut"] .chat-bubble,[data-shape="cut"] .chat-bubble.user,[data-shape="cut"] .sidebar,[data-shape="cut"] .cf-doc{border-radius:0;clip-path:polygon(var(--cut-lg) 0,calc(100% - var(--cut-lg)) 0,100% var(--cut-lg),100% calc(100% - var(--cut-lg)),calc(100% - var(--cut-lg)) 100%,var(--cut-lg) 100%,0 calc(100% - var(--cut-lg)),0 var(--cut-lg))}
 [data-shape="cut"] .card{box-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.04))}
 [data-shape="cut"] .modal{box-shadow:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.12))}
 [data-shape="cut"] .toast{box-shadow:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15))}
-` : '';
+`;
+  }
   return `<!DOCTYPE html>
 <html lang="en"${shapeAttr}>
 <head>
@@ -128,7 +161,7 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '12px'};--radius-full:9999px;
+  --radius-sm:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-full:9999px;
   --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
@@ -339,7 +372,7 @@ ${cutCSS}</style>
   <div><dt>Body</dt><dd style="font-family:var(--font-body)">${b.name}</dd></div>
   <div><dt>Heading</dt><dd style="font-family:var(--font-heading)">${h.name}</dd></div>
   <div><dt>Mono</dt><dd style="font-family:var(--font-mono)">${m.name}</dd></div>
-  <div><dt>Shape</dt><dd>${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}</dd></div>
+  <div><dt>Shape</dt><dd>${shapeLabel(c)}</dd></div>
 </dl>
 
 <!-- PROCESSING STATES -->
@@ -677,6 +710,7 @@ function generateSpec(c) {
   const b = c.body, h = resolve(c), m = c.mono;
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
+  const ctr = c.containerShape ?? c.shape;
   return `# Conversation First — App Configuration Spec
 
 > Five decisions — three typefaces, two colours. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
@@ -801,9 +835,11 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 ## 5 — Shape
 
-**Mode: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}**
+**Mode: ${shapeLabel(c)}**
 
-${c.shape === 'rounded' ? 'Standard rounded corners using `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (12px).' : ''}${c.shape === 'pill' ? 'Fully rounded capsule shapes. All radius tokens set to `9999px`.' : ''}${c.shape === 'square' ? 'Sharp edges. All radius tokens set to `0`.' : ''}${c.shape === 'cut' ? `Chamfered diagonal corners using \`clip-path: polygon(...)\`. All radius tokens set to \`0\`. The \`<html>\` element has \`data-shape="cut"\`.
+**Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-sm` (4px), `--radius-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-sm` and `--radius-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-sm` and `--radius-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
+**Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
+${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
 Three cut sizes:
 - \`--cut-sm\`: 4px — badges, inline code, small controls
@@ -1237,7 +1273,7 @@ After form submission, the form collapses into a confirmation banner:
 
 ---
 
-*Conversation First · ${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
+*Conversation First · ${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${shapeLabel(c)} shape*
 *Test page: \`test-page.html\`*
 `;
 }
@@ -1248,6 +1284,7 @@ function generateClaudeMdRules(c) {
   const b = c.body, h = resolve(c), m = c.mono;
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
+  const ctr = c.containerShape ?? c.shape;
   return `# Design System — ConversationFirst
 # Generated at conversationfirst.xyz — by Eric Greene
 
@@ -1318,11 +1355,13 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Radius
 
-\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
+\`--radius-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
 
-## Shape: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
+## Shape: ${shapeLabel(c)}
 
-${c.shape === 'cut' ? `Cut-corner mode. All elements use \`clip-path: polygon(...)\` for chamfered corners. Three sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : c.shape === 'pill' ? 'Pill mode. All radius tokens set to 9999px for fully rounded capsule shapes.' : c.shape === 'square' ? 'Square mode. All radius tokens set to 0 for sharp edges.' : 'Standard rounded corners.'}
+**Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill — radius-sm/md set to 9999px.' : c.shape === 'square' ? 'Square — radius-sm/md set to 0.' : 'Cut corners — clip-path polygon on buttons/inputs/badges.'}
+**Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square — radius-lg set to 0.' : 'Cut corners — clip-path polygon on cards/modals/chat bubbles.'}
+${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
 
 ## CSS tokens (full set)
 
@@ -1377,7 +1416,7 @@ ${c.shape === 'cut' ? `Cut-corner mode. All elements use \`clip-path: polygon(..
 
 ---
 *Generated with the ConversationFirst Configurator — conversationfirst.xyz*
-*${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
+*${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${shapeLabel(c)} shape*
 `;
 }
 
@@ -1387,6 +1426,7 @@ function generateSlashCommand(c) {
   const b = c.body, h = resolve(c), m = c.mono;
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
+  const ctr = c.containerShape ?? c.shape;
   return `# /design-system — ConversationFirst Spec
 # Drop this file into .claude/commands/ and invoke with /design-system
 # Generated at conversationfirst.xyz — by Eric Greene
@@ -1428,11 +1468,13 @@ Import: \`${fontsUrl(c)}\`
 
 ## Radius
 
-${c.shape === 'pill' ? '9999px all (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 all' : '4px sm / 8px md / 12px lg'} / 9999px full
+${c.shape === 'pill' ? '9999px sm/md (pill buttons)' : c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / ${ctr === 'square' || ctr === 'cut' ? '0 lg' : '12px lg'} / 9999px full
 
-## Shape: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
+## Shape: ${shapeLabel(c)}
 
-${c.shape === 'cut' ? 'Cut corners via `clip-path: polygon(...)`. Sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : c.shape === 'pill' ? 'Fully rounded capsule shapes on all elements.' : c.shape === 'square' ? 'Sharp edges, no rounding.' : 'Standard rounded corners.'}
+Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded.' : c.shape === 'square' ? 'Square — sharp edges.' : c.shape === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
+Containers: ${ctr === 'square' ? 'Square — sharp edges.' : ctr === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
+${c.shape === 'cut' || ctr === 'cut' ? 'Cut sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : ''}
 
 ## Rules
 
@@ -1447,7 +1489,7 @@ ${c.shape === 'cut' ? 'Cut corners via `clip-path: polygon(...)`. Sizes: `--cut-
 9. Buttons use verb labels ("Deploy", "Delete"), not "OK" or "Yes"
 
 ---
-*Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape*
+*Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${shapeLabel(c)} shape*
 `;
 }
 
@@ -1457,6 +1499,7 @@ function generateAIPrompt(c) {
   const b = c.body, h = resolve(c), m = c.mono;
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
+  const ctr = c.containerShape ?? c.shape;
   return `You are building a UI that follows the ConversationFirst design system (conversationfirst.xyz — by Eric Greene).
 
 VOICE RULES (apply to all AI-generated text):
@@ -1485,10 +1528,12 @@ COLOURS:
 - Citation background: ${tint(ac, 0.92)}
 
 SPACING: 4/8/12/16/20/24/32/40/48px
-RADIUS: ${c.shape === 'pill' ? '9999px all (pill mode)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md, 12px lg'}, 9999px full
+RADIUS: Buttons: ${c.shape === 'pill' ? '9999px (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. 9999px full.
 
-SHAPE: ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'}
-${c.shape === 'cut' ? '- Cut-corner mode: use clip-path polygon for chamfered corners\n- Three sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : c.shape === 'pill' ? '- Fully rounded capsule shapes on all elements' : c.shape === 'square' ? '- Sharp edges, no border-radius' : '- Standard rounded corners'}
+SHAPE: ${shapeLabel(c)}
+Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded capsules' : c.shape === 'square' ? 'Square — sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
+Containers: ${ctr === 'square' ? 'Square — sharp edges' : ctr === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
+${c.shape === 'cut' || ctr === 'cut' ? '- Cut sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : ''}
 
 COMPONENTS:
 - Buttons: primary (accent bg), secondary (border), ghost, destructive (red)
@@ -1514,7 +1559,7 @@ CSS CUSTOM PROPERTIES:
 
 Google Fonts: ${fontsUrl(c)}
 
-Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${SHAPE_OPTIONS.find(s => s.id === c.shape)?.name || 'Rounded'} shape
+Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${shapeLabel(c)} shape
 `;
 }
 
@@ -1560,6 +1605,131 @@ function FontCard({ font, selected, onClick, previewText, previewStyle }) {
       </div>
       <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", lineHeight: 1.3 }}>{font.desc}</div>
     </button>
+  );
+}
+
+function GoogleFontPicker({ category, selected, onSelect, previewText, previewStyle }: {
+  category: "body" | "heading" | "mono";
+  selected: any;
+  onSelect: (font: any) => void;
+  previewText?: string;
+  previewStyle?: React.CSSProperties;
+}) {
+  const [query, setQuery] = useState("");
+  const [allFonts, setAllFonts] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  const [loadedFont, setLoadedFont] = useState<string | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetchGoogleFonts().then(setAllFonts);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const defaultNames = FONT_OPTIONS[category].map(f => f.name);
+  const filtered = query.length > 0
+    ? allFonts.filter(f => !defaultNames.includes(f) && f.toLowerCase().includes(query.toLowerCase())).slice(0, 40)
+    : [];
+
+  const loadPreview = (name: string) => {
+    if (loadedFont === name) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g, "+")}:wght@400;600;700&display=swap`;
+    document.head.appendChild(link);
+    setLoadedFont(name);
+  };
+
+  const fallback = category === "mono" ? "monospace" : category === "heading" ? "Georgia, serif" : "system-ui, sans-serif";
+
+  const isCustomSelected = selected && !defaultNames.includes(selected.name);
+
+  return (
+    <div ref={wrapRef} style={{ marginTop: "var(--space-3)" }}>
+      <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, marginBottom: "var(--space-2)" }}>
+        Or choose any Google Font
+      </div>
+      <div style={{ position: "relative" }}>
+        <input
+          type="text"
+          placeholder="Search Google Fonts..."
+          value={query}
+          onChange={e => { setQuery(e.target.value); setOpen(true); }}
+          onFocus={() => { if (query.length > 0) setOpen(true); }}
+          style={{
+            fontFamily: "var(--font-body)", fontSize: "var(--text-sm)",
+            padding: "var(--space-2) var(--space-3)",
+            border: "1px solid var(--border)", borderRadius: "var(--radius-md)",
+            background: "var(--surface)", color: "var(--text)", width: "100%", maxWidth: "400px",
+          }}
+        />
+        {open && filtered.length > 0 && (
+          <div style={{
+            position: "absolute", top: "100%", left: 0, width: "100%", maxWidth: "400px",
+            maxHeight: "240px", overflowY: "auto", zIndex: 50,
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-lg)", marginTop: "2px",
+          }}>
+            {filtered.map(name => (
+              <button
+                key={name}
+                onMouseEnter={() => loadPreview(name)}
+                onClick={() => {
+                  loadPreview(name);
+                  const family = `'${name}', ${fallback}`;
+                  onSelect({ name, family, desc: "Google Font" });
+                  setQuery("");
+                  setOpen(false);
+                }}
+                style={{
+                  display: "block", width: "100%", textAlign: "left",
+                  padding: "var(--space-2) var(--space-3)",
+                  border: "none", background: "none", cursor: "pointer",
+                  fontSize: "var(--text-sm)", color: "var(--text)",
+                  borderBottom: "1px solid var(--border)",
+                  transition: "background 0.08s",
+                }}
+                onMouseOver={e => (e.currentTarget.style.background = "var(--bg)")}
+                onMouseOut={e => (e.currentTarget.style.background = "none")}
+              >
+                <span style={{ fontFamily: `'${name}', ${fallback}` }}>{name}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        {open && query.length > 0 && filtered.length === 0 && allFonts.length > 0 && (
+          <div style={{
+            position: "absolute", top: "100%", left: 0, width: "100%", maxWidth: "400px",
+            padding: "var(--space-3)", background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-lg)", marginTop: "2px",
+            fontSize: "var(--text-xs)", color: "var(--text-muted)",
+          }}>
+            No matching fonts
+          </div>
+        )}
+      </div>
+      {isCustomSelected && (
+        <div style={{
+          marginTop: "var(--space-2)", padding: "var(--space-3) var(--space-4)",
+          border: "2px solid var(--text)", borderRadius: "var(--radius-lg)",
+          background: "var(--bg)", boxShadow: "var(--shadow-md)",
+        }}>
+          <div style={{ fontSize: "var(--text-xs)", fontWeight: 600, marginBottom: "var(--space-1)" }}>
+            {selected.name} <span style={{ color: "var(--text-muted)", fontWeight: 500 }}>Google Font</span>
+          </div>
+          <div style={{ fontFamily: selected.family, fontSize: "var(--text-lg)", lineHeight: 1.3, ...previewStyle }}>
+            {previewText || "The quick brown fox jumps over the lazy dog"}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1654,6 +1824,8 @@ export default function Configurator() {
   const [choices, setChoices] = useState({ body: null, heading: null, mono: null, accent: null, bg: null, shape: null as ShapeMode | null, containerShape: null as ContainerShapeMode | null });
   const [toast, setToast] = useState(null);
   const [themeName, setThemeName] = useState("");
+  const [customAccentHex, setCustomAccentHex] = useState("");
+  const [customBgHex, setCustomBgHex] = useState("");
   const { saveTheme, applyTheme } = useTheme();
   const cur = STEPS[step];
   const all = choices.body && choices.heading && choices.mono && choices.accent && choices.bg && choices.shape && choices.containerShape;
@@ -1717,6 +1889,13 @@ export default function Configurator() {
               />
             ))}
           </div>
+          <GoogleFontPicker
+            category={cur}
+            selected={choices[cur]}
+            onSelect={f => setChoices(p => ({ ...p, [cur]: f }))}
+            previewText={cur === "heading" ? "Conversation First" : cur === "mono" ? "const config = { body, heading, mono };" : undefined}
+            previewStyle={cur === "heading" ? { fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: "-0.02em" } : cur === "mono" ? { fontSize: "var(--text-base)" } : undefined}
+          />
         </div>
       )}
 
@@ -1724,16 +1903,74 @@ export default function Configurator() {
         <div className="cfg-fin" key="colors">
           <p style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)", marginBottom: "var(--space-4)", lineHeight: 1.5, maxWidth: "520px" }}>{STEP_DESCS[cur]}</p>
           <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Accent colour</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)", marginBottom: "var(--space-6)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
             {ACCENT_OPTIONS.map(c => (
-              <ColorCard key={c.hex} color={c} selected={choices.accent} onClick={() => setChoices(p => ({ ...p, accent: c }))} />
+              <ColorCard key={c.hex} color={c} selected={choices.accent} onClick={() => { setChoices(p => ({ ...p, accent: c })); setCustomAccentHex(""); }} />
             ))}
           </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-6)" }}>
+            <label style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, whiteSpace: "nowrap" }}>Custom hex</label>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", flex: 1, maxWidth: "320px" }}>
+              <input
+                type="color"
+                value={customAccentHex || choices.accent?.hex || "#3d6b5e"}
+                onChange={e => {
+                  const hex = e.target.value;
+                  setCustomAccentHex(hex);
+                  setChoices(p => ({ ...p, accent: { name: "Custom", hex, desc: "Custom colour" } }));
+                }}
+                style={{ width: 36, height: 36, border: "1px solid var(--border)", borderRadius: "var(--radius-md)", padding: 2, cursor: "pointer", background: "var(--surface)" }}
+              />
+              <input
+                type="text"
+                placeholder="#000000"
+                value={customAccentHex}
+                onChange={e => {
+                  let v = e.target.value;
+                  if (v && !v.startsWith("#")) v = "#" + v;
+                  setCustomAccentHex(v);
+                  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                    setChoices(p => ({ ...p, accent: { name: "Custom", hex: v.toLowerCase(), desc: "Custom colour" } }));
+                  }
+                }}
+                style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", padding: "var(--space-2) var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-md)", background: "var(--surface)", color: "var(--text)", width: 120 }}
+              />
+            </div>
+          </div>
           <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-2)" }}>Background colour</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
             {BG_OPTIONS.map(c => (
-              <ColorCard key={c.hex} color={c} selected={choices.bg} onClick={() => setChoices(p => ({ ...p, bg: c }))} />
+              <ColorCard key={c.hex} color={c} selected={choices.bg} onClick={() => { setChoices(p => ({ ...p, bg: c })); setCustomBgHex(""); }} />
             ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+            <label style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", fontWeight: 600, whiteSpace: "nowrap" }}>Custom hex</label>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", flex: 1, maxWidth: "320px" }}>
+              <input
+                type="color"
+                value={customBgHex || choices.bg?.hex || "#faf9f7"}
+                onChange={e => {
+                  const hex = e.target.value;
+                  setCustomBgHex(hex);
+                  setChoices(p => ({ ...p, bg: { name: "Custom", hex, desc: "Custom colour" } }));
+                }}
+                style={{ width: 36, height: 36, border: "1px solid var(--border)", borderRadius: "var(--radius-md)", padding: 2, cursor: "pointer", background: "var(--surface)" }}
+              />
+              <input
+                type="text"
+                placeholder="#faf9f7"
+                value={customBgHex}
+                onChange={e => {
+                  let v = e.target.value;
+                  if (v && !v.startsWith("#")) v = "#" + v;
+                  setCustomBgHex(v);
+                  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                    setChoices(p => ({ ...p, bg: { name: "Custom", hex: v.toLowerCase(), desc: "Custom colour" } }));
+                  }
+                }}
+                style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-sm)", padding: "var(--space-2) var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-md)", background: "var(--surface)", color: "var(--text)", width: 120 }}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -1845,6 +2082,7 @@ export default function Configurator() {
                     accent: { name: choices.accent.name, hex: choices.accent.hex },
                     bg: { name: choices.bg.name, hex: choices.bg.hex },
                     shape: choices.shape,
+                    containerShape: choices.containerShape,
                     createdAt: Date.now(),
                   };
                   saveTheme(theme);
