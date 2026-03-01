@@ -115,19 +115,14 @@ describe('Chat input bar CSS', () => {
     expect(inputBarBlock).not.toMatch(/::before|::after/);
   });
 
-  it('no linear-gradient anywhere in the input bar section', () => {
-    expect(inputBarBlock).not.toMatch(/linear-gradient/);
-  });
-
-  it('.chat-input-bar does not set position: relative (no longer needs stacking context)', () => {
+  it('.chat-input-bar does not set position: relative', () => {
     const barRule = chatCss.match(/\.chat-input-bar\s*\{[^}]*\}/);
     expect(barRule[0]).not.toMatch(/position\s*:\s*relative/);
   });
 
-  it('.chat-input-bar uses var(--bg) background (solid, no gradient)', () => {
+  it('.chat-input-bar uses a transparent-to-bg gradient background', () => {
     const barRule = chatCss.match(/\.chat-input-bar\s*\{[^}]*\}/);
-    expect(barRule[0]).toMatch(/background\s*:\s*var\(--bg\)/);
-    expect(barRule[0]).not.toMatch(/linear-gradient/);
+    expect(barRule[0]).toMatch(/background\s*:\s*linear-gradient\(transparent/);
   });
 
   it('.chat-input-inner does not set z-index (no longer needs to stack above gradient)', () => {

@@ -207,7 +207,7 @@ export default function ChatInputDemo() {
             ['Font', '--font-body (textarea), --font-mono (status)'],
             ['Text size', '--text-base (input), --text-sm (menu items)'],
             ['Spacing', '--space-2 (inner padding), --space-3 (button padding)'],
-            ['Radius', '--radius-lg (container), --radius-md (buttons, thumbnails)'],
+            ['Radius', '--radius-input (container — follows pill when buttons are pill), --radius-md (buttons, thumbnails)'],
             ['Colour', '--surface (bg), --border (stroke), --accent (focus, send)'],
             ['Shadow', '--shadow-lg (container)'],
             ['Motion', '--duration-fast, --duration-base, --ease-out, --ease-spring'],

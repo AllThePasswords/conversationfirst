@@ -190,7 +190,7 @@ export default function ResponseDemo() {
       <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
           'Right-aligned, max-width 85%',
-          'Background uses page colour (--bg)',
+          'Background: color-mix(in srgb, var(--text) 6%, var(--bg)) — always filled to distinguish from page',
           'Plain text default — pasted markdown preserved',
           'Same padding and border-radius as response bubbles',
           'Images render inline above text',

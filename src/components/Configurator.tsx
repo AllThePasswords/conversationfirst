@@ -933,6 +933,8 @@ Convention: \`[cite-block:N title="..." url="..." meta="..."]\`
 
 1px top border. "Sources" in \`--text-xs\` uppercase.
 
+**Deduplication:** Multiple results from the same hostname are collapsed — only the first result per domain appears. **Default cap:** 3 visible sources. If more exist, a "Show N more sources" text button appears below the last row. Clicking it reveals the full deduplicated list.
+
 **Each footer item is a single clickable row** — the entire row (badge + title + source type) is wrapped in an \`<a>\` tag. This makes the click target large and obvious.
 
 Footer link structure:
@@ -969,6 +971,8 @@ The badge must always be interactive. A non-clickable citation is a broken citat
 - Cluster related claims under one citation where possible
 - Never fabricate citations or links
 - Max 8 per response; consolidate beyond that
+- Deduplicate footer by hostname — one entry per domain
+- Show 3 sources by default; "Show more" toggle for the rest
 - Reuse numbers for repeated sources
 - Reset numbering per response
 
@@ -1401,7 +1405,7 @@ ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-m
 
 - Inline: 18px superscript circle, \`--cite-bg\` fill, clickable \`<a>\` tag
 - Block: 3px left border in \`--cite-border\`, \`--cite-bg\` fill, clickable title
-- Footer: 1px top border, each row is a single clickable \`<a>\` tag
+- Footer: 1px top border, each row is a single clickable \`<a>\` tag. Deduplicated by hostname, 3 visible by default, "Show more" toggle
 - Convention: \`[cite:N](url)\` for inline, \`[cite-block:N title="..." url="..."]\` for blocks
 
 ## Component rules
