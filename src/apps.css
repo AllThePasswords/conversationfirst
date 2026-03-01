@@ -7,7 +7,7 @@
 
 .cf-shell {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: 200px 1fr;
   grid-template-rows: 40px 1fr;
   height: 100%;
   overflow: hidden;
@@ -61,56 +61,88 @@
   letter-spacing: 0.07em;
 }
 
-/* --- Icon Rail --- */
+/* --- Side Nav --- */
 
-.cf-icon-rail {
+.cf-sidenav {
   grid-column: 1;
   grid-row: 2;
-  width: 56px;
+  width: 200px;
   background: var(--surface);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-4);
-  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  gap: var(--space-1);
   user-select: none;
+  overflow-y: auto;
 }
 
-.cf-rail-btn {
-  width: 40px;
-  height: 40px;
+.cf-nav-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
   color: var(--text-muted);
   background: transparent;
   border: none;
   cursor: pointer;
+  text-align: left;
+  width: 100%;
   transition: color var(--duration-fast) var(--ease-out),
               background var(--duration-fast) var(--ease-out);
 }
 
-.cf-rail-btn:hover {
+.cf-nav-item:hover {
   color: var(--accent);
   background: var(--surface-raised);
 }
 
-.cf-rail-btn--active {
+.cf-nav-item--active {
   color: var(--accent);
   background: var(--accent-subtle);
+  font-weight: 600;
 }
 
-.cf-rail-btn svg {
-  width: 22px;
-  height: 22px;
+.cf-nav-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-3) var(--space-3);
 }
 
-.cf-icon-rail-bottom {
+.cf-nav-footer {
   margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
 }
+
+.cf-nav-email {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  padding: 0 var(--space-3);
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cf-nav-signout {
+  display: block;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.cf-nav-signout:hover { color: var(--text); }
 
 /* --- Main Content --- */
 
@@ -1187,24 +1219,42 @@
 @media (max-width: 768px) {
   .cf-shell {
     grid-template-columns: 1fr;
-    grid-template-rows: 40px 1fr 56px;
+    grid-template-rows: 40px 1fr 48px;
   }
 
-  .cf-icon-rail {
+  .cf-sidenav {
     grid-column: 1;
     grid-row: 3;
     width: 100%;
-    height: 56px;
+    height: 48px;
     flex-direction: row;
-    justify-content: center;
     border-right: none;
     border-top: 1px solid var(--border);
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-2);
+    gap: var(--space-1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .cf-icon-rail-bottom {
-    margin-top: 0;
-    margin-left: auto;
+  .cf-sidenav .cf-nav-item {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .cf-sidenav .cf-nav-divider {
+    border-top: none;
+    border-left: 1px solid var(--border);
+    margin: var(--space-2) var(--space-1);
+    width: 0;
+    height: auto;
+    align-self: stretch;
+  }
+
+  .cf-sidenav .cf-nav-footer {
+    display: none;
   }
 
   .cf-main {

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { useChat } from '../hooks/useChat';
 import { useChatDB } from '../hooks/useChatDB';
 import { useBrain } from '../hooks/useBrain';
@@ -7,7 +8,7 @@ import { validateImage, validateImageCount } from '../lib/imageUpload';
 import ChatMessage from './ChatMessage';
 import ChatProcessing from './ChatProcessing';
 import ChatInput from './ChatInput';
-import ChatSidebar from './ChatSidebar';
+import ChatHistory from './ChatHistory';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const SUGGESTIONS = [
@@ -22,15 +23,12 @@ const SUGGESTIONS = [
 let nextImageId = 0;
 
 export default function ChatPage({
-  sidebarOpen,
-  setSidebarOpen,
-  toggleSidebar,
   conversations,
   activeId,
+  setActiveId,
   createConversation,
   updateTitle,
-  onSidebarSelect,
-  onNewChat,
+  deleteConversation,
   isAuthenticated,
   useDB = false,
   user,
@@ -44,12 +42,11 @@ export default function ChatPage({
   const accessToken = session?.access_token || null;
   const newConvoIdRef = useRef(null);
 
-  // Auto-create conversation: always new if ?new in hash, otherwise fallback
+  // Handle ?new hash for creating a new conversation from landing page
   useEffect(() => {
     const hash = window.location.hash;
     if (hash.includes('?new')) {
       const result = createConversation();
-      // createConversation returns id (sync/guest) or Promise<id> (async/DB)
       if (result && typeof result.then === 'function') {
         result.then(id => { if (id) newConvoIdRef.current = id; });
       } else if (result) {
@@ -57,9 +54,6 @@ export default function ChatPage({
       }
       window.location.hash = '#/chat';
       return;
-    }
-    if (!activeId && conversations.length === 0) {
-      createConversation();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -83,12 +77,10 @@ export default function ChatPage({
   const [headerScrolled, setHeaderScrolled] = useState(false);
 
   // Send pending message from landing page floating input
-  // Only fires once activeId matches the newly created conversation
   useEffect(() => {
     if (!activeId || pendingSentRef.current) return;
     const pending = sessionStorage.getItem('cf-pending-message');
     if (!pending) return;
-    // If we created a new conversation via ?new, wait until activeId matches it
     if (newConvoIdRef.current && activeId !== newConvoIdRef.current) return;
     sessionStorage.removeItem('cf-pending-message');
     pendingSentRef.current = true;
@@ -122,9 +114,7 @@ export default function ChatPage({
     const validFiles = [];
     for (const file of files) {
       const err = validateImage(file);
-      if (err) {
-        continue;
-      }
+      if (err) continue;
       validFiles.push(file);
     }
 
@@ -149,7 +139,6 @@ export default function ChatPage({
     });
   }, []);
 
-  // Wrapped send that includes staged images then clears them
   const handleSend = useCallback((text, imageFiles = []) => {
     sendMessage(text, imageFiles);
     setStagedImages(prev => {
@@ -192,11 +181,29 @@ export default function ChatPage({
     }
   }, [addImages]);
 
+  // Handle new chat from history list
+  const handleNewChat = useCallback(() => {
+    createConversation();
+  }, [createConversation]);
+
   const inputDisabled = isStreaming || isUploading;
 
+  // ─── LIST VIEW: show conversation history when no active conversation ───
+  if (!activeId) {
+    return (
+      <ChatHistory
+        conversations={conversations}
+        onSelect={(id) => setActiveId(id)}
+        onNew={handleNewChat}
+        onDelete={deleteConversation}
+      />
+    );
+  }
+
+  // ─── DETAIL VIEW: active conversation ───
   return (
     <div
-      className={`chat-page ${sidebarOpen ? 'sidebar-open' : ''}`}
+      className="chat-page"
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
@@ -204,40 +211,15 @@ export default function ChatPage({
     >
       <a href="#chat-main" className="skip-link">Skip to content</a>
 
-      {isAuthenticated && (
-        <ChatSidebar
-          isOpen={sidebarOpen}
-          conversations={conversations}
-          activeId={activeId}
-          onSelect={onSidebarSelect}
-          onNew={onNewChat}
-          onClose={() => setSidebarOpen(false)}
-          user={user}
-        />
-      )}
-
       <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-        {isAuthenticated ? (
-          <button className="chat-menu-btn" onClick={toggleSidebar} title={sidebarOpen ? 'Close menu' : 'Menu'} aria-label={sidebarOpen ? 'Close conversation list' : 'Open conversation list'}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-        ) : (
-          <button
-            className="chat-menu-btn"
-            onClick={() => { window.location.hash = '#/'; }}
-            title="Back"
-            aria-label="Back to home"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-          </button>
-        )}
+        <button
+          className="chat-menu-btn"
+          onClick={() => setActiveId(null)}
+          title="Back to conversations"
+          aria-label="Back to conversation list"
+        >
+          <ArrowLeftIcon width={18} height={18} aria-hidden="true" />
+        </button>
         {messages.length > 0 && activeConversation?.title && (
           <div className="chat-header-title">
             {activeConversation.title}
@@ -325,7 +307,6 @@ export default function ChatPage({
 
               {isStreaming && (
                 <div className="chat-bubble">
-                  <div className="bubble-label">Assistant</div>
                   {isSearching && (
                     <div className="search-indicator" role="status" aria-live="polite">
                       <div className="processing-status">

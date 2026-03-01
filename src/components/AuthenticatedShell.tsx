@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { HouseholdCtx, useHouseholdProvider } from '../lib/useHousehold'
-import IconRail from './IconRail'
+import SideNav from './SideNav'
 import AppsHomepage from './AppsHomepage'
 import VaultPage from './VaultPage'
 import ChatPage from './ChatPage'
@@ -49,7 +49,6 @@ function parseHashRoute(): AppView {
 
 export default function AuthenticatedShell({ user, session }: AuthenticatedShellProps) {
   const [currentView, setCurrentView] = useState<AppView>(parseHashRoute)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const householdValue = useHouseholdProvider()
   const { householdId } = householdValue
 
@@ -91,27 +90,6 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
     navigate('apps')
   }, [navigate])
 
-  const handleSidebarSelect = useCallback((id) => {
-    setActiveId(id)
-    setSidebarOpen(false)
-  }, [setActiveId])
-
-  const handleNewChat = useCallback(() => {
-    createConversation()
-    setSidebarOpen(false)
-  }, [createConversation])
-
-  const toggleSidebar = useCallback(() => {
-    setSidebarOpen(prev => !prev)
-  }, [])
-
-  // Determine which IconRail button is active
-  const railView = currentView === 'vault' ? 'vault'
-    : currentView === 'chat' ? 'chat'
-    : currentView === 'overview' ? 'overview'
-    : currentView === 'apps' ? 'apps'
-    : 'apps' // individual apps highlight home
-
   const showBackButton = currentView !== 'apps'
 
   return (
@@ -131,9 +109,10 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
             {APP_LABELS[currentView] || 'ConversationFirst'}
           </span>
         </header>
-        <IconRail
-          currentView={railView}
+        <SideNav
+          currentView={currentView}
           onNavigate={navigate}
+          user={user}
         />
         <main className="cf-main">
           <div className="cf-main-inner">
@@ -148,17 +127,12 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
             ) : currentView === 'chat' ? (
               <PageTransition key="chat">
                 <ChatPage
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                  toggleSidebar={toggleSidebar}
                   conversations={conversations}
                   activeId={activeId}
                   setActiveId={setActiveId}
                   createConversation={createConversation}
                   updateTitle={updateTitle}
                   deleteConversation={deleteConversation}
-                  onSidebarSelect={handleSidebarSelect}
-                  onNewChat={handleNewChat}
                   isAuthenticated={true}
                   useDB={useDB}
                   user={user}
