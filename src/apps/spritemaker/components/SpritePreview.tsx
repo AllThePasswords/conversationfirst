@@ -38,8 +38,9 @@ export default function SpritePreview({ spriteId, onBack, onRefresh }: SpritePre
   if (loading || !asset) {
     return (
       <div className="sm-page">
-        <div className="sm-empty">
-          <span className="sm-loading-text">Loading sprite...</span>
+        <div className="cf-loading">
+          <span className="cf-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-text">Loading&hellip;</span>
         </div>
       </div>
     )

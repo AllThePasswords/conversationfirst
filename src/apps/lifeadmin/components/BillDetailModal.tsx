@@ -312,7 +312,7 @@ export default function BillDetailModal({ data, loading, onClose }: BillDetailMo
         <div className="la-detail-body" aria-live="polite">
           {loading && (
             <div className="la-detail-loading">
-              <span className="la-loading-cursor" aria-hidden="true" />
+              <span className="cf-loading-cursor" aria-hidden="true" />
               <span className="la-detail-loading-text">Fetching detail</span>
             </div>
           )}

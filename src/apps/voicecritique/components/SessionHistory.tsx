@@ -48,10 +48,10 @@ export default function SessionHistory({
       )}
 
       {sessions.length === 0 ? (
-        <div className="vc-empty">
-          <MicrophoneIcon className="vc-empty-icon" aria-hidden="true" />
-          <div className="vc-empty-title">No recordings yet</div>
-          <div className="vc-empty-desc">Start a new recording to begin.</div>
+        <div className="cf-empty">
+          <MicrophoneIcon className="cf-empty-icon" aria-hidden="true" />
+          <div className="cf-empty-title">No recordings yet</div>
+          <div className="cf-empty-desc">Start a new recording to begin.</div>
         </div>
       ) : (
         <div className="vc-session-table-wrapper">

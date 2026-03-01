@@ -63,8 +63,9 @@ export default function GameStyleGuide({ gameId, onBack, onSaved }: GameStyleGui
   if (loading) {
     return (
       <div className="sm-page">
-        <div className="sm-empty">
-          <span className="sm-loading-text">Loading style guide...</span>
+        <div className="cf-loading">
+          <span className="cf-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-text">Loading&hellip;</span>
         </div>
       </div>
     )

@@ -302,7 +302,7 @@ export default function TalkTrackPanel({
           </div>
           {aiStreaming && (
             <div className="fp-talktrack-ai-status" role="status">
-              <span className="fp-loading-cursor" />
+              <span className="cf-loading-cursor" />
               <span>Generating</span>
             </div>
           )}

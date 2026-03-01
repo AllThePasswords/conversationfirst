@@ -116,11 +116,9 @@ export default function OnPoint({ householdId }: OnPointProps) {
 
   if (loadingKey) {
     return (
-      <div className="op-container">
-        <div className="op-loading">
-          <span className="op-loading-cursor" aria-hidden="true" />
-          <span className="op-loading-text">Loading&hellip;</span>
-        </div>
+      <div className="cf-loading">
+        <span className="cf-loading-cursor" aria-hidden="true" />
+        <span className="cf-loading-text">Loading&hellip;</span>
       </div>
     )
   }

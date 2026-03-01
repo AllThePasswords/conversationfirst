@@ -64,17 +64,17 @@ export default function SessionHistory({
 
       {loading ? (
         <div className="op-session-table-wrapper">
-          <div className="op-loading">
-            <span className="op-loading-cursor" aria-hidden="true" />
-            <span className="op-loading-text">Loading sessions</span>
+          <div className="cf-loading">
+            <span className="cf-loading-cursor" aria-hidden="true" />
+            <span className="cf-loading-text">Loading&hellip;</span>
           </div>
         </div>
       ) : sessions.length === 0 ? (
         <div className="op-session-table-wrapper">
-          <div className="op-empty">
-            <MicrophoneIcon className="op-empty-icon" aria-hidden="true" />
-            <p className="op-empty-title">No sessions yet</p>
-            <p className="op-empty-desc">Start a new call to begin coaching.</p>
+          <div className="cf-empty">
+            <MicrophoneIcon className="cf-empty-icon" aria-hidden="true" />
+            <p className="cf-empty-title">No sessions yet</p>
+            <p className="cf-empty-desc">Start a new call to begin coaching.</p>
           </div>
         </div>
       ) : (

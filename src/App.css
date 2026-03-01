@@ -18,13 +18,17 @@
   top: var(--space-4);
 }
 
-html { font-size: 16px; }
+html { font-size: 16px; height: 100%; }
 body {
   font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
+}
+#root {
+  height: 100%;
 }
 
 /* Orphan/widow control — prevent single words on last/first lines */

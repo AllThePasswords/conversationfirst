@@ -15,9 +15,9 @@ export default function TransactionList({ items, loading, totalCount, scanning, 
   if (loading) {
     return (
       <div className="la-table-wrapper">
-        <div className="la-loading">
-          <span className="la-loading-cursor" aria-hidden="true" />
-          <span className="la-loading-text">Loading transactions</span>
+        <div className="cf-loading">
+          <span className="cf-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-text">Loading&hellip;</span>
         </div>
       </div>
     )
@@ -26,12 +26,12 @@ export default function TransactionList({ items, loading, totalCount, scanning, 
   if (items.length === 0 && !scanning) {
     return (
       <div className="la-table-wrapper">
-        <div className="la-empty">
-          <DocumentTextIcon className="la-empty-icon" aria-hidden="true" />
-          <p className="la-empty-title">
+        <div className="cf-empty">
+          <DocumentTextIcon className="cf-empty-icon" aria-hidden="true" />
+          <p className="cf-empty-title">
             {totalCount === 0 ? 'No transactions yet' : 'No matching items'}
           </p>
-          <p className="la-empty-desc">
+          <p className="cf-empty-desc">
             {totalCount === 0
               ? 'Connect a bank account or upload a bill to get started.'
               : 'Adjust your filters to see more results.'}

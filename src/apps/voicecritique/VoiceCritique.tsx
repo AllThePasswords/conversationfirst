@@ -131,11 +131,9 @@ export default function VoiceCritique({ householdId }: VoiceCritiqueProps) {
 
   if (loadingKey) {
     return (
-      <div className="vc-container">
-        <div className="vc-loading">
-          <span className="vc-loading-cursor" aria-hidden="true" />
-          <span className="vc-loading-text">Loading&hellip;</span>
-        </div>
+      <div className="cf-loading">
+        <span className="cf-loading-cursor" aria-hidden="true" />
+        <span className="cf-loading-text">Loading&hellip;</span>
       </div>
     )
   }
@@ -163,7 +161,7 @@ export default function VoiceCritique({ householdId }: VoiceCritiqueProps) {
         />
       ) : activeSession?.status === 'processing' ? (
         <div className="vc-processing">
-          <span className="vc-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-cursor" aria-hidden="true" />
           <span className="vc-processing-text">Structuring your critique&hellip;</span>
         </div>
       ) : activeSession?.status === 'completed' ? (

@@ -294,15 +294,15 @@ export default function VaultPage({ householdId }: VaultPageProps) {
       {/* ─── Connections table ─── */}
       <div className="vault-table-wrapper">
         {loading && allRows.length === 0 ? (
-          <div className="vault-loading">
-            <span className="cf-loading-cursor" />
-            <span className="cf-loading-text">Loading connections</span>
+          <div className="cf-loading">
+            <span className="cf-loading-cursor" aria-hidden="true" />
+            <span className="cf-loading-text">Loading&hellip;</span>
           </div>
         ) : allRows.length === 0 ? (
-          <div className="vault-empty">
-            <KeyIcon className="vault-empty-icon" aria-hidden="true" />
-            <p className="vault-empty-title">No connections yet</p>
-            <p className="vault-empty-desc">
+          <div className="cf-empty">
+            <KeyIcon className="cf-empty-icon" aria-hidden="true" />
+            <p className="cf-empty-title">No connections yet</p>
+            <p className="cf-empty-desc">
               Add API keys here or connect accounts through your apps.
             </p>
           </div>

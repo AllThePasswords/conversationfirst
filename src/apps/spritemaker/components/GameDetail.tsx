@@ -85,8 +85,9 @@ export default function GameDetail({
   if (loading || !game) {
     return (
       <div className="sm-page">
-        <div className="sm-empty">
-          <span className="sm-loading-text">Loading game...</span>
+        <div className="cf-loading">
+          <span className="cf-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-text">Loading&hellip;</span>
         </div>
       </div>
     )
@@ -170,11 +171,14 @@ export default function GameDetail({
       </div>
 
       {filtered.length === 0 ? (
-        <div className="sm-empty">
-          <p className="sm-empty-text">
+        <div className="cf-empty">
+          <p className="cf-empty-title">
+            {assets.length === 0 ? 'No sprites yet' : `No ${typeFilter} sprites`}
+          </p>
+          <p className="cf-empty-desc">
             {assets.length === 0
-              ? 'No sprites yet. Generate or upload your first sprite.'
-              : `No ${typeFilter} sprites.`}
+              ? 'Generate or upload your first sprite.'
+              : 'Try a different filter.'}
           </p>
         </div>
       ) : (

@@ -64,8 +64,9 @@ export default function SpriteMaker({ householdId }: SpriteMakerProps) {
 
   if (!householdId) {
     return (
-      <div className="sm-container">
-        <div className="sm-empty">Loading account...</div>
+      <div className="cf-loading">
+        <span className="cf-loading-cursor" aria-hidden="true" />
+        <span className="cf-loading-text">Loading&hellip;</span>
       </div>
     )
   }

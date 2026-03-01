@@ -161,9 +161,9 @@ export default function FullyPresent({ householdId }: FullyPresentProps) {
   // Loading state
   if (isLoading) {
     return (
-      <div className="fp-loading">
-        <span className="fp-loading-cursor" />
-        <span className="fp-loading-text">Loading</span>
+      <div className="cf-loading">
+        <span className="cf-loading-cursor" aria-hidden="true" />
+        <span className="cf-loading-text">Loading&hellip;</span>
       </div>
     )
   }

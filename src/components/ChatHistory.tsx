@@ -32,10 +32,10 @@ export default function ChatHistory({ conversations, onSelect, onNew, onDelete }
 
       {conversations.length === 0 ? (
         <div className="ch-table-wrapper">
-          <div className="ch-empty">
-            <ChatBubbleOvalLeftIcon className="ch-empty-icon" aria-hidden="true" />
-            <div className="ch-empty-title">No conversations yet</div>
-            <div className="ch-empty-desc">Start a new chat to begin.</div>
+          <div className="cf-empty">
+            <ChatBubbleOvalLeftIcon className="cf-empty-icon" aria-hidden="true" />
+            <div className="cf-empty-title">No conversations yet</div>
+            <div className="cf-empty-desc">Start a new chat to begin.</div>
           </div>
         </div>
       ) : (

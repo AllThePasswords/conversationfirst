@@ -461,9 +461,9 @@ export default function LifeAdmin({ householdId }: LifeAdminProps) {
 
   if (!householdId) {
     return (
-      <div className="la-loading">
-        <span className="la-loading-cursor" />
-        <span className="la-loading-text">Loading household</span>
+      <div className="cf-loading">
+        <span className="cf-loading-cursor" aria-hidden="true" />
+        <span className="cf-loading-text">Loading&hellip;</span>
       </div>
     )
   }

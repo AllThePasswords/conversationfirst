@@ -149,7 +149,7 @@ export default function GlobalChatPanel() {
         {isStreaming && (
           <div className="fp-chat-msg fp-chat-msg--assistant">
             <div className="fp-chat-msg-bubble">
-              <span className="fp-loading-cursor" />
+              <span className="cf-loading-cursor" />
               <span className="fp-chat-streaming-text">Generating</span>
             </div>
           </div>

@@ -90,13 +90,14 @@ export default function GameList({ games, loading, householdId, onSelectGame, on
       )}
 
       {loading ? (
-        <div className="sm-empty">
-          <span className="sm-loading-text">Loading games...</span>
+        <div className="cf-loading">
+          <span className="cf-loading-cursor" aria-hidden="true" />
+          <span className="cf-loading-text">Loading&hellip;</span>
         </div>
       ) : games.length === 0 ? (
-        <div className="sm-empty">
-          <span className="sm-empty-icon">SM</span>
-          <p className="sm-empty-text">No games yet. Create one to start generating sprites.</p>
+        <div className="cf-empty">
+          <p className="cf-empty-title">No games yet</p>
+          <p className="cf-empty-desc">Create one to start generating sprites.</p>
         </div>
       ) : (
         <div className="sm-game-grid">

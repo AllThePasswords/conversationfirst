@@ -93,13 +93,13 @@ export default function PresentationsList() {
 
       {recentPresentations.length === 0 ? (
         <div className="fp-presentations-table-wrapper">
-          <div className="fp-presentations-empty">
+          <div className="cf-empty">
             <PresentationChartBarIcon
-              className="fp-presentations-empty-icon"
+              className="cf-empty-icon"
               aria-hidden="true"
             />
-            <p className="fp-presentations-empty-title">No presentations yet</p>
-            <p className="fp-presentations-empty-desc">
+            <p className="cf-empty-title">No presentations yet</p>
+            <p className="cf-empty-desc">
               Create a new presentation to get started.
             </p>
           </div>
