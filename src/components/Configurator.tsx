@@ -125,8 +125,8 @@ function generateTestPage(c) {
   const shapeAttr = hasCut ? ' data-shape="cut"' : '';
   let cutCSS = '';
   if (c.shape === 'cut') {
-    cutCSS += `[data-shape="cut"] code,[data-shape="cut"] kbd,[data-shape="cut"] .badge,[data-shape="cut"] .cite-inline,[data-shape="cut"] .nav-item,[data-shape="cut"] .nav-item.active,[data-shape="cut"] .skeleton-line{border-radius:0;clip-path:polygon(var(--cut-sm) 0,calc(100% - var(--cut-sm)) 0,100% var(--cut-sm),100% calc(100% - var(--cut-sm)),calc(100% - var(--cut-sm)) 100%,var(--cut-sm) 100%,0 calc(100% - var(--cut-sm)),0 var(--cut-sm))}
-[data-shape="cut"] .btn,[data-shape="cut"] .input,[data-shape="cut"] textarea.input,[data-shape="cut"] select.input,[data-shape="cut"] .alert,[data-shape="cut"] pre,[data-shape="cut"] .toast,[data-shape="cut"] .cite-block,[data-shape="cut"] .skip-link{border-radius:0;clip-path:polygon(var(--cut-md) 0,calc(100% - var(--cut-md)) 0,100% var(--cut-md),100% calc(100% - var(--cut-md)),calc(100% - var(--cut-md)) 100%,var(--cut-md) 100%,0 calc(100% - var(--cut-md)),0 var(--cut-md))}
+    cutCSS += `[data-shape="cut"] code,[data-shape="cut"] kbd,[data-shape="cut"] .badge,[data-shape="cut"] .cite-inline,[data-shape="cut"] .nav-item,[data-shape="cut"] .nav-item.active,[data-shape="cut"] .skeleton-line{border-radius:0;clip-path:polygon(var(--cut-sm) 0,100% 0,100% 100%,0 100%,0 var(--cut-sm))}
+[data-shape="cut"] .btn,[data-shape="cut"] .input,[data-shape="cut"] textarea.input,[data-shape="cut"] select.input,[data-shape="cut"] .alert,[data-shape="cut"] pre,[data-shape="cut"] .toast,[data-shape="cut"] .cite-block,[data-shape="cut"] .skip-link{border-radius:0;clip-path:polygon(var(--cut-md) 0,100% 0,100% 100%,0 100%,0 var(--cut-md))}
 `;
   }
   if (ctr === 'cut') {
@@ -830,28 +830,18 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 **Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner — top-left chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
-Three cut sizes:
-- \`--cut-sm\`: 4px — badges, inline code, small controls (all corners)
-- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts (all corners)
-- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar (top-left only)
+Three cut sizes (all top-left corner only):
+- \`--cut-sm\`: 4px — badges, inline code, small controls
+- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts
+- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar
 
-Clip-path polygon for buttons/inputs (all corners, --cut-md):
+Clip-path polygon (top-left only):
 \\\`\\\`\\\`css
 clip-path: polygon(
-  var(--cut-md) 0, calc(100% - var(--cut-md)) 0,
-  100% var(--cut-md), 100% calc(100% - var(--cut-md)),
-  calc(100% - var(--cut-md)) 100%, var(--cut-md) 100%,
-  0 calc(100% - var(--cut-md)), 0 var(--cut-md)
-);
-\\\`\\\`\\\`
-
-Clip-path polygon for containers (top-left only, --cut-lg):
-\\\`\\\`\\\`css
-clip-path: polygon(
-  var(--cut-lg) 0, 100% 0,
+  var(--cut-md) 0, 100% 0,
   100% 100%,
   0 100%,
-  0 var(--cut-lg)
+  0 var(--cut-md)
 );
 \\\`\\\`\\\`
 
@@ -1995,7 +1985,7 @@ export default function Configurator() {
               const on = choices.shape === s.id;
               const ac = choices.accent?.hex || "var(--accent)";
               const btnRadius = s.id === "rounded" ? "8px" : s.id === "pill" ? "9999px" : "0";
-              const cutClipBtn = "polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px)";
+              const cutClipBtn = "polygon(6px 0, 100% 0, 100% 100%, 0 100%, 0 6px)";
               return (
                 <button key={s.id} onClick={() => setChoices(p => ({ ...p, shape: s.id }))} style={{
                   display: "block", width: "100%", textAlign: "left", padding: "var(--space-4) var(--space-5)",

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Hero from './Hero'
 import Configurator from './Configurator'
 import SectionAccordion from './SectionAccordion'
@@ -31,9 +31,22 @@ type Tab = 'spec' | 'configure'
 
 export default function OverviewPage() {
   const [activeTab, setActiveTab] = useState<Tab>('spec')
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const onScroll = () => setScrolled(el.scrollTop > 20)
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <div className="overview-page">
+    <div className="overview-page" ref={scrollRef}>
+      <header className={`ds-pinned-header${scrolled ? ' ds-pinned-header--scrolled' : ''}`}>
+        <span className="ds-pinned-header-title">Conversation First</span>
+      </header>
       <div className="page">
         <Hero />
 

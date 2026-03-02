@@ -191,25 +191,27 @@ function CitationFooter({ citations }) {
   const hiddenCount = unique.length - MAX_VISIBLE_SOURCES;
 
   return (
-    <div className="web-citations">
-      <div className="web-citations-label">Sources</div>
-      {visible.map((c, i) => (
-        <a
-          key={i}
-          className="web-citation-link"
-          href={c.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="web-citation-num">{i + 1}</span>
-          <span className="web-citation-title">{c.title}</span>
-          <span className="web-citation-url">{new URL(c.url).hostname}</span>
-          <span className="web-citation-arrow">↗</span>
-        </a>
-      ))}
+    <div className="cite-footer">
+      <div className="cite-footer-title">Sources</div>
+      <ul className="cite-footer-list">
+        {visible.map((c, i) => (
+          <li key={i} className="cite-footer-item">
+            <a
+              className="cite-footer-link"
+              href={c.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="cite-inline">{i + 1}</span>
+              {c.title}
+              <span className="cite-footer-source">· {new URL(c.url).hostname}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
       {hiddenCount > 0 && !expanded && (
         <button
-          className="web-citations-toggle"
+          className="cite-footer-toggle"
           onClick={() => setExpanded(true)}
         >
           Show {hiddenCount} more source{hiddenCount !== 1 ? 's' : ''}

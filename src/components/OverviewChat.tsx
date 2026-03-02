@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { streamResponse } from '../lib/streamResponse'
 import OverviewPage from './OverviewPage'
 import ChatInput from './ChatInput'
@@ -21,6 +21,7 @@ export default function OverviewChat() {
   const citationsRef = useRef<any[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLElement>(null)
+  const [headerScrolled, setHeaderScrolled] = useState(false)
 
   const chatActive = messages.length > 0 || isStreaming
 
@@ -28,6 +29,15 @@ export default function OverviewChat() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, streamingContent])
+
+  // Show header border on scroll
+  useEffect(() => {
+    const el = messagesContainerRef.current
+    if (!el) return
+    const onScroll = () => setHeaderScrolled(el.scrollTop > 8)
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [chatActive])
 
   const handleSend = useCallback((text: string) => {
     if (!text.trim()) return
@@ -96,15 +106,16 @@ export default function OverviewChat() {
     <>
       {chatActive ? (
         <div className="chat-page">
-          <header className="chat-header">
+          <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
             <button
-              className="btn btn-ghost"
+              className="chat-icon-btn"
               onClick={handleClose}
-              style={{ marginLeft: 'auto', gap: 'var(--space-2)', display: 'flex', alignItems: 'center' }}
+              aria-label="Back to design system"
+              type="button"
             >
-              <XMarkIcon width={16} height={16} />
-              Close
+              <ArrowLeftIcon width={18} height={18} />
             </button>
+            <div className="chat-header-title">Design System Chat</div>
           </header>
 
           <main className="chat-messages" ref={messagesContainerRef}>
@@ -114,7 +125,7 @@ export default function OverviewChat() {
               ))}
 
               {isStreaming && (
-                <div className="chat-bubble">
+                <div className="chat-bubble streaming">
                   {isSearching && (
                     <div className="search-indicator" role="status" aria-live="polite">
                       <div className="processing-status">
@@ -126,7 +137,7 @@ export default function OverviewChat() {
                     </div>
                   )}
                   {streamingContent ? (
-                    <div>
+                    <div className="streaming-content">
                       <MarkdownRenderer content={streamingContent} />
                       <span className="streaming-cursor" />
                     </div>

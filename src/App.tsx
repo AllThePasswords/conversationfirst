@@ -1,6 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import OverviewPage from './components/OverviewPage'
-import ChatInput from './components/ChatInput'
+import OverviewChat from './components/OverviewChat'
 import AuthPage from './components/AuthPage'
 import AuthenticatedShell from './components/AuthenticatedShell'
 import PrepPasswordGate from './components/PrepPasswordGate'
@@ -24,13 +23,6 @@ const PREP_ROUTES: Record<string, React.LazyExoticComponent<any>> = {
   '#/prep/breeze': PrepBreeze,
   '#/prep/mobile': PrepMobile,
   '#/prep/leadership': PrepLeadership,
-}
-
-// Home page send: stash message and navigate to chat
-function handleHomeSend(text: string) {
-  if (!text.trim()) return
-  sessionStorage.setItem('cf-pending-message', text.trim())
-  window.location.hash = '#/apps/chat?new'
 }
 
 const LoginButton = () => (
@@ -81,6 +73,13 @@ export default function App() {
     }
   }, [isAuthenticated, isLogin])
 
+  // Redirect: unauthenticated users on protected routes → login
+  useEffect(() => {
+    if (!isAuthenticated && (isApps || isVault || isOverview || isChat)) {
+      window.location.hash = '#/login'
+    }
+  }, [isAuthenticated, isApps, isVault, isOverview, isChat])
+
   // Show loading while auth initializes
   if (loading) {
     return null
@@ -112,7 +111,7 @@ export default function App() {
     return <AuthenticatedShell user={user} session={session} />
   }
 
-  // Public landing page
+  // Public landing page — ephemeral guest chat (no auth required)
   return (
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>
@@ -122,9 +121,8 @@ export default function App() {
       </header>
 
       <main id="main-content">
-        <OverviewPage />
+        <OverviewChat />
       </main>
-      <ChatInput onSend={handleHomeSend} variant="floating" />
     </div>
   )
 }

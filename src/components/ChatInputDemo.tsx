@@ -81,9 +81,9 @@ export default function ChatInputDemo() {
                   <XMarkIcon width={20} height={20} aria-hidden="true" />
                 </button>
 
-                <div className="chat-voice-waveform" aria-label="Recording voice" role="status">
+                <div className="chat-voice-waveform" aria-label="Recording voice" role="status" style={{ gap: 3 }}>
                   {Array.from({ length: waveformBars }, (_, i) => (
-                    <div key={i} className="voice-bar" style={{ animationDelay: `${(i * 0.08) % 1.2}s` }} />
+                    <div key={i} className="voice-bar" style={{ animationDelay: `${(i * 0.07) % 1.2}s` }} />
                   ))}
                 </div>
 
