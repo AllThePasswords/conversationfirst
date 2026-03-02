@@ -154,6 +154,10 @@
   position: relative;
   flex-shrink: 0;
 }
+/* Tighten gap between attach and mic/send buttons */
+.chat-attach-wrapper + .chat-icon-btn {
+  margin-left: calc(-1 * var(--space-2));
+}
 
 .chat-attach-btn svg {
   transition: transform var(--duration-base) var(--ease-spring);
@@ -169,7 +173,7 @@
 .chat-attach-menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));
-  left: calc(50% + 24px);
+  right: 0;
   min-width: 180px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -185,16 +189,18 @@
 @keyframes attach-menu-in {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(var(--space-2));
+    transform: translateY(var(--space-2));
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
 .chat-attach-menu-item {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
