@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div className="section" style={{ marginBottom: 'var(--space-12)', paddingBottom: 'var(--space-8)', borderBottom: '1px solid var(--border)' }}>
+    <div className="section" style={{ marginBottom: 'var(--space-12)' }}>
       <div style={{ fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', fontWeight: 500, marginBottom: 'var(--space-3)' }}>
         Design system for AI chat interfaces
       </div>

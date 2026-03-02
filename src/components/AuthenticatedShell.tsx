@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { HouseholdCtx, useHouseholdProvider } from '../lib/useHousehold'
 import SideNav from './SideNav'
-import ChatInput from './ChatInput'
 import VaultPage from './VaultPage'
 import ChatPage from './ChatPage'
 import PageTransition from './PageTransition'
-import OverviewPage from './OverviewPage'
+import OverviewChat from './OverviewChat'
 import LifeAdmin from '../apps/lifeadmin/LifeAdmin'
 import FullyPresent from '../apps/fullypresent/FullyPresent'
 import OnPoint from '../apps/onpoint/OnPoint'
@@ -79,12 +78,6 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
     navigate('chat')
   }, [createConversation, navigate])
 
-  const handleHomeSend = useCallback((text: string) => {
-    if (!text.trim()) return
-    sessionStorage.setItem('cf-pending-message', text.trim())
-    window.location.hash = '#/apps/chat?new'
-  }, [])
-
   return (
     <HouseholdCtx.Provider value={householdValue}>
       <div className={`cf-shell${menuOpen ? ' cf-menu-open' : ''}`}>
@@ -117,8 +110,7 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
         <main className="cf-main">
           {currentView === 'overview' ? (
             <PageTransition key="overview">
-              <OverviewPage />
-              <ChatInput onSend={handleHomeSend} variant="floating" />
+              <OverviewChat />
             </PageTransition>
           ) : currentView === 'vault' ? (
             <PageTransition key="vault">
@@ -161,8 +153,7 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
             </PageTransition>
           ) : (
             <PageTransition key="overview">
-              <OverviewPage />
-              <ChatInput onSend={handleHomeSend} variant="floating" />
+              <OverviewChat />
             </PageTransition>
           )}
         </main>
