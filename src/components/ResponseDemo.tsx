@@ -136,46 +136,46 @@ export default function ResponseDemo() {
       {/* --- Do / Don't --- */}
       <h3 style={{ fontSize: 'var(--text-lg)' }}>Correct vs. incorrect</h3>
 
-      <div className="grid-2" style={{ gap: 'var(--space-4)', marginBottom: 'var(--space-10)' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4 style={{ marginTop: 0 }}>Correct</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', flex: 1 }}>
-            <p>
-              The deployment failed because the health check endpoint returns 503 during cold starts. The container needs 4.2 seconds to initialise, but the load balancer timeout is set to 3 seconds.
-            </p>
-            <p style={{ marginBottom: 0 }}>
-              Increase the health check grace period to 10 seconds in your task definition. This gives the container time to warm up before traffic arrives.
-            </p>
-          </div>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-muted)',
-            padding: 'var(--space-3) var(--space-4)',
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-md)',
-          }}>
-            Two clear paragraphs. No orphans. Natural reading rhythm.
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gridTemplateRows: 'auto 1fr auto', columnGap: 'var(--space-4)', rowGap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
+        <h4 style={{ marginTop: 0, marginBottom: 0 }}>Correct</h4>
+        <h4 style={{ marginTop: 0, marginBottom: 0 }}>Incorrect</h4>
+
+        <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)' }}>
+          <p>
+            The deployment failed because the health check endpoint returns 503 during cold starts. The container needs 4.2 seconds to initialise, but the load balancer timeout is set to 3 seconds.
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            Increase the health check grace period to 10 seconds in your task definition. This gives the container time to warm up before traffic arrives.
           </p>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h4 style={{ marginTop: 0 }}>Incorrect</h4>
-          <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed', flex: 1 }}>
-            <p style={{ marginBottom: 0, maxWidth: 'none' }}>
-              The deployment failed because the health check endpoint returns 503 during cold starts because the container needs 4.2 seconds to initialise but the load balancer timeout is set to 3 seconds so you should increase the health check grace period to 10 seconds in your task definition which gives the container time to warm up before traffic arrives and then the health checks will pass and the deployment will succeed and your users will not see any downtime during deployments anymore.
-            </p>
-          </div>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-muted)',
-            padding: 'var(--space-3) var(--space-4)',
-            background: 'var(--destructive-subtle)',
-            border: '1px solid color-mix(in srgb, var(--destructive) 15%, transparent)',
-            borderRadius: 'var(--radius-md)',
-          }}>
-            Single run-on paragraph. No structure. Eye loses its place.
+        <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
+          <p style={{ marginBottom: 0, maxWidth: 'none' }}>
+            The deployment failed because the health check endpoint returns 503 during cold starts because the container needs 4.2 seconds to initialise but the load balancer timeout is set to 3 seconds so you should increase the health check grace period to 10 seconds in your task definition which gives the container time to warm up before traffic arrives and then the health checks will pass and the deployment will succeed and your users will not see any downtime during deployments anymore.
           </p>
         </div>
+
+        <p style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--text-muted)',
+          padding: 'var(--space-3) var(--space-4)',
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-md)',
+          margin: 0,
+        }}>
+          Two clear paragraphs. No orphans. Natural reading rhythm.
+        </p>
+        <p style={{
+          fontSize: 'var(--text-xs)',
+          color: 'var(--text-muted)',
+          padding: 'var(--space-3) var(--space-4)',
+          background: 'var(--destructive-subtle)',
+          border: '1px solid color-mix(in srgb, var(--destructive) 15%, transparent)',
+          borderRadius: 'var(--radius-md)',
+          margin: 0,
+        }}>
+          Single run-on paragraph. No structure. Eye loses its place.
+        </p>
       </div>
 
       {/* --- User bubble rules --- */}

@@ -7,6 +7,7 @@ import {
   CameraIcon,
   PhotoIcon,
   DocumentTextIcon,
+  PaperClipIcon,
 } from '@heroicons/react/24/outline';
 
 export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage, variant = 'bar' }) {
@@ -289,7 +290,17 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
                 <div className="chat-thumbnails" role="list" aria-label="Attached files">
                   {stagedImages.map((img, i) => (
                     <div key={img.id} className="chat-thumb" role="listitem">
-                      <img src={img.preview} alt={`Attachment ${i + 1}`} />
+                      {img.preview ? (
+                        <img src={img.preview} alt={`Attachment ${i + 1}`} />
+                      ) : (
+                        <div className="chat-thumb-placeholder">
+                          {img.file?.type?.startsWith('image/')
+                            ? <PhotoIcon width={22} height={22} />
+                            : img.file?.name?.match(/\.(pdf|doc|docx|txt|md)$/i)
+                              ? <DocumentTextIcon width={22} height={22} />
+                              : <PaperClipIcon width={22} height={22} />}
+                        </div>
+                      )}
                       <button
                         className="chat-thumb-remove"
                         onClick={() => onRemoveImage && onRemoveImage(img.id)}
