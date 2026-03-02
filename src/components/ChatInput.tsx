@@ -10,12 +10,89 @@ import {
   PaperClipIcon,
 } from '@heroicons/react/24/outline';
 
+/** Live audio-reactive waveform driven by AnalyserNode frequency data. */
+function LiveWaveform({ stream }: { stream: MediaStream | null }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<{ analyser: AnalyserNode; data: Uint8Array; audioCtx: AudioContext } | null>(null);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (!stream || !canvasRef.current) return;
+
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaStreamSource(stream);
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    analyser.smoothingTimeConstant = 0.6;
+    source.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    ctxRef.current = { analyser, data, audioCtx };
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d')!;
+    const barCount = 30;
+    const gap = 3;
+    const barWidth = 2.5;
+
+    const fillColor = getComputedStyle(canvas).color || '#1a1a1a';
+
+    const draw = () => {
+      analyser.getByteFrequencyData(data);
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const totalBarsWidth = barCount * barWidth + (barCount - 1) * gap;
+      const startX = (w - totalBarsWidth) / 2;
+
+      ctx.fillStyle = fillColor;
+
+      for (let i = 0; i < barCount; i++) {
+        // Map bar index to a frequency bin (spread across available bins)
+        const binIndex = Math.floor((i / barCount) * data.length);
+        const value = data[binIndex] / 255;
+        const minH = 3;
+        const maxH = h * 0.85;
+        const barH = minH + value * (maxH - minH);
+        const x = startX + i * (barWidth + gap);
+        const y = (h - barH) / 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barWidth, barH, barWidth / 2);
+        ctx.fill();
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      source.disconnect();
+      audioCtx.close();
+      ctxRef.current = null;
+    };
+  }, [stream]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="chat-voice-canvas"
+      width={300}
+      height={44}
+      aria-label="Recording voice"
+      role="status"
+    />
+  );
+}
+
 export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage, variant = 'bar' }) {
   const [text, setText] = useState('');
   const [dragging, setDragging] = useState(false);
   const [listening, setListening] = useState(false);
   const [dismissing, setDismissing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [micStream, setMicStream] = useState<MediaStream | null>(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const cameraInputRef = useRef(null);
@@ -29,19 +106,33 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    const maxH = listening ? 320 : 200;
+    const maxH = listening ? 320 : 280;
     el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
   }, [listening]);
+
+  // Re-measure textarea height after React renders new text
+  useEffect(() => {
+    resize();
+  }, [text, resize]);
 
   const speechSupported = typeof window !== 'undefined' &&
     (window.SpeechRecognition || window.webkitSpeechRecognition);
 
-  const toggleListening = useCallback(() => {
+  const toggleListening = useCallback(async () => {
     if (!speechSupported) return;
 
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       return;
+    }
+
+    // Get mic stream for live waveform visualisation
+    let stream: MediaStream | null = null;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setMicStream(stream);
+    } catch {
+      // Mic access denied — proceed without visualisation
     }
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -76,6 +167,11 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
       const isCancelled = cancelledRef.current;
       cancelledRef.current = false;
 
+      // Stop mic stream tracks
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+      }
+
       // Animate out before clearing
       setDismissing(true);
 
@@ -83,6 +179,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
       setTimeout(() => {
         setListening(false);
         setDismissing(false);
+        setMicStream(null);
         if (!isCancelled && fullText) {
           onSend(fullText, []);
         }
@@ -94,6 +191,10 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
       if (e.error !== 'aborted') {
         setListening(false);
         setDismissing(false);
+        setMicStream(null);
+      }
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
       }
       recognitionRef.current = null;
     };
@@ -211,12 +312,10 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
 
   const canSend = !disabled && (text.trim() || stagedImages.length > 0);
 
-  const waveformBars = 30;
-
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
+        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
@@ -265,10 +364,8 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
               <XMarkIcon width={20} height={20} aria-hidden="true" />
             </button>
 
-            <div className="chat-voice-waveform" aria-label="Recording voice" role="status">
-              {Array.from({ length: waveformBars }, (_, i) => (
-                <div key={i} className="voice-bar" style={{ animationDelay: `${(i * 0.08) % 1.2}s` }} />
-              ))}
+            <div className="chat-voice-waveform">
+              <LiveWaveform stream={micStream} />
             </div>
 
             <button

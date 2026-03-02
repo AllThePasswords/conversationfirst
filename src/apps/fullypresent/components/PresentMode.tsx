@@ -215,14 +215,19 @@ export default function PresentMode({
         const { data: { session } } = await supabase.auth.getSession()
         if (!session || cancelled) return
 
-        const response = await supabase.functions.invoke('synthesize-voice', {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-          body: { text: currentSlide.talkTrack, voiceId: settings.selectedVoiceId },
+        const res = await fetch('/api/tts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ text: currentSlide.talkTrack, voiceId: settings.selectedVoiceId }),
         })
 
-        if (cancelled || response.error || !response.data?.audio) return
+        const data = await res.json()
+        if (cancelled || !res.ok || !data?.audio) return
 
-        const { audio: base64Audio, duration: dur } = response.data
+        const { audio: base64Audio, duration: dur } = data
         const audio = new Audio(`data:audio/mpeg;base64,${base64Audio}`)
         audioRef.current = audio
 

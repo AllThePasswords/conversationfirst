@@ -3,24 +3,34 @@
    Platform shell styles with rounded corners (no clip-path)
    ========================================================================== */
 
-/* --- Shell Layout --- */
+/* --- Shell Layout (push-style sidenav) --- */
 
 .cf-shell {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 0fr 1fr;
   grid-template-rows: 1fr;
   height: 100%;
   overflow: hidden;
   font-family: var(--font-body);
+  transition: grid-template-columns var(--duration-base) var(--ease-out);
+}
+
+.cf-menu-open {
+  grid-template-columns: 260px 1fr;
+}
+
+/* --- Top Bar (contains hamburger) --- */
+
+.cf-topbar {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  flex-shrink: 0;
 }
 
 /* --- Hamburger Button --- */
 
 .cf-hamburger {
-  position: fixed;
-  top: var(--space-3);
-  left: var(--space-3);
-  z-index: 1100;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,6 +43,7 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   padding: 0;
+  flex-shrink: 0;
   transition: background var(--duration-fast) var(--ease-out);
 }
 
@@ -61,43 +72,31 @@
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* --- Menu Backdrop --- */
-
-.cf-menu-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.3);
-  animation: cf-fade-in var(--duration-base) var(--ease-out);
-}
-
-@keyframes cf-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* --- Side Nav --- */
+/* --- Side Nav (push layout) --- */
 
 .cf-sidenav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1050;
+  grid-column: 1;
+  grid-row: 1;
   width: 260px;
+  min-width: 0;
   height: 100%;
   background: var(--surface);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: calc(var(--space-4) + 44px) var(--space-3) var(--space-4);
+  padding: var(--space-4) var(--space-3);
   user-select: none;
   overflow-y: auto;
+  overflow-x: hidden;
   transform: translateX(-100%);
-  transition: transform var(--duration-base) var(--ease-out);
+  opacity: 0;
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out);
 }
 
 .cf-menu-open .cf-sidenav {
   transform: translateX(0);
+  opacity: 1;
 }
 
 .cf-nav-section {
@@ -109,6 +108,7 @@
 .cf-nav-item {
   display: flex;
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
@@ -298,13 +298,14 @@
 /* --- Main Content --- */
 
 .cf-main {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
   background: var(--bg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+  min-width: 0;
 }
 
 /* --- Shared Loading State --- */
@@ -1424,9 +1425,11 @@
 /* --- Responsive: Mobile --- */
 
 @media (max-width: 768px) {
+  .cf-menu-open {
+    grid-template-columns: min(85vw, 300px) 1fr;
+  }
   .cf-sidenav {
-    width: 85vw;
-    max-width: 300px;
+    width: min(85vw, 300px);
   }
 }
 

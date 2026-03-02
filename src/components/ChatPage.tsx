@@ -71,6 +71,8 @@ export default function ChatPage({
 
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const lastUserMsgRef = useRef(null);
+  const prevStreamingRef = useRef(false);
   const pendingSentRef = useRef(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
 
@@ -86,10 +88,14 @@ export default function ChatPage({
     setTimeout(() => sendMessage(pending), 50);
   }, [activeId, sendMessage, isAuthenticated]);
 
-  // Scroll to bottom only when messages array changes
+  // Scroll user's prompt to the top of the viewport when streaming starts.
+  // No auto-scroll during streaming — the user reads at their own pace.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (isStreaming && !prevStreamingRef.current && lastUserMsgRef.current) {
+      lastUserMsgRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    prevStreamingRef.current = isStreaming;
+  }, [isStreaming]);
 
   // Show header border on scroll
   useEffect(() => {
@@ -286,12 +292,18 @@ export default function ChatPage({
             </div>
           ) : (
             <>
-              {messages.map((m, i) => (
-                <ChatMessage key={i} message={m} showPlayAction={isAuthenticated} />
-              ))}
+              {messages.map((m, i) => {
+                const isLastUser = m.role === 'user' &&
+                  !messages.slice(i + 1).some(msg => msg.role === 'user');
+                return (
+                  <div key={i} ref={isLastUser ? lastUserMsgRef : undefined}>
+                    <ChatMessage message={m} showPlayAction={isAuthenticated} />
+                  </div>
+                );
+              })}
 
               {isStreaming && (
-                <div className="chat-bubble">
+                <div className="chat-bubble streaming">
                   {isSearching && (
                     <div className="search-indicator" role="status" aria-live="polite">
                       <div className="processing-status">
@@ -303,7 +315,7 @@ export default function ChatPage({
                     </div>
                   )}
                   {streamingContent ? (
-                    <div>
+                    <div className="streaming-content">
                       <MarkdownRenderer content={streamingContent} />
                       <span className="streaming-cursor" />
                     </div>

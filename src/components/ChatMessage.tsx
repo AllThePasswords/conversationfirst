@@ -40,6 +40,29 @@ function stripMarkdown(md: string): string {
     .trim();
 }
 
+/** Render user text with preserved line breaks — splits on double-newline for
+ *  paragraphs and single-newline for soft breaks within a paragraph. */
+function UserTextBlock({ text }: { text: string }) {
+  const paragraphs = text.split(/\n{2,}/);
+  return (
+    <>
+      {paragraphs.map((para, i) => {
+        const lines = para.split('\n');
+        return (
+          <p key={i} style={{ marginBottom: i < paragraphs.length - 1 ? '0.5em' : 0 }}>
+            {lines.map((line, j) => (
+              <span key={j}>
+                {j > 0 && <br />}
+                {line}
+              </span>
+            ))}
+          </p>
+        );
+      })}
+    </>
+  );
+}
+
 export default function ChatMessage({ message, showPlayAction = false }) {
   const displayContent = typeof message.content === 'string'
     ? message.content
@@ -65,11 +88,11 @@ export default function ChatMessage({ message, showPlayAction = false }) {
                 />
               ))}
               {message.content.filter(b => b.type === 'text').map((b, i) => (
-                <p key={i} style={{ marginBottom: 0 }}>{b.text}</p>
+                <UserTextBlock key={i} text={b.text} />
               ))}
             </>
           ) : (
-            <p style={{ marginBottom: 0 }}>{message.content}</p>
+            <UserTextBlock text={message.content} />
           )}
         </div>
       ) : (

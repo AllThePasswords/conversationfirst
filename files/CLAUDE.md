@@ -184,6 +184,32 @@ Five tiers, all typography-based:
 - Status: `--font-mono`, `--text-sm`, `--text-muted`
 - No spinners. No bouncing dots. Typography only.
 
+## Response streaming
+
+Streaming is a core interaction. It must feel smooth and intentional.
+
+### Rendering rules
+
+1. **Throttle to animation frames.** Never call `setState` on every SSE chunk. Accumulate into a ref, then flush via `requestAnimationFrame`. This caps visual updates at ~60fps and prevents layout thrash.
+2. **Contain layout during streaming.** The streaming bubble uses `contain: layout style` and `will-change: contents` so reflow is scoped to the bubble — not the entire page.
+3. **Fade in the first content.** When the first text chunk arrives, the streaming content block plays `stream-appear` (translateY(6px) + opacity, `--duration-base`, `--ease-out`).
+4. **Cursor indicates liveness.** A 2px accent-coloured blinking cursor sits inline after the last streamed character. Blink: 1s ease-in-out infinite.
+
+### Scroll behaviour
+
+1. **Prompt scrolls to top.** When the user sends a message, their prompt scrolls to `block: 'start'` of the viewport with `behavior: 'smooth'`.
+2. **No auto-scroll during streaming.** The viewport stays put while content grows below. The user reads at their own pace.
+3. **Bottom breathing room.** The messages container has `padding-bottom: 40vh` so the prompt can sit at the top with space below for the response.
+
+### Motion tokens
+
+| Animation | Duration | Easing | Purpose |
+|---|---|---|---|
+| `stream-appear` | `--duration-base` (200ms) | `--ease-out` | First content chunk fades in |
+| `cursor-blink` | 1s | ease-in-out | Blinking cursor during streaming |
+
+---
+
 ## Chat input
 
 The chat input is the primary interaction surface. Every element uses design system tokens. No inline SVGs — Heroicons only.

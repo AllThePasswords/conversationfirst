@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext'
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, TrashIcon, SwatchIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline'
 
 interface Conversation {
   id: string
@@ -19,8 +19,8 @@ interface SideNavProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'overview', label: 'Design System' },
-  { id: 'chat', label: 'Chat' },
+  { id: 'overview', label: 'Design System', icon: SwatchIcon },
+  { id: 'new-chat', label: 'New Chat', icon: ChatBubbleLeftIcon },
 ]
 
 export default function SideNav({
@@ -43,15 +43,20 @@ export default function SideNav({
   return (
     <nav className="cf-sidenav" aria-label="Platform navigation">
       <div className="cf-nav-section">
-        {NAV_ITEMS.map(item => (
-          <button
-            key={item.id}
-            className={`cf-nav-item${currentView === item.id ? ' cf-nav-item--active' : ''}`}
-            onClick={() => onNavigate(item.id)}
-          >
-            {item.label}
-          </button>
-        ))}
+        {NAV_ITEMS.map(item => {
+          const Icon = item.icon
+          const isNewChat = item.id === 'new-chat'
+          return (
+            <button
+              key={item.id}
+              className={`cf-nav-item${!isNewChat && currentView === item.id ? ' cf-nav-item--active' : ''}`}
+              onClick={() => isNewChat ? onNewChat() : onNavigate(item.id)}
+            >
+              <Icon width={16} height={16} aria-hidden="true" />
+              {item.label}
+            </button>
+          )
+        })}
       </div>
 
       <hr className="cf-nav-divider" />

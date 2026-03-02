@@ -17,7 +17,7 @@ export function useTextToSpeech() {
     };
   }, []);
 
-  const play = useCallback(async (text: string) => {
+  const play = useCallback(async (text: string, voiceId?: string) => {
     // If already playing, stop
     if (audioRef.current) {
       audioRef.current.pause();
@@ -34,17 +34,24 @@ export function useTextToSpeech() {
         return;
       }
 
-      const response = await supabase.functions.invoke('synthesize-voice', {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-        body: { text },
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ text, voiceId }),
       });
 
-      if (response.error || !response.data?.audio) {
+      const data = await response.json();
+
+      if (!response.ok || !data?.audio) {
+        console.error('TTS error:', data?.error || 'No audio returned');
         setState('idle');
         return;
       }
 
-      const audio = new Audio(`data:audio/mpeg;base64,${response.data.audio}`);
+      const audio = new Audio(`data:audio/mpeg;base64,${data.audio}`);
       audioRef.current = audio;
 
       audio.onended = () => {

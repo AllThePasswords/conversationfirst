@@ -78,13 +78,15 @@ export default function TalkTrackPanel({
       try {
         const { data: { session } } = await supabase.auth.getSession()
         if (!session) return
-        const response = await supabase.functions.invoke('list-voices', {
+        const res = await fetch('/api/voices', {
           headers: { Authorization: `Bearer ${session.access_token}` },
         })
-        if (response.data?.voices) {
-          setVoices(response.data.voices)
-          if (!selectedVoiceId && response.data.voices.length > 0) {
-            setSelectedVoiceId(response.data.voices[0].id)
+        if (!res.ok) return
+        const data = await res.json()
+        if (data?.voices) {
+          setVoices(data.voices)
+          if (!selectedVoiceId && data.voices.length > 0) {
+            setSelectedVoiceId(data.voices[0].id)
           }
         }
       } catch {
@@ -164,17 +166,23 @@ export default function TalkTrackPanel({
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) return
 
-      const response = await supabase.functions.invoke('synthesize-voice', {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-        body: { text: value, voiceId: selectedVoiceId },
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ text: value, voiceId: selectedVoiceId }),
       })
 
-      if (response.error || !response.data?.audio) {
-        console.error('Voice synthesis failed:', response.error)
+      const data = await res.json()
+
+      if (!res.ok || !data?.audio) {
+        console.error('Voice synthesis failed:', data?.error)
         return
       }
 
-      const { audio: base64Audio, wordTimings: timings, duration: dur } = response.data
+      const { audio: base64Audio, wordTimings: timings, duration: dur } = data
       setWordTimings(timings || [])
       setDuration(dur || 0)
 

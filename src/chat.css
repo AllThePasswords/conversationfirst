@@ -13,11 +13,17 @@
   flex: 1;
   overflow-y: auto;
   padding: var(--space-6) var(--space-4);
+  /* Smooth momentum scrolling on touch devices */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .chat-messages-inner {
   max-width: 840px;
   margin: 0 auto;
+  /* Breathing room below the last message so the user's prompt
+     can sit at the top of the viewport with space to read. */
+  padding-bottom: 40vh;
 }
 
 /* Tighter chat bubble spacing for conversation flow */
@@ -34,8 +40,8 @@
 /* ===== Input Bar ===== */
 .chat-input-bar {
   flex-shrink: 0;
-  padding: var(--space-4) var(--space-8) var(--space-6);
-  background: linear-gradient(transparent, var(--bg) 40%);
+  padding: var(--space-4) var(--space-8) var(--space-5);
+  background: linear-gradient(transparent, var(--bg) 50%);
 }
 
 .chat-input-inner {
@@ -43,19 +49,25 @@
   margin: 0 auto;
   display: flex;
   gap: var(--space-1);
-  align-items: center;
+  align-items: flex-end;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: var(--radius-full);
   padding: var(--space-1) var(--space-2);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md), 0 0 0 1px color-mix(in srgb, var(--border) 50%, transparent);
   min-height: 56px;
   transition: border-color var(--duration-fast) var(--ease-out),
-              box-shadow var(--duration-fast) var(--ease-out);
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-radius var(--duration-fast) var(--ease-out);
 }
 .chat-input-inner:focus-within {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* Expanded state — softer corners when input has attachments */
+.chat-input-inner.has-attachments {
+  border-radius: 24px;
 }
 
 /* Recording state */
@@ -82,7 +94,7 @@
   color: var(--text);
   resize: none;
   min-height: 44px;
-  max-height: 200px;
+  max-height: 280px;
   line-height: var(--line-height-prose);
   overflow-y: auto;
   transition: max-height var(--duration-base) var(--ease-out);
@@ -157,7 +169,7 @@
 .chat-attach-menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));
-  right: 0;
+  left: calc(50% + 24px);
   min-width: 180px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -173,11 +185,11 @@
 @keyframes attach-menu-in {
   from {
     opacity: 0;
-    transform: translateY(var(--space-2));
+    transform: translateX(-50%) translateY(var(--space-2));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -407,9 +419,9 @@
 .response-actions {
   display: flex;
   gap: var(--space-2);
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border);
+  margin-top: var(--space-4);
+  padding-top: 0;
+  border-top: none;
 }
 
 .response-action-btn {
@@ -475,26 +487,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
   flex: 1;
   min-width: 0;
   height: 44px;
   padding: 0 var(--space-2);
 }
 
-.voice-bar {
-  width: 2.5px;
-  height: 4px;
-  background: var(--text);
-  border-radius: var(--radius-full);
-  animation: voice-bar 1.2s ease-in-out infinite alternate;
-  flex-shrink: 0;
-}
-
-@keyframes voice-bar {
-  0% { height: 4px; }
-  50% { height: 22px; }
-  100% { height: 6px; }
+.chat-voice-canvas {
+  width: 100%;
+  height: 44px;
+  color: var(--text);
 }
 
 /* ===== Recording Entry Animations ===== */
@@ -552,12 +554,9 @@
   animation: btn-spin-out 250ms var(--ease-out) both;
 }
 
-/* Bars freeze, container fades away */
+/* Canvas waveform fades out */
 .dismissing .chat-voice-waveform {
   animation: waveform-dismiss 280ms var(--ease-out) both;
-}
-.dismissing .voice-bar {
-  animation-play-state: paused;
 }
 
 /* ===== Send Button ===== */
@@ -730,7 +729,32 @@
 .ch-btn-icon svg { width: 14px; height: 14px; }
 .ch-delete-btn:hover { color: var(--destructive); }
 
-/* ===== Streaming Cursor ===== */
+/* ===== Streaming ===== */
+
+/* Layout containment during streaming reduces reflow cost.
+   The browser only recalculates this subtree, not the whole page. */
+.chat-bubble.streaming {
+  contain: layout style;
+  will-change: contents;
+}
+
+/* Content fades in gently when the first chunk arrives */
+.streaming-content {
+  animation: stream-appear var(--duration-base) var(--ease-out) both;
+}
+
+@keyframes stream-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Blinking cursor at the end of streaming text */
 .streaming-cursor {
   display: inline-block;
   width: 2px;
@@ -740,6 +764,11 @@
   vertical-align: text-bottom;
   margin-left: 2px;
   border-radius: 1px;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* ===== Welcome State ===== */
@@ -887,7 +916,6 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  padding-left: calc(36px + var(--space-3) + var(--space-3));
   border-bottom: 1px solid transparent;
   flex-shrink: 0;
   transition: border-color 0.2s;

@@ -158,10 +158,19 @@ export function useChatDB(conversationId, onTitleUpdate, accessToken, brain) {
         apiMessages.push({ role: m.role, content: apiContent });
       }
 
+      let rafScheduled = false;
+
       streamResponse(apiMessages, {
         onChunk(chunk) {
           accumulatorRef.current += chunk;
-          setStreamingContent(accumulatorRef.current);
+          // Throttle to animation frames for smooth rendering
+          if (!rafScheduled) {
+            rafScheduled = true;
+            requestAnimationFrame(() => {
+              setStreamingContent(accumulatorRef.current);
+              rafScheduled = false;
+            });
+          }
         },
         onSearchStart() {
           setIsSearching(true);

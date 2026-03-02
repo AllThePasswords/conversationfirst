@@ -431,21 +431,22 @@ ol ol { list-style-type: lower-alpha; }
 ol ol ol { list-style-type: lower-roman; }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 
-/* Chat bubbles */
+/* Chat bubbles — assistant messages flow directly, no card */
 .chat-bubble {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5) var(--space-6);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: var(--space-3) 0;
   margin-bottom: var(--space-3);
   font-size: var(--text-base);
 }
 .chat-bubble.user {
   background: color-mix(in srgb, var(--text) 6%, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   margin-left: auto;
   width: fit-content;
   max-width: 85%;
-  border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-5);
 }
 
@@ -1439,7 +1440,6 @@ kbd {
 /* --- Large cut (top-left only): cards, modals, bubbles, sidebar, preview --- */
 [data-shape="cut"] .card,
 [data-shape="cut"] .modal,
-[data-shape="cut"] .chat-bubble,
 [data-shape="cut"] .chat-bubble.user,
 [data-shape="cut"] .sidebar,
 [data-shape="cut"] .cf-preview {
