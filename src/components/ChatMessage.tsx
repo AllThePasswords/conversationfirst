@@ -1,5 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import {
+  ClipboardDocumentIcon,
+  ClipboardDocumentCheckIcon,
+  SpeakerWaveIcon,
+  StopIcon,
+} from '@heroicons/react/24/outline';
 import MarkdownRenderer from './MarkdownRenderer';
+import { useTextToSpeech } from '../hooks/useTextToSpeech';
 
 const MAX_VISIBLE_SOURCES = 3;
 
@@ -18,12 +25,29 @@ function dedupeCitations(citations) {
   });
 }
 
-export default function ChatMessage({ message }) {
+/** Strip markdown to plain text for clipboard. */
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, m => m.replace(/```\w*\n?/g, '').replace(/```/g, ''))
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^\s*[-*+]\s+/gm, '- ')
+    .replace(/^\s*\d+\.\s+/gm, m => m)
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+export default function ChatMessage({ message, showPlayAction = false }) {
   const displayContent = typeof message.content === 'string'
     ? message.content
     : Array.isArray(message.content)
       ? message.content.filter(b => b.type === 'text').map(b => b.text).join('')
       : '';
+
+  const isAssistant = message.role !== 'user';
 
   return (
     <div className={`chat-bubble ${message.role === 'user' ? 'user' : ''}`}>
@@ -54,7 +78,79 @@ export default function ChatMessage({ message }) {
           {message.citations && message.citations.length > 0 && (
             <CitationFooter citations={message.citations} />
           )}
+          {isAssistant && displayContent && (
+            <ResponseActions
+              content={displayContent}
+              showPlay={showPlayAction}
+            />
+          )}
         </>
+      )}
+    </div>
+  );
+}
+
+function ResponseActions({ content, showPlay }: { content: string; showPlay: boolean }) {
+  const [copied, setCopied] = useState(false);
+  const tts = useTextToSpeech();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  const handleCopy = useCallback(() => {
+    const plainText = stripMarkdown(content);
+    navigator.clipboard.writeText(plainText).then(() => {
+      setCopied(true);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
+    });
+  }, [content]);
+
+  const handlePlay = useCallback(() => {
+    if (tts.state === 'playing') {
+      tts.stop();
+    } else {
+      const plainText = stripMarkdown(content);
+      tts.play(plainText);
+    }
+  }, [content, tts]);
+
+  return (
+    <div className="response-actions">
+      <button
+        className="response-action-btn"
+        type="button"
+        onClick={handleCopy}
+        aria-label={copied ? 'Copied' : 'Copy response'}
+      >
+        {copied ? (
+          <ClipboardDocumentCheckIcon className="response-action-icon" aria-hidden="true" />
+        ) : (
+          <ClipboardDocumentIcon className="response-action-icon" aria-hidden="true" />
+        )}
+        <span>{copied ? 'Copied' : 'Copy'}</span>
+      </button>
+
+      {showPlay && (
+        <button
+          className={`response-action-btn${tts.state === 'playing' ? ' active' : ''}`}
+          type="button"
+          onClick={handlePlay}
+          disabled={tts.state === 'loading'}
+          aria-label={tts.state === 'playing' ? 'Stop playback' : 'Read aloud'}
+        >
+          {tts.state === 'playing' ? (
+            <StopIcon className="response-action-icon" aria-hidden="true" />
+          ) : (
+            <SpeakerWaveIcon className="response-action-icon" aria-hidden="true" />
+          )}
+          <span>
+            {tts.state === 'loading' ? 'Loading\u2026' : tts.state === 'playing' ? 'Stop' : 'Play'}
+          </span>
+        </button>
       )}
     </div>
   );

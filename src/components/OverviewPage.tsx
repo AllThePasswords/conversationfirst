@@ -59,6 +59,8 @@ export default function OverviewPage() {
           >
             Configure
           </button>
+          <div className="ds-tabs-spacer" />
+          <ThemePresetBar />
         </div>
 
         {/* ── Design Spec panel ── */}
@@ -119,7 +121,6 @@ export default function OverviewPage() {
             id="ds-panel-configure"
             aria-labelledby="ds-tab-configure"
           >
-            <ThemePresetBar />
             <Configurator />
           </div>
         )}

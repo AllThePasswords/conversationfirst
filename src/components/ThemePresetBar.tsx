@@ -5,7 +5,6 @@ export default function ThemePresetBar() {
 
   return (
     <div className="theme-bar">
-      <label className="theme-bar-label" htmlFor="theme-select">Theme</label>
       <select
         id="theme-select"
         className="theme-bar-select"

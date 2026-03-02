@@ -46,8 +46,8 @@
   height: 2px;
   background: var(--text-muted);
   border-radius: 1px;
-  transition: transform var(--duration-normal) var(--ease-out),
-              opacity var(--duration-normal) var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out);
 }
 
 /* Animate to X when menu is open */
@@ -68,7 +68,7 @@
   inset: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.3);
-  animation: cf-fade-in var(--duration-normal) var(--ease-out);
+  animation: cf-fade-in var(--duration-base) var(--ease-out);
 }
 
 @keyframes cf-fade-in {
@@ -93,7 +93,7 @@
   user-select: none;
   overflow-y: auto;
   transform: translateX(-100%);
-  transition: transform var(--duration-normal) var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out);
 }
 
 .cf-menu-open .cf-sidenav {

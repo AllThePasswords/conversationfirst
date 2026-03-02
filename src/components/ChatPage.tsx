@@ -287,7 +287,7 @@ export default function ChatPage({
           ) : (
             <>
               {messages.map((m, i) => (
-                <ChatMessage key={i} message={m} />
+                <ChatMessage key={i} message={m} showPlayAction={isAuthenticated} />
               ))}
 
               {isStreaming && (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 
 interface SectionAccordionProps {
   id: string
@@ -25,14 +26,14 @@ export default function SectionAccordion({ id, title, explainer, icon: Icon, def
         >
           {Icon && (
             <span className="section-accordion-icon" aria-hidden="true">
-              <Icon width={22} height={22} />
+              <Icon width={28} height={28} />
             </span>
           )}
           <div className="section-accordion-text">
             <span className="section-accordion-title">{title}</span>
             <span className="section-accordion-explainer">{explainer}</span>
           </div>
-          <span className="section-accordion-chevron" aria-hidden="true">&#x25B8;</span>
+          <ChevronRightIcon className="section-accordion-chevron" width={20} height={20} aria-hidden="true" />
         </button>
       </h2>
       <div

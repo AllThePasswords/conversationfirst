@@ -288,6 +288,69 @@ When recording stops (user taps mic again):
 - Active send: brief scale pulse `1.0 → 0.95 → 1.0`
 - Focus: `2px solid --accent`, `outline-offset: 2px`
 
+### Response micro-actions
+
+Every assistant response has a row of small utility buttons below the message content (and citations, if present). These are always visible but visually muted — not hidden behind hover.
+
+#### Anatomy
+
+```
+┌───────────────────────────────────────────┐
+│  [Response content]                       │
+│  [Citations if any]                       │
+│                                           │
+│  ┌─────┐ ┌─────┐                         │
+│  │ Copy│ │ Play│                          │
+│  └─────┘ └─────┘                         │
+└───────────────────────────────────────────┘
+```
+
+Two actions, left-aligned in a horizontal row:
+
+- **Copy** — `ClipboardDocumentIcon` 16/outline + "Copy" label. Copies the full response text (plain text, stripped of markdown) to the clipboard. On success, icon changes to `ClipboardDocumentCheckIcon` and label reads "Copied" for 2 seconds.
+- **Play** — `SpeakerWaveIcon` 16/outline + "Play" label. Sends the response text to ElevenLabs `synthesize-voice` Supabase Edge Function and plays the returned audio. While synthesizing: label reads "Loading…". While playing: icon pulses subtly, label reads "Stop", clicking again pauses. When no ElevenLabs connection exists, button is hidden.
+
+#### Styling
+
+```css
+.response-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.response-action-btn {
+  /* Same pattern as .code-copy-btn */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-btn-sm);
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.response-action-btn:hover {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+```
+
+#### Rules
+
+- Only on assistant messages. Never on user messages.
+- Always visible. Not hidden behind hover.
+- Copy always available. Play only when ElevenLabs is connected.
+- Icons: Heroicons 24/outline, rendered at 16px. No inline SVGs.
+- Actions sit below citations when citations exist.
+
 ### Keyboard
 
 - `Enter` sends the message
