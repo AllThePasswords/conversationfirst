@@ -211,7 +211,7 @@ export default function ChatPage({
       <a href="#chat-main" className="skip-link">Skip to content</a>
 
       <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-        {messages.length > 0 && activeConversation?.title && (
+        {activeConversation?.title && (
           <div className="chat-header-title">
             {activeConversation.title}
           </div>
@@ -240,9 +240,6 @@ export default function ChatPage({
             <div className="chat-welcome">
               <div className="welcome-header">
                 <h2>Conversation First</h2>
-                <p className="welcome-subtitle">
-                  The AI is a computer. Not a person, not an assistant, not a helper.
-                </p>
               </div>
 
               <div className="welcome-section">

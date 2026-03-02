@@ -10,7 +10,7 @@ import {
   PaperClipIcon,
 } from '@heroicons/react/24/outline';
 
-/** Live audio-reactive waveform — continuous stream flowing right → left. */
+/** Live audio-reactive waveform — vertical bars that grow with amplitude. */
 function LiveWaveform({ stream }: { stream: MediaStream | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
@@ -38,14 +38,21 @@ function LiveWaveform({ stream }: { stream: MediaStream | null }) {
     source.connect(analyser);
     const freqData = new Uint8Array(analyser.frequencyBinCount);
 
-    // Ring buffer for the scrolling waveform history
-    const historyLen = Math.ceil(w / 1.5);
-    const history = new Float32Array(historyLen);
+    // Bar configuration
+    const barWidth = 2;
+    const barGap = 3;
+    const barStep = barWidth + barGap;
+    const numBars = Math.floor(w / barStep);
+    const minBarH = 2;
+
+    // Ring buffer for scrolling bar history
+    const history = new Float32Array(numBars);
     let writeHead = 0;
     let lastPush = 0;
-    const pushInterval = 16; // ~60fps sample rate
+    const pushInterval = 50; // ~20 samples/sec for smooth scroll
 
     const accentColor = getComputedStyle(canvas).getPropertyValue('color').trim() || '#1a1a1a';
+    const startTime = performance.now();
 
     const draw = (now: number) => {
       analyser.getByteFrequencyData(freqData);
@@ -60,7 +67,7 @@ function LiveWaveform({ stream }: { stream: MediaStream | null }) {
 
       // Push new sample into ring buffer at a steady rate
       if (now - lastPush >= pushInterval) {
-        history[writeHead % historyLen] = rms;
+        history[writeHead % numBars] = rms;
         writeHead++;
         lastPush = now;
       }
@@ -68,61 +75,38 @@ function LiveWaveform({ stream }: { stream: MediaStream | null }) {
       ctx.clearRect(0, 0, w, h);
 
       const midY = h / 2;
-      const maxAmp = h * 0.4;
-      const stepX = w / historyLen;
+      const maxAmp = h * 0.38;
 
-      // Draw the flowing waveform — reads from ring buffer right-to-left
-      ctx.beginPath();
-      ctx.moveTo(w, midY);
+      // Fade-in over first 300ms
+      const elapsed = now - startTime;
+      const fadeIn = Math.min(elapsed / 300, 1);
 
-      for (let i = 0; i < historyLen; i++) {
-        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
-        const amp = history[idx] * maxAmp;
-        const x = w - i * stepX;
-        // Mirror waveform: top half
-        ctx.lineTo(x, midY - amp);
+      // Draw vertical bars from right to left (newest on right)
+      for (let i = 0; i < numBars; i++) {
+        const idx = ((writeHead - 1 - i) % numBars + numBars) % numBars;
+        const amp = history[idx];
+        const barH = Math.max(minBarH, amp * maxAmp);
+        const x = w - (i * barStep) - barWidth;
+
+        if (x < 0) break;
+
+        // Bars further from the right edge fade out
+        const distFade = 1 - (i / numBars) * 0.6;
+        ctx.globalAlpha = fadeIn * distFade * 0.7;
+        ctx.fillStyle = accentColor;
+
+        // Draw bar centered vertically with rounded caps
+        const radius = barWidth / 2;
+        const top = midY - barH;
+        const bottom = midY + barH;
+        const barFullH = bottom - top;
+
+        ctx.beginPath();
+        ctx.roundRect(x, top, barWidth, barFullH, radius);
+        ctx.fill();
       }
-
-      // Continue back across bottom half
-      for (let i = historyLen - 1; i >= 0; i--) {
-        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
-        const amp = history[idx] * maxAmp;
-        const x = w - i * stepX;
-        ctx.lineTo(x, midY + amp);
-      }
-
-      ctx.closePath();
-      ctx.fillStyle = accentColor;
-      ctx.globalAlpha = 0.35;
-      ctx.fill();
-
-      // Draw centre line for definition
-      ctx.beginPath();
-      ctx.moveTo(w, midY);
-      for (let i = 0; i < historyLen; i++) {
-        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
-        const amp = history[idx] * maxAmp;
-        const x = w - i * stepX;
-        ctx.lineTo(x, midY - amp);
-      }
-      ctx.strokeStyle = accentColor;
-      ctx.globalAlpha = 0.8;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Bottom mirror line
-      ctx.beginPath();
-      ctx.moveTo(w, midY);
-      for (let i = 0; i < historyLen; i++) {
-        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
-        const amp = history[idx] * maxAmp;
-        const x = w - i * stepX;
-        ctx.lineTo(x, midY + amp);
-      }
-      ctx.stroke();
 
       ctx.globalAlpha = 1;
-
       rafRef.current = requestAnimationFrame(draw);
     };
 

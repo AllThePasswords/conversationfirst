@@ -41,7 +41,8 @@
 .chat-input-bar {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-8) var(--space-5);
-  background: linear-gradient(transparent, var(--bg) 50%);
+  background: var(--bg);
+  box-shadow: 0 -8px 16px -4px color-mix(in srgb, var(--text) 4%, transparent);
 }
 
 .chat-input-inner {
@@ -440,8 +441,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
   transition: color var(--duration-fast) var(--ease-out),
               background var(--duration-fast) var(--ease-out);
 }
@@ -550,14 +551,20 @@
   animation-delay: 60ms;
 }
 
-/* Waveform sweeps in right → left (clip reveals from send toward cancel) */
-@keyframes waveform-reveal {
-  from { clip-path: inset(0 0 0 100%); }
-  to   { clip-path: inset(0 0 0 0); }
+/* Waveform fades in softly near the send button */
+@keyframes waveform-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .recording:not(.dismissing) .chat-voice-waveform {
-  animation: waveform-reveal 400ms var(--ease-out) 100ms both;
+  animation: waveform-fade-in 300ms var(--ease-out) 80ms both;
 }
 
 /* ===== Recording Exit (Dismiss) Animations ===== */
@@ -803,13 +810,13 @@
 .chat-welcome {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  max-width: 840px;
   margin: 0 auto;
   padding: var(--space-10) var(--space-4) var(--space-8);
 }
 
 .welcome-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: var(--space-8);
 }
 
@@ -943,10 +950,12 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-4);
   border-bottom: 1px solid transparent;
   flex-shrink: 0;
-  transition: border-color 0.2s;
+  height: 44px;
+  transition: border-color var(--duration-base) var(--ease-out);
+  background: var(--bg);
 }
 
 .chat-header.scrolled {
@@ -958,6 +967,12 @@
   font-weight: 500;
   color: var(--text);
   min-width: 0;
+  max-width: 840px;
+  margin: 0 auto;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -1041,11 +1056,7 @@
   .chat-welcome {
     padding: var(--space-6) var(--space-3) var(--space-4);
   }
-  .chat-header-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  /* chat-header-title truncation already in base styles */
   .welcome-header {
     margin-bottom: var(--space-6);
   }

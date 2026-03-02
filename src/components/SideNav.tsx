@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext'
-import { PlusIcon, TrashIcon, SwatchIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline'
+import { TrashIcon, SwatchIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline'
 
 interface Conversation {
   id: string
@@ -64,14 +64,6 @@ export default function SideNav({
       <div className="cf-nav-history">
         <div className="cf-nav-history-header">
           <span className="cf-nav-history-label">History</span>
-          <button
-            className="cf-nav-history-new"
-            onClick={onNewChat}
-            title="New chat"
-            aria-label="New chat"
-          >
-            <PlusIcon width={14} height={14} aria-hidden="true" />
-          </button>
         </div>
 
         <div className="cf-nav-history-list">

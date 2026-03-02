@@ -75,8 +75,9 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
 
   const handleNewChat = useCallback(() => {
     createConversation()
-    navigate('chat')
-  }, [createConversation, navigate])
+    // Navigate to chat without closing the sidenav
+    window.location.hash = '#/apps/chat'
+  }, [createConversation])
 
   return (
     <HouseholdCtx.Provider value={householdValue}>
