@@ -238,10 +238,6 @@ export default function ChatPage({
         <div className="chat-messages-inner">
           {messages.length === 0 && !isStreaming ? (
             <div className="chat-welcome">
-              <div className="welcome-header">
-                <h2>Conversation First</h2>
-              </div>
-
               <div className="welcome-section">
                 <div className="welcome-section-label">What this chat does</div>
                 <p className="welcome-desc">

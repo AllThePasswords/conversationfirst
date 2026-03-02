@@ -1001,15 +1001,6 @@
 }
 
 
-/* ===== Home Page Header ===== */
-.home-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: transparent;
-  border-bottom: none;
-}
-
 /* ===== Floating Input (Landing Page) ===== */
 .chat-input-floating {
   position: fixed;
@@ -1020,18 +1011,12 @@
   background: transparent;
   z-index: 40;
   transition: left 0.2s ease;
+  pointer-events: none;
 }
 
-/* Soft fade-out above the floating input so content doesn't hard-clip */
-.chat-input-floating::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: linear-gradient(transparent, var(--bg));
-  pointer-events: none;
+/* Re-enable pointer events on the actual input */
+.chat-input-floating .chat-input-inner {
+  pointer-events: auto;
 }
 
 /* ===== Auth Page ===== */

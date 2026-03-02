@@ -1,6 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import OverviewChat from './components/OverviewChat'
-import AuthPage from './components/AuthPage'
 import AuthenticatedShell from './components/AuthenticatedShell'
 import PrepPasswordGate from './components/PrepPasswordGate'
 import PrepLanding from './components/PrepLanding'
@@ -25,21 +24,6 @@ const PREP_ROUTES: Record<string, React.LazyExoticComponent<any>> = {
   '#/prep/leadership': PrepLeadership,
 }
 
-const LoginButton = () => (
-  <button
-    className="chat-menu-btn"
-    onClick={() => { window.location.hash = '#/login' }}
-    title="Log in"
-    aria-label="Log in"
-  >
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-      <polyline points="10 17 15 12 10 7" />
-      <line x1="15" y1="12" x2="3" y2="12" />
-    </svg>
-  </button>
-)
-
 export default function App() {
   const [route, setRoute] = useState(window.location.hash)
   const { user, session, loading } = useAuth()
@@ -51,7 +35,6 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  const isLogin = route === '#/login'
   const isPrep = route === '#/prep' || route.startsWith('#/prep/')
   const isApps = route === '#/apps' || route.startsWith('#/apps/')
   const isVault = route === '#/vault'
@@ -66,28 +49,16 @@ export default function App() {
     }
   }, [isAuthenticated, isLanding])
 
-  // Redirect: authenticated users on login → Design System
-  useEffect(() => {
-    if (isAuthenticated && isLogin) {
-      window.location.hash = '#/apps/overview'
-    }
-  }, [isAuthenticated, isLogin])
-
-  // Redirect: unauthenticated users on protected routes → login
+  // Redirect: unauthenticated users on protected routes → landing
   useEffect(() => {
     if (!isAuthenticated && (isApps || isVault || isOverview || isChat)) {
-      window.location.hash = '#/login'
+      window.location.hash = '#/'
     }
   }, [isAuthenticated, isApps, isVault, isOverview, isChat])
 
   // Show loading while auth initializes
   if (loading) {
     return null
-  }
-
-  // Login page
-  if (isLogin) {
-    return <AuthPage />
   }
 
   // Prep pages (always accessible)
@@ -115,10 +86,6 @@ export default function App() {
   return (
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>
-
-      <header className="chat-header home-header">
-        <LoginButton />
-      </header>
 
       <main id="main-content">
         <OverviewChat />

@@ -44,9 +44,6 @@ export default function OverviewPage() {
 
   return (
     <div className="overview-page" ref={scrollRef}>
-      <header className={`ds-pinned-header${scrolled ? ' ds-pinned-header--scrolled' : ''}`}>
-        <span className="ds-pinned-header-title">Conversation First</span>
-      </header>
       <div className="page">
         <Hero />
 
