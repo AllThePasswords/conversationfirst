@@ -113,7 +113,7 @@ export default function OverviewPage() {
               <InlineFormsDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2 — outline for UI chrome, solid for compact indicators. One library, consistent sizing." icon={SwatchIcon}>
+            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2 — outline for UI chrome, solid for compact indicators. One library, one size." icon={SwatchIcon}>
               <IconDemo />
             </SectionAccordion>
 

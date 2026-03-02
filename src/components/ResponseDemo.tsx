@@ -148,7 +148,7 @@ export default function ResponseDemo() {
             Increase the health check grace period to 10 seconds in your task definition. This gives the container time to warm up before traffic arrives.
           </p>
         </div>
-        <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed' }}>
+        <div className="chat-bubble" style={{ fontSize: 'var(--text-sm)', opacity: 0.7, borderStyle: 'dashed', padding: 'var(--space-4) var(--space-5)' }}>
           <p style={{ marginBottom: 0, maxWidth: 'none' }}>
             The deployment failed because the health check endpoint returns 503 during cold starts because the container needs 4.2 seconds to initialise but the load balancer timeout is set to 3 seconds so you should increase the health check grace period to 10 seconds in your task definition which gives the container time to warm up before traffic arrives and then the health checks will pass and the deployment will succeed and your users will not see any downtime during deployments anymore.
           </p>

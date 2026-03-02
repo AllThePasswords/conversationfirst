@@ -21,7 +21,6 @@ export default function OverviewChat() {
   const citationsRef = useRef<any[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLElement>(null)
-  const [headerScrolled, setHeaderScrolled] = useState(false)
 
   const chatActive = messages.length > 0 || isStreaming
 
@@ -29,15 +28,6 @@ export default function OverviewChat() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, streamingContent])
-
-  // Show header border on scroll
-  useEffect(() => {
-    const el = messagesContainerRef.current
-    if (!el) return
-    const onScroll = () => setHeaderScrolled(el.scrollTop > 8)
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [chatActive])
 
   const handleSend = useCallback((text: string) => {
     if (!text.trim()) return
@@ -106,20 +96,19 @@ export default function OverviewChat() {
     <>
       {chatActive ? (
         <div className="chat-page">
-          <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
-            <button
-              className="chat-header-back"
-              onClick={handleClose}
-              aria-label="Back to design system"
-              type="button"
-            >
-              <ArrowLeftIcon width={14} height={14} />
-            </button>
-            <div className="chat-header-title">Design System Chat</div>
-          </header>
-
           <main className="chat-messages" ref={messagesContainerRef}>
             <div className="chat-messages-inner">
+              <div className="chat-inline-header">
+                <button
+                  className="chat-header-back"
+                  onClick={handleClose}
+                  aria-label="Back to design system"
+                  type="button"
+                >
+                  <ArrowLeftIcon width={14} height={14} />
+                </button>
+                <div className="chat-header-title">Design System Chat</div>
+              </div>
               {messages.map((m, i) => (
                 <ChatMessage key={i} message={m} />
               ))}
