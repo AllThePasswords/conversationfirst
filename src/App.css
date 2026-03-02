@@ -1087,47 +1087,142 @@ kbd {
 
 /* Theme preset bar */
 .theme-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-1);
 }
-.theme-bar-label {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.theme-bar-select {
+
+/* ── Pill trigger ── */
+.theme-bar-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-family: var(--font-body);
   font-size: var(--text-sm);
   padding: var(--space-1) var(--space-3);
+  padding-right: var(--space-2);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 9999px;
   background: var(--bg);
   color: var(--text);
   cursor: pointer;
-  min-width: 180px;
-  appearance: auto;
+  white-space: nowrap;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
 }
-.theme-bar-select:focus {
-  outline: none;
+.theme-bar-pill:hover {
+  border-color: var(--border-strong);
+}
+.theme-bar-pill.active,
+.theme-bar-pill:focus-visible {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+  outline: none;
 }
-.theme-bar-delete {
+.theme-bar-pill-label {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.theme-bar-chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.theme-bar-chevron.open {
+  transform: rotate(180deg);
+}
+
+/* ── Clear / X button ── */
+.theme-bar-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 1.1rem;
   cursor: pointer;
-  padding: 0 var(--space-1);
-  line-height: 1;
   border-radius: var(--radius-btn-sm);
   transition: color var(--duration-fast) var(--ease-out);
 }
-.theme-bar-delete:hover {
+.theme-bar-clear:hover {
+  color: var(--text);
+}
+
+/* ── Dropdown menu ── */
+.theme-bar-menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-1);
+  z-index: 100;
+  animation: theme-menu-in var(--duration-normal) var(--ease-out);
+}
+@keyframes theme-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Menu item ── */
+.theme-bar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.theme-bar-menu-item:hover {
+  background: var(--accent-subtle);
+}
+.theme-bar-menu-item.selected {
+  font-weight: 600;
+  color: var(--accent);
+}
+.theme-bar-menu-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Trash button inside menu item ── */
+.theme-bar-menu-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-btn-sm);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+.theme-bar-menu-item:hover .theme-bar-menu-delete {
+  opacity: 1;
+}
+.theme-bar-menu-delete:hover {
   color: var(--destructive);
 }
 /* Push home-header below sticky theme bar */
@@ -1301,7 +1396,7 @@ kbd {
 [data-shape="cut"] .skeleton-line,
 [data-shape="cut"] .nav-item,
 [data-shape="cut"] .nav-item.active,
-[data-shape="cut"] .theme-bar-select,
+[data-shape="cut"] .theme-bar-pill,
 [data-shape="cut"] .cite-inline,
 [data-shape="cut"] .chat-action-confirmed-icon,
 [data-shape="cut"] .progress-bar,
@@ -1341,7 +1436,7 @@ kbd {
   );
 }
 
-/* --- Large cut: cards, modals, bubbles, sidebar, preview --- */
+/* --- Large cut (top-left only): cards, modals, bubbles, sidebar, preview --- */
 [data-shape="cut"] .card,
 [data-shape="cut"] .modal,
 [data-shape="cut"] .chat-bubble,
@@ -1350,10 +1445,10 @@ kbd {
 [data-shape="cut"] .cf-preview {
   border-radius: 0;
   clip-path: polygon(
-    var(--cut-lg) 0, calc(100% - var(--cut-lg)) 0,
-    100% var(--cut-lg), 100% calc(100% - var(--cut-lg)),
-    calc(100% - var(--cut-lg)) 100%, var(--cut-lg) 100%,
-    0 calc(100% - var(--cut-lg)), 0 var(--cut-lg)
+    var(--cut-lg) 0, 100% 0,
+    100% 100%,
+    0 100%,
+    0 var(--cut-lg)
   );
 }
 

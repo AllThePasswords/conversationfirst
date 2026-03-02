@@ -8,10 +8,10 @@ export default function Hero() {
         Conversation First
       </h1>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', lineHeight: 1.5, marginBottom: 'var(--space-6)' }}>
-        A typographic design system for conversational AI experiences. Built on ten years of mobile chat design and two years shaping AI interfaces — grounded in type rules, flexible enough for any brand.
+        A complete design system for conversational AI: typography, colour, shape, voice rules, processing states, citations, and a full component library. All configurable to your brand and ready to export.
       </p>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', marginBottom: 0 }}>
-        Pick three typefaces, choose an accent colour, and preview a complete, WCAG 2.1 AA compliant system — voice rules, design tokens, processing states, citation formats, and a full component library — in a couple of steps.
+        Choose your typefaces, accent and background colours, and button shapes, then download a production-ready spec, an interactive test page, or integration files for Claude, AI prompts, and slash commands. WCAG 2.1 AA compliant by default.
       </p>
     </div>
   );

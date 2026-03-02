@@ -60,24 +60,12 @@ const FONT_OPTIONS = {
 
 const ACCENT_OPTIONS = [
   { name: "Forest", hex: "#3d6b5e", desc: "Default — warm, natural" },
-  { name: "Ocean", hex: "#2563eb", desc: "Clean, professional" },
-  { name: "Violet", hex: "#7c3aed", desc: "Creative, bold" },
-  { name: "Rose", hex: "#9f1239", desc: "Elegant, refined" },
-  { name: "Amber", hex: "#b45309", desc: "Warm, inviting" },
-  { name: "Slate", hex: "#525252", desc: "Neutral, understated" },
-  { name: "Teal", hex: "#0d9488", desc: "Fresh, modern" },
-  { name: "Indigo", hex: "#4f46e5", desc: "Deep, trustworthy" },
   { name: "Black", hex: "#000000", desc: "Pure black — stark, minimal" },
 ];
 
 const BG_OPTIONS = [
   { name: "Warm Paper", hex: "#faf9f7", desc: "Default — soft, warm" },
   { name: "Pure White", hex: "#ffffff", desc: "Clean, bright" },
-  { name: "Cool Gray", hex: "#f8fafc", desc: "Crisp, blue-tinted" },
-  { name: "Cream", hex: "#fffbeb", desc: "Golden warmth" },
-  { name: "Blush", hex: "#fef2f2", desc: "Soft pink undertone" },
-  { name: "Mint", hex: "#f0fdf4", desc: "Fresh, natural" },
-  { name: "Lavender", hex: "#faf5ff", desc: "Soft purple undertone" },
 ];
 
 function hexToRgb(hex) {
@@ -142,7 +130,7 @@ function generateTestPage(c) {
 `;
   }
   if (ctr === 'cut') {
-    cutCSS += `[data-shape="cut"] .card,[data-shape="cut"] .modal,[data-shape="cut"] .chat-bubble,[data-shape="cut"] .chat-bubble.user,[data-shape="cut"] .sidebar,[data-shape="cut"] .cf-doc{border-radius:0;clip-path:polygon(var(--cut-lg) 0,calc(100% - var(--cut-lg)) 0,100% var(--cut-lg),100% calc(100% - var(--cut-lg)),calc(100% - var(--cut-lg)) 100%,var(--cut-lg) 100%,0 calc(100% - var(--cut-lg)),0 var(--cut-lg))}
+    cutCSS += `[data-shape="cut"] .card,[data-shape="cut"] .modal,[data-shape="cut"] .chat-bubble,[data-shape="cut"] .chat-bubble.user,[data-shape="cut"] .sidebar,[data-shape="cut"] .cf-doc{border-radius:0;clip-path:polygon(var(--cut-lg) 0,100% 0,100% 100%,0 100%,0 var(--cut-lg))}
 [data-shape="cut"] .card{box-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.04))}
 [data-shape="cut"] .modal{box-shadow:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.12))}
 [data-shape="cut"] .toast{box-shadow:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15))}
@@ -839,21 +827,31 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 **Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
 **Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons — `--radius-input: 9999px`.' : 'Follows container radius — `--radius-input: var(--radius-lg)`.'}
-**Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
+**Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner — top-left chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
 Three cut sizes:
-- \`--cut-sm\`: 4px — badges, inline code, small controls
-- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts
-- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar
+- \`--cut-sm\`: 4px — badges, inline code, small controls (all corners)
+- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts (all corners)
+- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar (top-left only)
 
-Clip-path polygon (example for --cut-md):
+Clip-path polygon for buttons/inputs (all corners, --cut-md):
 \\\`\\\`\\\`css
 clip-path: polygon(
   var(--cut-md) 0, calc(100% - var(--cut-md)) 0,
   100% var(--cut-md), 100% calc(100% - var(--cut-md)),
   calc(100% - var(--cut-md)) 100%, var(--cut-md) 100%,
   0 calc(100% - var(--cut-md)), 0 var(--cut-md)
+);
+\\\`\\\`\\\`
+
+Clip-path polygon for containers (top-left only, --cut-lg):
+\\\`\\\`\\\`css
+clip-path: polygon(
+  var(--cut-lg) 0, 100% 0,
+  100% 100%,
+  0 100%,
+  0 var(--cut-lg)
 );
 \\\`\\\`\\\`
 
@@ -2033,7 +2031,7 @@ export default function Configurator() {
             {CTR_SHAPE_OPTIONS.map(s => {
               const on = choices.containerShape === s.id;
               const cardRadius = s.id === "rounded" ? "12px" : "0";
-              const cutClipCard = "polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px)";
+              const cutClipCard = "polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px)";
               return (
                 <button key={s.id} onClick={() => setChoices(p => ({ ...p, containerShape: s.id }))} style={{
                   display: "block", width: "100%", textAlign: "left", padding: "var(--space-4) var(--space-5)",
@@ -2063,13 +2061,10 @@ export default function Configurator() {
       )}
 
       {cur === "review" && all && (
-        <div className="cfg-fin" key="review">
-          {/* Save & apply to site */}
-          <div style={{ marginBottom: "var(--space-8)", padding: "var(--space-5) var(--space-6)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
-            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Save & apply theme</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
-              Name your theme and apply it across the entire Conversation First site. Saved themes appear in the dropdown at the top.
-            </p>
+        <div className="cfg-fin" key="review" style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+          {/* 1. Save & apply */}
+          <div style={{ padding: "var(--space-5) var(--space-6)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
+            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-3)" }}>Save & apply theme</h3>
             <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "stretch" }}>
               <input
                 type="text"
@@ -2108,60 +2103,57 @@ export default function Configurator() {
             </div>
           </div>
 
-          <div style={{ marginBottom: "var(--space-6)" }}>
-            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Use in your project</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
-              Drop these into any project to apply your design system. The CLAUDE.md rules make every Claude Code conversation follow your spec automatically.
+          {/* 2. View test page */}
+          <button onClick={() => {
+            const html = generateTestPage(choices);
+            const blob = new Blob([html], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            window.open(url, "_blank");
+          }}
+            className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }}>
+            View test page
+          </button>
+
+          {/* 3. Fetch URL for AI editors */}
+          <div style={{ padding: "var(--space-4) var(--space-5)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-2)", lineHeight: 1.5, maxWidth: "none" }}>
+              Drop this URL into Claude Code, Cursor, or any AI editor to implement the design system.
             </p>
-            <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
-              <button onClick={() => { navigator.clipboard.writeText(generateClaudeMdRules(choices)).then(() => flash("CLAUDE.md rules copied")); }}
-                className="btn btn-primary">
-                Copy CLAUDE.md rules
-              </button>
-              <button onClick={() => { dl(generateSlashCommand(choices), "design-system.md", "text/markdown"); flash("Slash command downloaded"); }}
-                className="btn btn-secondary">
-                Download /design-system command
-              </button>
-              <button onClick={() => { navigator.clipboard.writeText(generateAIPrompt(choices)).then(() => flash("AI prompt copied")); }}
-                className="btn btn-secondary">
-                Copy AI prompt
+            <div style={{ display: "flex", gap: "var(--space-2)", alignItems: "center" }}>
+              <code style={{
+                flex: 1,
+                fontSize: "var(--text-xs)",
+                fontFamily: "var(--font-mono)",
+                padding: "var(--space-2) var(--space-3)",
+                background: "var(--code-bg)",
+                borderRadius: "var(--radius-sm)",
+                color: "var(--text-secondary)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}>
+                conversationfirst.vercel.app/llms.txt
+              </code>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => {
+                  navigator.clipboard.writeText("https://conversationfirst.vercel.app/llms.txt")
+                    .then(() => flash("URL copied"));
+                }}
+              >
+                Copy
               </button>
             </div>
           </div>
 
-          <div style={{ marginBottom: "var(--space-6)" }}>
-            <h3 style={{ fontSize: "var(--text-sm)", fontWeight: 600, marginBottom: "var(--space-1)" }}>Full spec & test page</h3>
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-3)", lineHeight: 1.5, maxWidth: "none" }}>
-              Complete specification with all rendering rules, plus an interactive test page with every component. Dark mode automatic.
-            </p>
-            <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}>
-              <button onClick={() => { dl(generateSpec(choices), "conversation-first-spec.md", "text/markdown"); flash("Spec downloaded"); }}
-                className="btn btn-secondary">
-                Download spec (.md)
-              </button>
-              <button onClick={() => { dl(generateTestPage(choices), "test-page.html", "text/html"); flash("Test page downloaded"); }}
-                className="btn btn-secondary">
-                Download test page (.html)
-              </button>
-              <button onClick={() => {
-                const html = generateTestPage(choices);
-                const blob = new Blob([html], { type: "text/html" });
-                const url = URL.createObjectURL(blob);
-                window.open(url, "_blank");
-              }}
-                className="btn btn-secondary">
-                View test page
-              </button>
-              <button onClick={() => { navigator.clipboard.writeText(generateSpec(choices)).then(() => flash("Copied")); }}
-                className="btn btn-secondary">
-                Copy spec
-              </button>
-            </div>
-          </div>
-
-          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "var(--space-5) var(--space-6)" }}>
-            <MiniPreview choices={choices} />
-          </div>
+          {/* 4. Try new chat */}
+          <button
+            className="btn btn-secondary"
+            style={{ width: "100%", justifyContent: "center" }}
+            onClick={() => { window.location.hash = "#/apps/chat?new"; }}
+          >
+            Try new chat
+          </button>
         </div>
       )}
 
