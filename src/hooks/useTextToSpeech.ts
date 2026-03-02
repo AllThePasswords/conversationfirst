@@ -6,10 +6,12 @@ type TtsState = 'idle' | 'loading' | 'playing';
 export function useTextToSpeech() {
   const [state, setState] = useState<TtsState>('idle');
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      abortRef.current?.abort();
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -17,16 +19,27 @@ export function useTextToSpeech() {
     };
   }, []);
 
-  const play = useCallback(async (text: string, voiceId?: string) => {
-    // If already playing, stop
+  const stop = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
-      setState('idle');
+    }
+    setState('idle');
+  }, []);
+
+  const play = useCallback(async (text: string, voiceId?: string) => {
+    // If loading or playing, stop
+    if (state !== 'idle') {
+      stop();
       return;
     }
 
     setState('loading');
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -41,6 +54,7 @@ export function useTextToSpeech() {
           'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ text, voiceId }),
+        signal: controller.signal,
       });
 
       const data = await response.json();
@@ -61,19 +75,15 @@ export function useTextToSpeech() {
 
       audio.play();
       setState('playing');
-    } catch {
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        setState('idle');
+      }
       audioRef.current = null;
-      setState('idle');
+    } finally {
+      abortRef.current = null;
     }
-  }, []);
-
-  const stop = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    setState('idle');
-  }, []);
+  }, [state, stop]);
 
   return { state, play, stop };
 }

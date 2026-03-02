@@ -277,8 +277,8 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
   background: var(--accent-subtle);
   color: var(--accent);
@@ -290,9 +290,9 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 }
 .section-accordion-title {
   font-family: var(--font-heading);
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: var(--line-height-tight);
 }
 .section-accordion-explainer {

@@ -2103,18 +2103,27 @@ export default function Configurator() {
             </div>
           </div>
 
-          {/* 2. View test page */}
-          <button onClick={() => {
-            const html = generateTestPage(choices);
-            const blob = new Blob([html], { type: "text/html" });
-            const url = URL.createObjectURL(blob);
-            window.open(url, "_blank");
-          }}
-            className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }}>
-            View test page
-          </button>
+          {/* 2. Action buttons — side by side */}
+          <div style={{ display: "flex", gap: "var(--space-2)" }}>
+            <button onClick={() => {
+              const html = generateTestPage(choices);
+              const blob = new Blob([html], { type: "text/html" });
+              const url = URL.createObjectURL(blob);
+              window.open(url, "_blank");
+            }}
+              className="btn btn-secondary" style={{ flex: 1, justifyContent: "center" }}>
+              View test page
+            </button>
+            <button
+              className="btn btn-secondary"
+              style={{ flex: 1, justifyContent: "center" }}
+              onClick={() => { window.location.hash = "#/apps/chat?new"; }}
+            >
+              Try new chat
+            </button>
+          </div>
 
-          {/* 3. Fetch URL for AI editors */}
+          {/* 3. AI editor URL */}
           <div style={{ padding: "var(--space-4) var(--space-5)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)" }}>
             <p style={{ fontSize: "var(--text-xs)", color: "var(--text-secondary)", marginBottom: "var(--space-2)", lineHeight: 1.5, maxWidth: "none" }}>
               Drop this URL into Claude Code, Cursor, or any AI editor to implement the design system.
@@ -2145,15 +2154,6 @@ export default function Configurator() {
               </button>
             </div>
           </div>
-
-          {/* 4. Try new chat */}
-          <button
-            className="btn btn-secondary"
-            style={{ width: "100%", justifyContent: "center" }}
-            onClick={() => { window.location.hash = "#/apps/chat?new"; }}
-          >
-            Try new chat
-          </button>
         </div>
       )}
 

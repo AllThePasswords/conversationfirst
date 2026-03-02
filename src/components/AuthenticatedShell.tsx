@@ -81,6 +81,18 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
   return (
     <HouseholdCtx.Provider value={householdValue}>
       <div className={`cf-shell${menuOpen ? ' cf-menu-open' : ''}`}>
+        {/* Hamburger sits at shell level so it's always flush-left */}
+        <button
+          className="cf-hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+        >
+          <span className="cf-hamburger-line" />
+          <span className="cf-hamburger-line" />
+          <span className="cf-hamburger-line" />
+        </button>
+
         <SideNav
           currentView={currentView}
           onNavigate={navigate}
@@ -93,18 +105,6 @@ export default function AuthenticatedShell({ user, session }: AuthenticatedShell
         />
 
         <main className="cf-main">
-          <header className="cf-topbar">
-            <button
-              className="cf-hamburger"
-              onClick={() => setMenuOpen(o => !o)}
-              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={menuOpen}
-            >
-              <span className="cf-hamburger-line" />
-              <span className="cf-hamburger-line" />
-              <span className="cf-hamburger-line" />
-            </button>
-          </header>
           {currentView === 'overview' ? (
             <PageTransition key="overview">
               <OverviewChat />

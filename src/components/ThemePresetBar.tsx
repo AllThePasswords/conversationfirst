@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronDownIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '../context/ThemeContext';
 
 export default function ThemePresetBar() {
@@ -52,19 +52,6 @@ export default function ThemePresetBar() {
           aria-hidden="true"
         />
       </button>
-
-      {/* Clear active theme */}
-      {activeTheme && (
-        <button
-          className="theme-bar-clear"
-          onClick={() => applyTheme(null)}
-          title="Reset to default"
-          aria-label="Reset to default theme"
-          type="button"
-        >
-          <XMarkIcon width={14} height={14} aria-hidden="true" />
-        </button>
-      )}
 
       {/* Dropdown menu */}
       {menuOpen && (

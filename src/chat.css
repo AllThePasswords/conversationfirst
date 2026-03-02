@@ -118,7 +118,7 @@
   border-radius: var(--radius-full);
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text);
   cursor: pointer;
   flex-shrink: 0;
   transition: color var(--duration-fast) var(--ease-out),
@@ -137,16 +137,16 @@
   cursor: not-allowed;
 }
 
-/* Cancel button (recording state) — dark filled circle */
+/* Cancel button (recording state) — accent filled circle */
 .chat-cancel-btn {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--accent);
+  color: #fff;
   width: 44px;
   height: 44px;
 }
 .chat-cancel-btn:hover {
-  color: var(--bg);
-  opacity: 0.85;
+  background: var(--accent-hover);
+  color: #fff;
 }
 
 /* ===== Attach Button & Menu ===== */
@@ -465,6 +465,27 @@
   flex-shrink: 0;
 }
 
+.response-action-spinner {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: response-spin 0.6s linear infinite;
+}
+
+@keyframes response-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .response-action-spinner {
+    animation: none;
+    border-top-color: var(--text-muted);
+  }
+}
+
 /* Upload progress */
 .chat-upload-indicator {
   font-family: var(--font-mono);
@@ -494,9 +515,10 @@
 }
 
 .chat-voice-canvas {
+  display: block;
   width: 100%;
   height: 44px;
-  color: var(--text);
+  color: var(--accent);
 }
 
 /* ===== Recording Entry Animations ===== */
@@ -561,12 +583,12 @@
 
 /* ===== Send Button ===== */
 .chat-send-btn {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--accent);
+  color: #fff;
 }
 .chat-send-btn:hover {
-  color: var(--bg);
-  opacity: 0.85;
+  background: var(--accent-hover);
+  color: #fff;
 }
 .chat-send-btn:active {
   transform: scale(0.95);
@@ -579,8 +601,8 @@
 
 /* Send button in recording state */
 .chat-send-btn.recording {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--accent);
+  color: #fff;
 }
 
 /* ===== Chat History (list view) ===== */

@@ -133,11 +133,11 @@ function ResponseActions({ content, showPlay }: { content: string; showPlay: boo
   }, [content]);
 
   const handlePlay = useCallback(() => {
-    if (tts.state === 'playing') {
-      tts.stop();
-    } else {
+    if (tts.state === 'idle') {
       const plainText = stripMarkdown(content);
       tts.play(plainText);
+    } else {
+      tts.stop();
     }
   }, [content, tts]);
 
@@ -159,19 +159,24 @@ function ResponseActions({ content, showPlay }: { content: string; showPlay: boo
 
       {showPlay && (
         <button
-          className={`response-action-btn${tts.state === 'playing' ? ' active' : ''}`}
+          className={`response-action-btn${tts.state !== 'idle' ? ' active' : ''}`}
           type="button"
           onClick={handlePlay}
-          disabled={tts.state === 'loading'}
-          aria-label={tts.state === 'playing' ? 'Stop playback' : 'Read aloud'}
+          aria-label={
+            tts.state === 'playing' ? 'Stop playback'
+              : tts.state === 'loading' ? 'Cancel'
+              : 'Read aloud'
+          }
         >
-          {tts.state === 'playing' ? (
+          {tts.state === 'loading' ? (
+            <span className="response-action-spinner" aria-hidden="true" />
+          ) : tts.state === 'playing' ? (
             <StopIcon className="response-action-icon" aria-hidden="true" />
           ) : (
             <SpeakerWaveIcon className="response-action-icon" aria-hidden="true" />
           )}
           <span>
-            {tts.state === 'loading' ? 'Loading\u2026' : tts.state === 'playing' ? 'Stop' : 'Play'}
+            {tts.state === 'playing' ? 'Stop' : 'Play'}
           </span>
         </button>
       )}

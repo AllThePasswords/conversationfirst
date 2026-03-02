@@ -10,67 +10,128 @@ import {
   PaperClipIcon,
 } from '@heroicons/react/24/outline';
 
-/** Live audio-reactive waveform driven by AnalyserNode frequency data. */
+/** Live audio-reactive waveform — continuous stream flowing right → left. */
 function LiveWaveform({ stream }: { stream: MediaStream | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const ctxRef = useRef<{ analyser: AnalyserNode; data: Uint8Array; audioCtx: AudioContext } | null>(null);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
     if (!stream || !canvasRef.current) return;
 
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d')!;
+
+    // HiDPI scaling to prevent blurry rendering
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    const w = rect.width;
+    const h = rect.height;
+
     const audioCtx = new AudioContext();
     const source = audioCtx.createMediaStreamSource(stream);
     const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 64;
-    analyser.smoothingTimeConstant = 0.6;
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.75;
     source.connect(analyser);
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    ctxRef.current = { analyser, data, audioCtx };
+    const freqData = new Uint8Array(analyser.frequencyBinCount);
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d')!;
-    const barCount = 30;
-    const gap = 3;
-    const barWidth = 2.5;
+    // Ring buffer for the scrolling waveform history
+    const historyLen = Math.ceil(w / 1.5);
+    const history = new Float32Array(historyLen);
+    let writeHead = 0;
+    let lastPush = 0;
+    const pushInterval = 16; // ~60fps sample rate
 
-    const fillColor = getComputedStyle(canvas).color || '#1a1a1a';
+    const accentColor = getComputedStyle(canvas).getPropertyValue('color').trim() || '#1a1a1a';
 
-    const draw = () => {
-      analyser.getByteFrequencyData(data);
-      const w = canvas.width;
-      const h = canvas.height;
+    const draw = (now: number) => {
+      analyser.getByteFrequencyData(freqData);
+
+      // Compute RMS amplitude from frequency data
+      let sum = 0;
+      for (let i = 0; i < freqData.length; i++) {
+        const v = freqData[i] / 255;
+        sum += v * v;
+      }
+      const rms = Math.sqrt(sum / freqData.length);
+
+      // Push new sample into ring buffer at a steady rate
+      if (now - lastPush >= pushInterval) {
+        history[writeHead % historyLen] = rms;
+        writeHead++;
+        lastPush = now;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
-      const totalBarsWidth = barCount * barWidth + (barCount - 1) * gap;
-      const startX = (w - totalBarsWidth) / 2;
+      const midY = h / 2;
+      const maxAmp = h * 0.4;
+      const stepX = w / historyLen;
 
-      ctx.fillStyle = fillColor;
+      // Draw the flowing waveform — reads from ring buffer right-to-left
+      ctx.beginPath();
+      ctx.moveTo(w, midY);
 
-      for (let i = 0; i < barCount; i++) {
-        // Map bar index to a frequency bin (spread across available bins)
-        const binIndex = Math.floor((i / barCount) * data.length);
-        const value = data[binIndex] / 255;
-        const minH = 3;
-        const maxH = h * 0.85;
-        const barH = minH + value * (maxH - minH);
-        const x = startX + i * (barWidth + gap);
-        const y = (h - barH) / 2;
-        ctx.beginPath();
-        ctx.roundRect(x, y, barWidth, barH, barWidth / 2);
-        ctx.fill();
+      for (let i = 0; i < historyLen; i++) {
+        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
+        const amp = history[idx] * maxAmp;
+        const x = w - i * stepX;
+        // Mirror waveform: top half
+        ctx.lineTo(x, midY - amp);
       }
+
+      // Continue back across bottom half
+      for (let i = historyLen - 1; i >= 0; i--) {
+        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
+        const amp = history[idx] * maxAmp;
+        const x = w - i * stepX;
+        ctx.lineTo(x, midY + amp);
+      }
+
+      ctx.closePath();
+      ctx.fillStyle = accentColor;
+      ctx.globalAlpha = 0.35;
+      ctx.fill();
+
+      // Draw centre line for definition
+      ctx.beginPath();
+      ctx.moveTo(w, midY);
+      for (let i = 0; i < historyLen; i++) {
+        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
+        const amp = history[idx] * maxAmp;
+        const x = w - i * stepX;
+        ctx.lineTo(x, midY - amp);
+      }
+      ctx.strokeStyle = accentColor;
+      ctx.globalAlpha = 0.8;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Bottom mirror line
+      ctx.beginPath();
+      ctx.moveTo(w, midY);
+      for (let i = 0; i < historyLen; i++) {
+        const idx = ((writeHead - 1 - i) % historyLen + historyLen) % historyLen;
+        const amp = history[idx] * maxAmp;
+        const x = w - i * stepX;
+        ctx.lineTo(x, midY + amp);
+      }
+      ctx.stroke();
+
+      ctx.globalAlpha = 1;
 
       rafRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    rafRef.current = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       source.disconnect();
       audioCtx.close();
-      ctxRef.current = null;
     };
   }, [stream]);
 
@@ -78,8 +139,6 @@ function LiveWaveform({ stream }: { stream: MediaStream | null }) {
     <canvas
       ref={canvasRef}
       className="chat-voice-canvas"
-      width={300}
-      height={44}
       aria-label="Recording voice"
       role="status"
     />

@@ -12,6 +12,7 @@
   height: 100%;
   overflow: hidden;
   font-family: var(--font-body);
+  position: relative;
   transition: grid-template-columns var(--duration-base) var(--ease-out);
 }
 
@@ -19,18 +20,13 @@
   grid-template-columns: 260px 1fr;
 }
 
-/* --- Top Bar (contains hamburger) --- */
-
-.cf-topbar {
-  display: flex;
-  align-items: center;
-  padding: var(--space-2) var(--space-3);
-  flex-shrink: 0;
-}
-
-/* --- Hamburger Button --- */
+/* --- Hamburger Button — fixed at top-left, moves with sidenav --- */
 
 .cf-hamburger {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 50;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,7 +40,12 @@
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: background var(--duration-fast) var(--ease-out);
+  transition: background var(--duration-fast) var(--ease-out),
+              left var(--duration-base) var(--ease-out);
+}
+
+.cf-menu-open .cf-hamburger {
+  left: calc(260px - 36px - var(--space-3));
 }
 
 .cf-hamburger:hover {
@@ -84,7 +85,7 @@
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: var(--space-4) var(--space-3);
+  padding: calc(36px + var(--space-3) + var(--space-4)) var(--space-3) var(--space-4);
   user-select: none;
   overflow-y: auto;
   overflow-x: hidden;
@@ -125,12 +126,12 @@
 
 .cf-nav-item:hover {
   color: var(--accent);
-  background: var(--surface-raised);
+  background: var(--accent-subtle);
 }
 
 .cf-nav-item--active {
   color: var(--accent);
-  background: var(--accent-subtle);
+  background: transparent;
   font-weight: 600;
 }
 
@@ -219,7 +220,7 @@
 
 .cf-nav-history-item:hover {
   color: var(--text);
-  background: var(--surface-raised);
+  background: var(--accent-subtle);
 }
 
 .cf-nav-history-item:hover .cf-nav-history-delete {
@@ -228,7 +229,8 @@
 
 .cf-nav-history-item--active {
   color: var(--accent);
-  background: var(--accent-subtle);
+  background: transparent;
+  font-weight: 600;
 }
 
 .cf-nav-history-title {
@@ -306,6 +308,7 @@
   flex-direction: column;
   position: relative;
   min-width: 0;
+  padding-top: calc(36px + var(--space-3) * 2);
 }
 
 /* --- Shared Loading State --- */
