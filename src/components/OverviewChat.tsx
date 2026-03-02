@@ -108,12 +108,12 @@ export default function OverviewChat() {
         <div className="chat-page">
           <header className={`chat-header${headerScrolled ? ' scrolled' : ''}`}>
             <button
-              className="chat-icon-btn"
+              className="chat-header-back"
               onClick={handleClose}
               aria-label="Back to design system"
               type="button"
             >
-              <ArrowLeftIcon width={18} height={18} />
+              <ArrowLeftIcon width={14} height={14} />
             </button>
             <div className="chat-header-title">Design System Chat</div>
           </header>
