@@ -4,11 +4,12 @@ interface SectionAccordionProps {
   id: string
   title: string
   explainer: string
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
   defaultOpen?: boolean
   children: React.ReactNode
 }
 
-export default function SectionAccordion({ id, title, explainer, defaultOpen = false, children }: SectionAccordionProps) {
+export default function SectionAccordion({ id, title, explainer, icon: Icon, defaultOpen = false, children }: SectionAccordionProps) {
   const [open, setOpen] = useState(defaultOpen)
   const headingId = `${id}-heading`
   const contentId = `${id}-content`
@@ -22,6 +23,11 @@ export default function SectionAccordion({ id, title, explainer, defaultOpen = f
           aria-expanded={open}
           aria-controls={contentId}
         >
+          {Icon && (
+            <span className="section-accordion-icon" aria-hidden="true">
+              <Icon width={22} height={22} />
+            </span>
+          )}
           <div className="section-accordion-text">
             <span className="section-accordion-title">{title}</span>
             <span className="section-accordion-explainer">{explainer}</span>

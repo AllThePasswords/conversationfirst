@@ -235,8 +235,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 
 /* ===== Section Accordion ===== */
 .section-accordion {
-  border-bottom: 1px solid var(--border);
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
 }
 .section-accordion-header {
   margin: 0;
@@ -249,20 +248,37 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: var(--space-8) 0;
-  background: none;
-  border: none;
+  padding: var(--space-5) var(--space-5);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   text-align: left;
   gap: var(--space-4);
   color: var(--text);
-  transition: color var(--duration-base) var(--ease-out);
+  transition:
+    background var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
 }
-.section-accordion-trigger:hover { color: var(--accent); }
+.section-accordion-trigger:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+}
 .section-accordion-trigger:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
+}
+.section-accordion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  color: var(--accent);
 }
 .section-accordion-text {
   display: flex;
