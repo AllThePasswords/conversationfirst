@@ -454,12 +454,12 @@ ol ol { list-style-type: lower-alpha; }
 ol ol ol { list-style-type: lower-roman; }
 hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 
-/* Chat bubbles — assistant messages flow directly, no card */
+/* Chat bubbles */
 .chat-bubble {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: var(--space-3) 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
   margin-bottom: var(--space-3);
   font-size: var(--text-base);
 }
