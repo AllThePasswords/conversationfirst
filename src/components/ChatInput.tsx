@@ -457,7 +457,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
               <textarea
                 ref={textareaRef}
                 className="chat-input-field"
-                placeholder="How can I help?"
+                placeholder="Ask a question about Conversation First..."
                 aria-label="Message input"
                 value={text}
                 onChange={(e) => { setText(e.target.value); resize(); }}

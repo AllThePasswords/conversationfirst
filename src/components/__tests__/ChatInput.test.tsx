@@ -49,7 +49,7 @@ describe('ChatInput', () => {
 
     it('renders textarea with placeholder', () => {
       renderInput();
-      expect(screen.getByPlaceholderText('How can I help?')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Ask a question about Conversation First...')).toBeInTheDocument();
     });
 
     it('renders attach button with aria-label', () => {

@@ -128,7 +128,7 @@ export default function ChatInputDemo() {
 
                   <textarea
                     className="chat-input-field"
-                    placeholder="How can I help?"
+                    placeholder="Ask a question about Conversation First..."
                     aria-label="Message input"
                     rows={1}
                     readOnly

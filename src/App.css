@@ -886,23 +886,11 @@ kbd {
   display: none;
 }
 
-/* Document / page layout — for A4 reports, printable sheets, visual designs */
+/* Document layout — structured content with columns, headers, asides */
 .cf-doc {
-  background: #fff;
   color: #1a1a1a;
-  border-radius: var(--radius-md);
-  padding: 48px 56px;
-  max-width: 680px;
-  margin: 0 auto;
   font-size: var(--text-base);
   line-height: 1.6;
-  box-shadow: var(--shadow-md);
-  aspect-ratio: 210 / 297;
-  overflow: hidden;
-  position: relative;
-}
-@media (prefers-color-scheme: dark) {
-  .cf-doc { box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
 }
 .cf-doc h1 { font-family: var(--font-heading); font-size: var(--text-2xl); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 var(--space-2); color: #1a1a1a; }
 .cf-doc h2 { font-family: var(--font-heading); font-size: var(--text-lg); font-weight: 700; line-height: 1.3; margin: var(--space-6) 0 var(--space-2); color: #1a1a1a; }
@@ -956,14 +944,11 @@ kbd {
 .cf-doc .doc-example.good { background: #eef4f1; color: #3d6b5e; }
 .cf-doc .doc-example.bad { background: #fef2f1; color: #c4453a; text-decoration: line-through; opacity: 0.7; }
 .cf-doc .doc-footer {
-  position: absolute;
-  bottom: 48px;
-  left: 56px;
-  right: 56px;
   font-size: var(--text-xs);
   color: #6b6966;
   border-top: 1px solid #e4e2dd;
   padding-top: var(--space-3);
+  margin-top: var(--space-6);
   display: flex;
   justify-content: space-between;
 }
@@ -995,9 +980,9 @@ kbd {
 .cf-doc .doc-header-band {
   background: var(--accent);
   color: #fff;
-  margin: -48px -56px 0;
-  padding: var(--space-8) 56px var(--space-6);
+  padding: var(--space-6) var(--space-6) var(--space-4);
   margin-bottom: var(--space-6);
+  border-radius: var(--radius-md);
 }
 .cf-doc .doc-header-band h1,
 .cf-doc .doc-header-band h2,
@@ -1388,7 +1373,6 @@ kbd {
 [data-shape="cut"] .code-block-wrapper,
 [data-shape="cut"] .toast,
 [data-shape="cut"] .cite-block,
-[data-shape="cut"] .cf-doc,
 [data-shape="cut"] .chat-bubble img,
 [data-shape="cut"] .skip-link,
 [data-shape="cut"] .cf-doc .doc-highlight {
