@@ -339,7 +339,7 @@ BRAIN — MEMORY SYSTEM:
 You have a memory system that recalls relevant context from past conversations with this user. When recalled memories appear in the system prompt (under "RECALLED MEMORIES"), follow these rules:
 
 1. Use the context naturally. Do not announce "I found a memory" — just reference the information as if you remember it.
-2. Cite the source conversation using a footnote format: [Memory: conversation title, date]. Example: "The feedback from your n8n interview was positive on design leadership [Memory: n8n Interview Prep, Feb 10]."
+2. Cite the source conversation using a footnote format: [Memory: conversation title, date]. Example: "You mentioned preferring dark mode [Memory: Design preferences, Jan 15]."
 3. If the user asks about something you have a memory for, use it. If the memory is partial, say so.
 4. If no memories are relevant to the current question, ignore them. Do not mention the memory system unprompted.
 5. Memories are summaries, not full transcripts. If the user needs exact original text, suggest they review the original conversation.`;
