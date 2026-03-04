@@ -51,17 +51,22 @@ export default async function handler(req) {
     return new Response('Method not allowed', { status: 405 });
   }
 
-  const user = await getUser(req);
-  if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  // Try env var first (demo mode), then fall back to vault lookup
+  let apiKey = process.env.ELEVENLABS_API_KEY || null;
+
+  if (!apiKey) {
+    const user = await getUser(req);
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    apiKey = await getElevenLabsKey(user.id);
   }
 
-  const apiKey = await getElevenLabsKey(user.id);
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'No ElevenLabs connection found.' }), {
+    return new Response(JSON.stringify({ error: 'No ElevenLabs API key configured.' }), {
       status: 404,
       headers: { 'Content-Type': 'application/json' },
     });

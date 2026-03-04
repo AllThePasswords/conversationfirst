@@ -76,9 +76,8 @@
   box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-/* Expanded state: soften corners when input grows tall */
-.chat-input-inner.has-attachments,
-.chat-input-inner.multiline {
+/* Expanded state: soften corners when input has attachments */
+.chat-input-inner.has-attachments {
   border-radius: var(--radius-lg);
 }
 
@@ -505,6 +504,113 @@
     animation: none;
     border-top-color: var(--text-muted);
   }
+}
+
+/* ===== Voice Play Group (split button + menu) ===== */
+.voice-play-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.voice-play-group .response-action-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-right: var(--space-2);
+}
+
+.voice-chevron-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-left: 1px solid var(--border);
+  cursor: pointer;
+  padding: var(--space-1) var(--space-1);
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  color: var(--text-muted);
+  transition: color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+
+.voice-chevron-btn:hover,
+.voice-chevron-btn.active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.voice-chevron-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.voice-chevron-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.voice-menu {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 0;
+  min-width: 200px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 50;
+  padding: var(--space-1) 0;
+}
+
+.voice-menu-loading {
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.voice-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  text-align: left;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.voice-menu-item:hover {
+  background: var(--accent-subtle);
+}
+
+.voice-menu-item.selected {
+  color: var(--accent);
+}
+
+.voice-menu-name {
+  flex: 1;
+}
+
+.voice-menu-category {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.voice-menu-check {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 /* Upload progress */

@@ -5,10 +5,59 @@ import {
   SpeakerWaveIcon,
   StopIcon,
 } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import MarkdownRenderer from './MarkdownRenderer';
 import { useTextToSpeech } from '../hooks/useTextToSpeech';
+import { supabase } from '../lib/supabase';
 
 const MAX_VISIBLE_SOURCES = 3;
+
+/* ── Voice list cache (shared across all ResponseActions instances) ── */
+type Voice = { id: string; name: string; category: string };
+let voiceCache: Voice[] | null = null;
+let voiceFetchPromise: Promise<Voice[]> | null = null;
+
+const VOICE_STORAGE_KEY = 'cf-tts-voice';
+const DEFAULT_VOICE: Voice = { id: '21m00Tcm4TlvDq8ikWAM', name: 'Rachel', category: 'premade' };
+
+function getSavedVoice(): Voice {
+  try {
+    const raw = localStorage.getItem(VOICE_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* ignore */ }
+  return DEFAULT_VOICE;
+}
+
+function saveVoice(voice: Voice) {
+  localStorage.setItem(VOICE_STORAGE_KEY, JSON.stringify(voice));
+}
+
+async function fetchVoices(): Promise<Voice[]> {
+  if (voiceCache) return voiceCache;
+  if (voiceFetchPromise) return voiceFetchPromise;
+
+  voiceFetchPromise = (async () => {
+    try {
+      const headers: Record<string, string> = {};
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) headers['Authorization'] = `Bearer ${session.access_token}`;
+      } catch { /* no auth */ }
+
+      const res = await fetch('/api/voices', { headers });
+      if (!res.ok) return [DEFAULT_VOICE];
+      const data = await res.json();
+      voiceCache = data.voices || [DEFAULT_VOICE];
+      return voiceCache;
+    } catch {
+      return [DEFAULT_VOICE];
+    } finally {
+      voiceFetchPromise = null;
+    }
+  })();
+
+  return voiceFetchPromise;
+}
 
 /** Deduplicate citations by hostname, keeping the first occurrence. */
 function dedupeCitations(citations) {
@@ -171,14 +220,41 @@ export default function ChatMessage({ message, showPlayAction = false }) {
 
 function ResponseActions({ content, showPlay }: { content: string; showPlay: boolean }) {
   const [copied, setCopied] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState<Voice>(getSavedVoice);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [voices, setVoices] = useState<Voice[]>([]);
+  const [loadingVoices, setLoadingVoices] = useState(false);
   const tts = useTextToSpeech();
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
+
+  // Close menu on outside click
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [menuOpen]);
+
+  // Close menu on Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [menuOpen]);
 
   const handleCopy = useCallback(() => {
     const plainText = stripMarkdown(content);
@@ -191,11 +267,31 @@ function ResponseActions({ content, showPlay }: { content: string; showPlay: boo
   const handlePlay = useCallback(() => {
     if (tts.state === 'idle') {
       const narration = toNarrationText(content);
-      tts.play(narration);
+      tts.play(narration, selectedVoice.id);
     } else {
       tts.stop();
     }
-  }, [content, tts]);
+  }, [content, tts, selectedVoice]);
+
+  const handleToggleMenu = useCallback(() => {
+    setMenuOpen(prev => {
+      const opening = !prev;
+      if (opening && voices.length === 0 && !loadingVoices) {
+        setLoadingVoices(true);
+        fetchVoices().then(v => {
+          setVoices(v);
+          setLoadingVoices(false);
+        });
+      }
+      return opening;
+    });
+  }, [voices.length, loadingVoices]);
+
+  const handleSelectVoice = useCallback((voice: Voice) => {
+    setSelectedVoice(voice);
+    saveVoice(voice);
+    setMenuOpen(false);
+  }, []);
 
   return (
     <div className="response-actions">
@@ -214,27 +310,66 @@ function ResponseActions({ content, showPlay }: { content: string; showPlay: boo
       </button>
 
       {showPlay && (
-        <button
-          className={`response-action-btn${tts.state !== 'idle' ? ' active' : ''}`}
-          type="button"
-          onClick={handlePlay}
-          aria-label={
-            tts.state === 'playing' ? 'Stop playback'
-              : tts.state === 'loading' ? 'Cancel'
-              : 'Read aloud'
-          }
-        >
-          {tts.state === 'loading' ? (
-            <span className="response-action-spinner" aria-hidden="true" />
-          ) : tts.state === 'playing' ? (
-            <StopIcon className="response-action-icon" aria-hidden="true" />
-          ) : (
-            <SpeakerWaveIcon className="response-action-icon" aria-hidden="true" />
+        <div className="voice-play-group" ref={menuRef}>
+          <button
+            className={`response-action-btn${tts.state !== 'idle' ? ' active' : ''}`}
+            type="button"
+            onClick={handlePlay}
+            aria-label={
+              tts.state === 'playing' ? 'Stop playback'
+                : tts.state === 'loading' ? 'Cancel'
+                : `Read aloud with ${selectedVoice.name}`
+            }
+          >
+            {tts.state === 'loading' ? (
+              <span className="response-action-spinner" aria-hidden="true" />
+            ) : tts.state === 'playing' ? (
+              <StopIcon className="response-action-icon" aria-hidden="true" />
+            ) : (
+              <SpeakerWaveIcon className="response-action-icon" aria-hidden="true" />
+            )}
+            <span>
+              {tts.state === 'playing' ? 'Stop' : selectedVoice.name}
+            </span>
+          </button>
+
+          <button
+            className={`voice-chevron-btn${menuOpen ? ' active' : ''}`}
+            type="button"
+            onClick={handleToggleMenu}
+            aria-label="Choose voice"
+            aria-expanded={menuOpen}
+          >
+            <ChevronDownIcon className="voice-chevron-icon" aria-hidden="true" />
+          </button>
+
+          {menuOpen && (
+            <div className="voice-menu" role="listbox" aria-label="Available voices">
+              {loadingVoices ? (
+                <div className="voice-menu-loading">Loading voices...</div>
+              ) : voices.length === 0 ? (
+                <div className="voice-menu-loading">No voices available</div>
+              ) : (
+                voices.map(v => (
+                  <button
+                    key={v.id}
+                    className={`voice-menu-item${v.id === selectedVoice.id ? ' selected' : ''}`}
+                    type="button"
+                    role="option"
+                    aria-selected={v.id === selectedVoice.id}
+                    onClick={() => handleSelectVoice(v)}
+                  >
+                    <span className="voice-menu-name">{v.name}</span>
+                    <span className="voice-menu-category">{v.category}</span>
+                    {v.id === selectedVoice.id && (
+                      <CheckIcon className="voice-menu-check" aria-hidden="true" />
+                    )}
+                  </button>
+                ))
+              )}
+            </div>
           )}
-          <span>
-            {tts.state === 'playing' ? 'Stop' : 'Play'}
-          </span>
-        </button>
+        </div>
       )}
     </div>
   );
