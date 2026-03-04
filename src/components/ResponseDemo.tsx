@@ -1,66 +1,22 @@
 export default function ResponseDemo() {
   return (
     <>
-      {/* --- Anatomy --- */}
-      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Response anatomy</h3>
+      {/* --- Legibility & rhythm --- */}
+      <h3 style={{ marginTop: 0, fontSize: 'var(--text-lg)' }}>Legibility and rhythm</h3>
 
-      <div className="chat-bubble" style={{ position: 'relative' }}>
+      <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
-          Net revenue retention reached 124% in Q3, up from 118% in Q2<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="Q3 Financial Report">1</a>. The improvement came from expansion revenue in mid-market accounts.
+          Every response is a page the reader never asked to visit. They arrived with a question and want to leave with an answer — the typography should never slow them down. Legibility isn't decoration. It's the difference between a response that gets read and one that gets skimmed past.
         </p>
         <p>
-          Three factors drove the increase:
+          Spacing is the primary tool. Paragraphs need enough air between them that the eye can reset, but not so much that the content feels fragmented. The system uses a 2:1 ratio — paragraph gaps are roughly twice the inter-line gap — which gives each block its own shape without breaking the vertical flow. Headings bind downward to the content they introduce, pulling tighter below than above, so the reader always knows what belongs together.
         </p>
-        <ol>
-          <li>Average contract value grew 31% as customers adopted premium tiers.</li>
-          <li>Churn dropped to 1.8% monthly, down from 2.4% the prior quarter.</li>
-          <li>Usage-based billing captured 12% more per-seat revenue on average.</li>
-        </ol>
+        <p>
+          Line length matters just as much. Prose is capped at a comfortable measure so the eye can track back to the start of the next line without losing its place. Code blocks break out of this constraint because developers expect to scan horizontally, but body text never does. Lists tighten their internal spacing so items feel like a single unit, not a scattered collection of bullets.
+        </p>
         <p style={{ marginBottom: 0 }}>
-          This puts the company well above the SaaS industry median of 110%<a className="cite-inline" href="#" onClick={e => e.preventDefault()} title="OpenView SaaS Benchmarks 2025">2</a>.
+          The goal is invisible structure. When the rhythm is right, the reader doesn't notice the typography — they just understand the answer faster. Every spacing token, line-height value, and wrapping rule in this system exists to protect that experience.
         </p>
-
-        <div className="cite-footer">
-          <div className="cite-footer-title">Sources</div>
-          <ul className="cite-footer-list">
-            <li className="cite-footer-item">
-              <a className="cite-footer-link" href="#" onClick={e => e.preventDefault()}>
-                <span className="cite-inline">1</span>
-                Q3 Financial Report
-                <span className="cite-footer-source">· Google Drive</span>
-              </a>
-            </li>
-            <li className="cite-footer-item">
-              <a className="cite-footer-link" href="#" onClick={e => e.preventDefault()}>
-                <span className="cite-inline">2</span>
-                OpenView SaaS Benchmarks 2025
-                <span className="cite-footer-source">· Web</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div style={{ display: 'grid', gap: 'var(--space-2)', marginTop: 'var(--space-4)', marginBottom: 'var(--space-10)' }}>
-        {[
-          { label: 'Body', desc: 'Prose, lists, code, headings — all subject to rhythm rules' },
-          { label: 'Sources', desc: 'Footer citations separated by a top border — clickable rows' },
-        ].map((item, i) => (
-          <div key={i} style={{
-            fontSize: 'var(--text-sm)',
-            color: 'var(--text-secondary)',
-            padding: 'var(--space-2) var(--space-4)',
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-md)',
-            display: 'flex',
-            gap: 'var(--space-2)',
-            alignItems: 'baseline',
-          }}>
-            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{item.label}</span>
-            {item.desc}
-          </div>
-        ))}
       </div>
 
       {/* --- Rich content --- */}

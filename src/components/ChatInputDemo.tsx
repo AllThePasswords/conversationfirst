@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import {
   PlusIcon,
   MicrophoneIcon,
@@ -9,6 +9,98 @@ import {
   DocumentTextIcon,
   PaperClipIcon,
 } from '@heroicons/react/24/outline'
+
+/** Simulated waveform matching the live canvas renderer in ChatInput. */
+function DemoWaveform() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const rafRef = useRef<number>(0)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')!
+    const dpr = window.devicePixelRatio || 1
+    const rect = canvas.getBoundingClientRect()
+    canvas.width = rect.width * dpr
+    canvas.height = rect.height * dpr
+    ctx.scale(dpr, dpr)
+    const w = rect.width
+    const h = rect.height
+
+    const barWidth = 2
+    const barGap = 3
+    const barStep = barWidth + barGap
+    const numBars = Math.floor(w / barStep)
+    const minBarH = 2
+
+    const history = new Float32Array(numBars)
+    let writeHead = 0
+    let lastPush = 0
+    const pushInterval = 50
+
+    const accentColor =
+      getComputedStyle(canvas).getPropertyValue('color').trim() || '#1a1a1a'
+    const startTime = performance.now()
+
+    const draw = (now: number) => {
+      // Generate fake amplitude from layered sine waves
+      const t = now / 1000
+      const rms =
+        0.18 +
+        0.12 * Math.sin(t * 2.3) +
+        0.08 * Math.sin(t * 5.7 + 1) +
+        0.06 * Math.sin(t * 11.3 + 3) +
+        0.04 * Math.random()
+
+      if (now - lastPush >= pushInterval) {
+        history[writeHead % numBars] = Math.max(0, rms)
+        writeHead++
+        lastPush = now
+      }
+
+      ctx.clearRect(0, 0, w, h)
+      const midY = h / 2
+      const maxAmp = h * 0.38
+      const elapsed = now - startTime
+      const fadeIn = Math.min(elapsed / 300, 1)
+
+      for (let i = 0; i < numBars; i++) {
+        const idx = ((writeHead - 1 - i) % numBars + numBars) % numBars
+        const amp = history[idx]
+        const barH = Math.max(minBarH, amp * maxAmp)
+        const x = w - i * barStep - barWidth
+        if (x < 0) break
+
+        const distFade = 1 - (i / numBars) * 0.6
+        ctx.globalAlpha = fadeIn * distFade * 0.7
+        ctx.fillStyle = accentColor
+
+        const radius = barWidth / 2
+        const top = midY - barH
+        const barFullH = barH * 2
+        ctx.beginPath()
+        ctx.roundRect(x, top, barWidth, barFullH, radius)
+        ctx.fill()
+      }
+
+      ctx.globalAlpha = 1
+      rafRef.current = requestAnimationFrame(draw)
+    }
+
+    rafRef.current = requestAnimationFrame(draw)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="chat-voice-canvas"
+      aria-label="Recording voice"
+      role="status"
+    />
+  )
+}
 
 /**
  * ChatInputDemo — a self-contained, non-functional replica of the
@@ -39,8 +131,6 @@ export default function ChatInputDemo() {
     setShowThumbs(p => !p)
     setMenuOpen(false)
   }, [])
-
-  const waveformBars = 30
 
   return (
     <div>
@@ -81,10 +171,8 @@ export default function ChatInputDemo() {
                   <XMarkIcon width={20} height={20} aria-hidden="true" />
                 </button>
 
-                <div className="chat-voice-waveform" aria-label="Recording voice" role="status" style={{ gap: 3 }}>
-                  {Array.from({ length: waveformBars }, (_, i) => (
-                    <div key={i} className="voice-bar" style={{ animationDelay: `${(i * 0.07) % 1.2}s` }} />
-                  ))}
+                <div className="chat-voice-waveform">
+                  <DemoWaveform />
                 </div>
 
                 <button
