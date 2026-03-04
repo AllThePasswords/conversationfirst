@@ -318,7 +318,7 @@ export default function ChatInputDemo() {
       <h4 style={{ fontSize: 'var(--text-base)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>Multiline auto-grow</h4>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-4)' }}>
         The textarea expands as you type, up to 10 lines. After 10 lines it scrolls internally.
-        The pill radius softens once content wraps to a second line.
+        The pill shape is kept so the container corner cups the circular send button.
       </p>
       <div style={{ marginBottom: 'var(--space-10)' }}>
         <MultilineDemo />
