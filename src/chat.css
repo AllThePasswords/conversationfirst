@@ -76,8 +76,9 @@
   box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-/* Expanded state: soften corners when input has attachments */
-.chat-input-inner.has-attachments {
+/* Expanded state: soften corners when input grows tall */
+.chat-input-inner.has-attachments,
+.chat-input-inner.multiline {
   border-radius: var(--radius-lg);
 }
 

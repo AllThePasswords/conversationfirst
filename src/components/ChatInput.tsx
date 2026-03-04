@@ -362,7 +362,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${multiline ? 'multiline' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
+        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
