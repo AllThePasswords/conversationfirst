@@ -135,7 +135,6 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   const [listening, setListening] = useState(false);
   const [dismissing, setDismissing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [multiline, setMultiline] = useState(false);
   const [micStream, setMicStream] = useState<MediaStream | null>(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -155,9 +154,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const lineH = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45;
     const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
     const maxH = lineH * 10 + padY;
-    const newH = Math.min(el.scrollHeight, maxH);
-    el.style.height = newH + 'px';
-    setMultiline(el.scrollHeight > lineH + padY + 4);
+    el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
   }, []);
 
   // Re-measure textarea height after React renders new text
@@ -294,7 +291,6 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     if ((!text.trim() && stagedImages.length === 0) || disabled) return;
     onSend(text, stagedImages.map(img => img.file));
     setText('');
-    setMultiline(false);
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
     }
