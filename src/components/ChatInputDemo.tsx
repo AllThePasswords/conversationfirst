@@ -110,7 +110,6 @@ function DemoWaveform() {
 /** Auto-growing textarea demo. Mirrors the resize logic from ChatInput. */
 function MultilineDemo() {
   const [text, setText] = useState('')
-  const [multiline, setMultiline] = useState(false)
   const ref = useRef<HTMLTextAreaElement>(null)
 
   const resize = useCallback(() => {
@@ -122,14 +121,13 @@ function MultilineDemo() {
     const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
     const maxH = lineH * 10 + padY
     el.style.height = Math.min(el.scrollHeight, maxH) + 'px'
-    setMultiline(el.scrollHeight > lineH + padY + 4)
   }, [])
 
   useEffect(() => { resize() }, [text, resize])
 
   return (
     <div className="chat-input-bar" style={{ position: 'relative' }}>
-      <div className={`chat-input-inner ${multiline ? 'multiline' : ''}`}>
+      <div className="chat-input-inner">
         <div className="chat-input-body">
           <textarea
             ref={ref}
