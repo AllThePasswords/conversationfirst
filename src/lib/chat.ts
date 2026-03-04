@@ -1,4 +1,4 @@
-// Chat persistence layer — threads and messages
+// Chat persistence layer: threads and messages
 // Stores conversation history in Supabase for cross-session persistence.
 
 import { supabase } from './supabase'

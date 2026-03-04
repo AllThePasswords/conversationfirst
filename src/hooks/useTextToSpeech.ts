@@ -41,18 +41,23 @@ export function useTextToSpeech() {
     abortRef.current = controller;
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        setState('idle');
-        return;
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      // Attach auth if available (vault key path), otherwise rely on env var
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          headers['Authorization'] = `Bearer ${session.access_token}`;
+        }
+      } catch {
+        // No auth available. Endpoint will use env var fallback
       }
 
       const response = await fetch('/api/tts', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
+        headers,
         body: JSON.stringify({ text, voiceId }),
         signal: controller.signal,
       });

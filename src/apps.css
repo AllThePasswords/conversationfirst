@@ -20,7 +20,7 @@
   grid-template-columns: 260px 1fr;
 }
 
-/* --- Hamburger Button — fixed at top-left, moves with sidenav --- */
+/* --- Hamburger Button: fixed at top-left, moves with sidenav --- */
 
 .cf-hamburger {
   position: absolute;
@@ -3551,7 +3551,7 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   FullyPresent — Presentation Editor
+   FullyPresent: Presentation Editor
 ═══════════════════════════════════════════════════ */
 
 /* Override main container when FullyPresent is active */
@@ -3564,9 +3564,9 @@
   max-width: none;
 }
 
-/* cf-main is now overflow:hidden with no padding — apps control their own scroll */
+/* cf-main is now overflow:hidden with no padding. Apps control their own scroll */
 
-/* Standalone window — no padding for FullyPresent */
+/* Standalone window: no padding for FullyPresent */
 .cf-standalone-content:has(.fp-container) {
   padding: 0;
   overflow: hidden;
@@ -4750,7 +4750,7 @@
 }
 
 /* ═══════════════════════════════════════════════════
-   FullyPresent — Present Mode (full-screen overlay)
+   FullyPresent: Present Mode (full-screen overlay)
 ═══════════════════════════════════════════════════ */
 
 .fp-present-overlay {
@@ -5147,7 +5147,7 @@
 }
 
 .op-session-table thead th:nth-child(1) { width: 18%; }  /* Date */
-.op-session-table thead th:nth-child(2) { width: auto; }  /* Title — takes remaining */
+.op-session-table thead th:nth-child(2) { width: auto; }  /* Title: takes remaining */
 .op-session-table thead th:nth-child(3) { width: 16%; }  /* Questions */
 .op-session-table thead th:nth-child(4) { width: 15%; }  /* Duration */
 .op-session-table thead th:nth-child(5) { width: 16%; }  /* Status */

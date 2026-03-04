@@ -1,4 +1,4 @@
-// useMemory hook — memory access with app permission checks
+// useMemory hook: memory access with app permission checks
 // Wraps memory.ts queries with permission enforcement from AppConfig.
 
 import { useCallback } from 'react'

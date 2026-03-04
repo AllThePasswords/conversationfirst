@@ -102,7 +102,7 @@ export function useBrainGuest() {
 
   /**
    * Recall relevant memories using client-side keyword matching.
-   * No API call needed — fast and free.
+   * No API call needed. Fast and free.
    */
   const recall = useCallback(async (query) => {
     if (!query || query.trim().length < 5) {

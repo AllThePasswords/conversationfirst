@@ -8,8 +8,8 @@ import ChatProcessing from './ChatProcessing'
 import MarkdownRenderer from './MarkdownRenderer'
 
 /**
- * OverviewChat — wraps the Design System page with an ephemeral chat.
- * Messages live in React state only — nothing is persisted.
+ * OverviewChat: wraps the Design System page with an ephemeral chat.
+ * Messages live in React state only. Nothing is persisted.
  */
 export default function OverviewChat() {
   const [messages, setMessages] = useState<any[]>([])

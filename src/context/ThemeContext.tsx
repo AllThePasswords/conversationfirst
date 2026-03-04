@@ -70,7 +70,7 @@ const ALL_VARS = [
   '--warning', '--warning-subtle',
   '--code-bg', '--cite-bg', '--cite-border',
   '--shadow-sm', '--shadow-md', '--shadow-lg',
-  '--radius-sm', '--radius-md', '--radius-lg',
+  '--radius-sm', '--radius-md', '--radius-lg', '--radius-input',
 ];
 
 /* ── Apply a theme to the document ── */
@@ -117,7 +117,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     }
   }
 
-  // Shape — buttons (--radius-btn-sm, --radius-btn-md) and containers (--radius-lg) can differ
+  // Shape: buttons (--radius-btn-sm, --radius-btn-md) and containers (--radius-lg) can differ
   const btnShape = theme.shape;
   const ctrShape = theme.containerShape ?? theme.shape;
   // Buttons / small elements
@@ -134,17 +134,18 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     case 'cut':
       el.style.setProperty('--radius-sm', '0');
       el.style.setProperty('--radius-md', '0');
+      el.style.setProperty('--radius-input', '0');
       // btn tokens inherit via var(--radius-sm/md) → 0
       el.style.removeProperty('--radius-btn-sm');
       el.style.removeProperty('--radius-btn-md');
       break;
     default:
-      // rounded — clear all overrides, let CSS defaults apply
+      // rounded: moderate corners, not pill
       el.style.removeProperty('--radius-sm');
       el.style.removeProperty('--radius-md');
       el.style.removeProperty('--radius-btn-sm');
       el.style.removeProperty('--radius-btn-md');
-      el.style.removeProperty('--radius-input');
+      el.style.setProperty('--radius-input', '12px');
       break;
   }
   // Containers

@@ -1,4 +1,4 @@
-// App registry — Layer 3 configuration
+// App registry: Layer 3 configuration
 // Each app declares which connection types and memory types it can access.
 // Permissions enforced client-side via hooks; RLS enforces household-level server-side.
 

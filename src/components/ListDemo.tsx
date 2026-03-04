@@ -9,9 +9,9 @@ export default function ListDemo() {
           The API supports three authentication methods:
         </p>
         <ul>
-          <li>API key — passed in the <code>Authorization</code> header.</li>
-          <li>OAuth 2.0 — for user-delegated access with scoped permissions.</li>
-          <li>Service account — for server-to-server calls without user context.</li>
+          <li>API key: passed in the <code>Authorization</code> header.</li>
+          <li>OAuth 2.0: for user-delegated access with scoped permissions.</li>
+          <li>Service account: for server-to-server calls without user context.</li>
         </ul>
         <p style={{ marginBottom: 0 }}>
           All three methods support rate limiting and audit logging.
@@ -41,9 +41,9 @@ export default function ListDemo() {
           Key parameters to tune:
         </p>
         <ul>
-          <li><strong>max</strong> — maximum number of connections in the pool.</li>
-          <li><strong>idleTimeoutMillis</strong> — close connections after this idle duration.</li>
-          <li><strong>connectionTimeoutMillis</strong> — fail fast if no connection is available.</li>
+          <li><strong>max</strong>: maximum number of connections in the pool.</li>
+          <li><strong>idleTimeoutMillis</strong>: close connections after this idle duration.</li>
+          <li><strong>connectionTimeoutMillis</strong>: fail fast if no connection is available.</li>
         </ul>
         <p style={{ marginBottom: 0 }}>
           Monitor pool wait times in production. If P95 exceeds 50ms, increase the pool size or optimise slow queries.
@@ -58,19 +58,19 @@ export default function ListDemo() {
           The design system uses three spacing scales:
         </p>
         <ul>
-          <li>Micro scale — internal component spacing
+          <li>Micro scale: internal component spacing
             <ul>
               <li>4px between related elements within a control.</li>
               <li>8px between grouped controls in a toolbar.</li>
             </ul>
           </li>
-          <li>Meso scale — between components
+          <li>Meso scale: between components
             <ul>
               <li>16px between form fields in a group.</li>
               <li>24px between distinct sections on a page.</li>
             </ul>
           </li>
-          <li>Macro scale — page-level layout
+          <li>Macro scale: page-level layout
             <ul>
               <li>48px between major content regions.</li>
               <li>64px for top-level page margins.</li>
@@ -108,10 +108,10 @@ export default function ListDemo() {
           Configuration options for the rate limiter:
         </p>
         <ul>
-          <li><strong>windowMs</strong> — time window in milliseconds. Default: <code>60000</code> (one minute).</li>
-          <li><strong>maxRequests</strong> — maximum requests per window. Set to <code>100</code> for public APIs.</li>
-          <li><strong>keyGenerator</strong> — function that identifies clients. Typically extracts the IP address or API key from the request.</li>
-          <li><strong>skipFailedRequests</strong> — when <code>true</code>, failed requests (4xx/5xx) do not count toward the limit.</li>
+          <li><strong>windowMs</strong>: time window in milliseconds. Default: <code>60000</code> (one minute).</li>
+          <li><strong>maxRequests</strong>: maximum requests per window. Set to <code>100</code> for public APIs.</li>
+          <li><strong>keyGenerator</strong>: function that identifies clients. Typically extracts the IP address or API key from the request.</li>
+          <li><strong>skipFailedRequests</strong>: when <code>true</code>, failed requests (4xx/5xx) do not count toward the limit.</li>
         </ul>
       </div>
 
@@ -122,8 +122,8 @@ export default function ListDemo() {
         {[
           'Markers: disc → circle → square · Ordered: decimal → lower-alpha → lower-roman',
           'List after paragraph pulls up 0.25em for continuity',
-          'Items use 4px vertical padding, not margin — first/last strip outer padding',
-          'Root indent 20px, nested 16px — prevents excessive drift',
+          'Items use 4px vertical padding, not margin. First/last strip outer padding',
+          'Root indent 20px, nested 16px. Prevents excessive drift',
           'Markers use --text-muted, fading further at each nesting level',
           'Last list in a bubble has zero bottom margin',
         ].map((rule, i) => (

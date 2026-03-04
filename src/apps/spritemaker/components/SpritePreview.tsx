@@ -77,7 +77,7 @@ export default function SpritePreview({ spriteId, onBack, onRefresh }: SpritePre
           {currentPose?.url ? (
             <img
               src={currentPose.url}
-              alt={`${asset.name} — ${currentPose.pose_name}`}
+              alt={`${asset.name}, ${currentPose.pose_name}`}
               className="sm-preview-img"
             />
           ) : (

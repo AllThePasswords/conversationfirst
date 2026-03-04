@@ -147,7 +147,7 @@ export function useChatDB(conversationId, onTitleUpdate, accessToken, brain) {
         try {
           memories = await brain.recall(text.trim());
         } catch {
-          // Non-blocking — continue without memories
+          // Non-blocking. Continue without memories
         }
       }
 

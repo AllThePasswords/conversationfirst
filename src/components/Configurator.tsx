@@ -25,46 +25,46 @@ function fetchGoogleFonts(): Promise<string[]> {
 
 const FONT_OPTIONS = {
   body: [
-    { name: "Source Serif 4", family: "'Source Serif 4', Georgia, serif", style: "serif", desc: "Editorial — warm, highly legible" },
-    { name: "Crimson Pro", family: "'Crimson Pro', Georgia, serif", style: "serif", desc: "Book quality — refined reading" },
-    { name: "Lora", family: "'Lora', Georgia, serif", style: "serif", desc: "Contemporary — friendly curves" },
-    { name: "Spectral", family: "'Spectral', Georgia, serif", style: "serif", desc: "Technical — crisp, structured" },
-    { name: "Newsreader", family: "'Newsreader', Georgia, serif", style: "serif", desc: "Newspaper — authoritative, clear" },
-    { name: "Alegreya", family: "'Alegreya', Georgia, serif", style: "serif", desc: "Humanist — dynamic, literary" },
-    { name: "Merriweather", family: "'Merriweather', Georgia, serif", style: "serif", desc: "Screen-first — sturdy" },
-    { name: "Bitter", family: "'Bitter', Georgia, serif", style: "serif", desc: "Slab — bold personality" },
-    { name: "DM Sans", family: "'DM Sans', system-ui, sans-serif", style: "sans", desc: "Geometric — clean, modern" },
-    { name: "Plus Jakarta Sans", family: "'Plus Jakarta Sans', system-ui, sans-serif", style: "sans", desc: "Rounded — approachable" },
-    { name: "IBM Plex Sans", family: "'IBM Plex Sans', system-ui, sans-serif", style: "sans", desc: "Industrial — neutral character" },
-    { name: "Outfit", family: "'Outfit', system-ui, sans-serif", style: "sans", desc: "Variable — soft, versatile" },
+    { name: "Source Serif 4", family: "'Source Serif 4', Georgia, serif", style: "serif", desc: "Editorial. Warm, highly legible" },
+    { name: "Crimson Pro", family: "'Crimson Pro', Georgia, serif", style: "serif", desc: "Book quality. Refined reading" },
+    { name: "Lora", family: "'Lora', Georgia, serif", style: "serif", desc: "Contemporary. Friendly curves" },
+    { name: "Spectral", family: "'Spectral', Georgia, serif", style: "serif", desc: "Technical. Crisp, structured" },
+    { name: "Newsreader", family: "'Newsreader', Georgia, serif", style: "serif", desc: "Newspaper. Authoritative, clear" },
+    { name: "Alegreya", family: "'Alegreya', Georgia, serif", style: "serif", desc: "Humanist. Dynamic, literary" },
+    { name: "Merriweather", family: "'Merriweather', Georgia, serif", style: "serif", desc: "Screen-first. Sturdy" },
+    { name: "Bitter", family: "'Bitter', Georgia, serif", style: "serif", desc: "Slab. Bold personality" },
+    { name: "DM Sans", family: "'DM Sans', system-ui, sans-serif", style: "sans", desc: "Geometric. Clean, modern" },
+    { name: "Plus Jakarta Sans", family: "'Plus Jakarta Sans', system-ui, sans-serif", style: "sans", desc: "Rounded. Approachable" },
+    { name: "IBM Plex Sans", family: "'IBM Plex Sans', system-ui, sans-serif", style: "sans", desc: "Industrial. Neutral character" },
+    { name: "Outfit", family: "'Outfit', system-ui, sans-serif", style: "sans", desc: "Variable. Soft, versatile" },
   ],
   heading: [
-    { name: "Same as body", family: null, desc: "Uniform — single typeface" },
-    { name: "Fraunces", family: "'Fraunces', Georgia, serif", style: "serif", desc: "Expressive — optical sizing" },
-    { name: "Newsreader", family: "'Newsreader', Georgia, serif", style: "serif", desc: "Newspaper — authoritative" },
-    { name: "Source Serif 4", family: "'Source Serif 4', Georgia, serif", style: "serif", desc: "Editorial — clean display" },
-    { name: "Outfit", family: "'Outfit', system-ui, sans-serif", style: "sans", desc: "Geometric — crisp large" },
-    { name: "Plus Jakarta Sans", family: "'Plus Jakarta Sans', system-ui, sans-serif", style: "sans", desc: "Rounded — friendly scale" },
-    { name: "Recursive", family: "'Recursive', system-ui, sans-serif", style: "sans", desc: "Variable — playful to serious" },
-    { name: "SUSE", family: "'SUSE', system-ui, sans-serif", style: "sans", desc: "Technical — engineered" },
-    { name: "DM Sans", family: "'DM Sans', system-ui, sans-serif", style: "sans", desc: "Geometric — precise" },
+    { name: "Same as body", family: null, desc: "Uniform. Single typeface" },
+    { name: "Fraunces", family: "'Fraunces', Georgia, serif", style: "serif", desc: "Expressive. Optical sizing" },
+    { name: "Newsreader", family: "'Newsreader', Georgia, serif", style: "serif", desc: "Newspaper. Authoritative" },
+    { name: "Source Serif 4", family: "'Source Serif 4', Georgia, serif", style: "serif", desc: "Editorial. Clean display" },
+    { name: "Outfit", family: "'Outfit', system-ui, sans-serif", style: "sans", desc: "Geometric. Crisp large" },
+    { name: "Plus Jakarta Sans", family: "'Plus Jakarta Sans', system-ui, sans-serif", style: "sans", desc: "Rounded. Friendly scale" },
+    { name: "Recursive", family: "'Recursive', system-ui, sans-serif", style: "sans", desc: "Variable. Playful to serious" },
+    { name: "SUSE", family: "'SUSE', system-ui, sans-serif", style: "sans", desc: "Technical. Engineered" },
+    { name: "DM Sans", family: "'DM Sans', system-ui, sans-serif", style: "sans", desc: "Geometric. Precise" },
   ],
   mono: [
     { name: "JetBrains Mono", family: "'JetBrains Mono', monospace", desc: "Ligatures, tall x-height" },
     { name: "Fira Code", family: "'Fira Code', monospace", desc: "Mozilla, coding ligatures" },
     { name: "IBM Plex Mono", family: "'IBM Plex Mono', monospace", desc: "Industrial, pairs with Plex" },
-    { name: "Source Code Pro", family: "'Source Code Pro', monospace", desc: "Adobe — neutral, legible" },
-    { name: "Inconsolata", family: "'Inconsolata', monospace", desc: "Humanist — lighter, elegant" },
+    { name: "Source Code Pro", family: "'Source Code Pro', monospace", desc: "Adobe. Neutral, legible" },
+    { name: "Inconsolata", family: "'Inconsolata', monospace", desc: "Humanist. Lighter, elegant" },
   ],
 };
 
 const ACCENT_OPTIONS = [
-  { name: "Forest", hex: "#3d6b5e", desc: "Default — warm, natural" },
-  { name: "Black", hex: "#000000", desc: "Pure black — stark, minimal" },
+  { name: "Forest", hex: "#3d6b5e", desc: "Default. Warm, natural" },
+  { name: "Black", hex: "#000000", desc: "Pure black. Stark, minimal" },
 ];
 
 const BG_OPTIONS = [
-  { name: "Warm Paper", hex: "#faf9f7", desc: "Default — soft, warm" },
+  { name: "Warm Paper", hex: "#faf9f7", desc: "Default. Soft, warm" },
   { name: "Pure White", hex: "#ffffff", desc: "Clean, bright" },
 ];
 
@@ -76,14 +76,14 @@ function rgbToHex(r,g,b) {
 }
 
 const BTN_SHAPE_OPTIONS: { id: ShapeMode; name: string; desc: string }[] = [
-  { id: "rounded", name: "Rounded", desc: "Soft corners — 4/8px radius" },
+  { id: "rounded", name: "Rounded", desc: "Soft corners, 4/8px radius" },
   { id: "pill", name: "Pill", desc: "Fully rounded capsule shapes" },
-  { id: "square", name: "Square", desc: "Sharp edges — no rounding" },
+  { id: "square", name: "Square", desc: "Sharp edges, no rounding" },
   { id: "cut", name: "Cut Corner", desc: "Chamfered diagonal corners" },
 ];
 const CTR_SHAPE_OPTIONS: { id: ContainerShapeMode; name: string; desc: string }[] = [
-  { id: "rounded", name: "Rounded", desc: "Soft corners — 12px radius" },
-  { id: "square", name: "Square", desc: "Sharp edges — no rounding" },
+  { id: "rounded", name: "Rounded", desc: "Soft corners, 12px radius" },
+  { id: "square", name: "Square", desc: "Sharp edges, no rounding" },
   { id: "cut", name: "Cut Corner", desc: "Chamfered diagonal corners" },
 ];
 
@@ -94,7 +94,7 @@ const STEP_DESCS = {
   heading: "Hierarchy. Page titles, section heads, modal titles, card titles, chat headings.",
   mono: "Precision. Code blocks, inline code, technical identifiers, terminal output, data.",
   colors: "Identity. Your accent colour for buttons, links, and citations. Your background colour for the overall canvas.",
-  shape: "Structure. The fundamental geometry of every element — buttons, cards, inputs, badges, and more.",
+  shape: "Structure. The fundamental geometry of every element: buttons, cards, inputs, badges, and more.",
 };
 
 function resolve(c) { return c.heading?.family ? c.heading : c.body; }
@@ -140,7 +140,7 @@ function generateTestPage(c) {
 <html lang="en"${shapeAttr}>
 <head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Conversation First — Test Page</title>
+<title>Conversation First: Test Page</title>
 <link href="${gf}" rel="stylesheet"/>
 <style>
 :root {
@@ -366,7 +366,7 @@ ${cutCSS}</style>
 <section class="section" aria-labelledby="s-processing">
 <h2 class="section-label" id="s-processing">Processing states</h2>
 
-<h3>Minimal — cursor only</h3>
+<h3>Minimal: cursor only</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For fast responses under 2 seconds. Just a blinking cursor.</p>
 <div class="chat-bubble">
 
@@ -377,7 +377,7 @@ ${cutCSS}</style>
   </div>
 </div>
 
-<h3>Standard — status text</h3>
+<h3>Standard: status text</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For typical responses. Monospace status with animated dots.</p>
 <div class="chat-bubble">
 
@@ -389,7 +389,7 @@ ${cutCSS}</style>
   </div>
 </div>
 
-<h3>Detailed — with context</h3>
+<h3>Detailed: with context</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For complex queries. Shows what the system is doing.</p>
 <div class="chat-bubble">
 
@@ -407,7 +407,7 @@ ${cutCSS}</style>
   </div>
 </div>
 
-<h3>Skeleton — content preview</h3>
+<h3>Skeleton: content preview</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">For long responses. Shows the shape of incoming content.</p>
 <div class="chat-bubble">
 
@@ -429,7 +429,7 @@ ${cutCSS}</style>
   </div>
 </div>
 
-<h3>Inline — mid-stream</h3>
+<h3>Inline: mid-stream</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">When text is streaming in and the model is still generating.</p>
 <div class="chat-bubble">
 
@@ -439,7 +439,7 @@ ${cutCSS}</style>
 
 <!-- CONVERSATION TONE -->
 <section class="section" aria-labelledby="s-tone">
-<h2 class="section-label" id="s-tone">Conversation — correct tone</h2>
+<h2 class="section-label" id="s-tone">Conversation: correct tone</h2>
 
 <div class="chat-bubble user"><p>What's the retention rate for Q3?</p>
 </div>
@@ -459,7 +459,7 @@ ${cutCSS}</style>
   <strong style="color:var(--text-secondary)">Why this is correct:</strong> Direct answer first. No preamble. Supporting context with citations. Every claim has a source. Stopped when done.
 </p>
 
-<h3 style="margin-top:var(--space-8)">Incorrect tone — for comparison</h3>
+<h3 style="margin-top:var(--space-8)">Incorrect tone, for comparison</h3>
 
 <div class="chat-bubble" style="opacity:0.7;border-style:dashed">
 
@@ -473,7 +473,7 @@ ${cutCSS}</style>
 
 <!-- COMPLEX QUERY -->
 <section class="section" aria-labelledby="s-complex">
-<h2 class="section-label" id="s-complex">Conversation — complex query</h2>
+<h2 class="section-label" id="s-complex">Conversation: complex query</h2>
 
 <div class="chat-bubble user"><p>How does our Q3 margin compare to industry, and what drove the change?</p>
 </div>
@@ -624,14 +624,14 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
 <h3>Gap modifiers</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Three levels: tight (8px), normal (16px), loose (24px).</p>
 <div style="margin-bottom:var(--space-6)">
-  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-tight</code> — 8px</p>
+  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-tight</code>: 8px</p>
   <div class="grid-4 gap-tight" style="margin-bottom:var(--space-3)">
     <div class="card stat"><div class="stat-value">A</div><div class="stat-label">Dense</div></div>
     <div class="card stat"><div class="stat-value">B</div><div class="stat-label">Dense</div></div>
     <div class="card stat"><div class="stat-value">C</div><div class="stat-label">Dense</div></div>
     <div class="card stat"><div class="stat-value">D</div><div class="stat-label">Dense</div></div>
   </div>
-  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-loose</code> — 24px</p>
+  <p style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2)"><code>gap-loose</code>: 24px</p>
   <div class="grid-4 gap-loose">
     <div class="card stat"><div class="stat-value">A</div><div class="stat-label">Spacious</div></div>
     <div class="card stat"><div class="stat-value">B</div><div class="stat-label">Spacious</div></div>
@@ -640,7 +640,7 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
   </div>
 </div>
 
-<h3>Document — CV with sidebar</h3>
+<h3>Document: CV with sidebar</h3>
 <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Full document layout using doc-header-band, doc-cols-2-1, and doc-aside.</p>
 <div class="cf-doc">
   <div class="doc-header-band">
@@ -652,9 +652,9 @@ Q1: 66%  Q2: 68%  Q3: 72%</code></pre>
     <div class="doc-cols-2-1">
       <div>
         <h2>Experience</h2>
-        <h3>Lead Engineer — Acme Corp</h3>
+        <h3>Lead Engineer, Acme Corp</h3>
         <p>Led a team of 8 engineers building distributed systems. Reduced API latency 40%.</p>
-        <h3>Software Engineer — StartupCo</h3>
+        <h3>Software Engineer, StartupCo</h3>
         <p>Built the core payments platform from scratch. Processed $2M monthly.</p>
       </div>
       <div class="doc-aside">
@@ -698,13 +698,13 @@ function generateSpec(c) {
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
   const ctr = c.containerShape ?? c.shape;
-  return `# Conversation First — App Configuration Spec
+  return `# Conversation First: App Configuration Spec
 
-> Five decisions — three typefaces, two colours. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
+> Five decisions: three typefaces, two colours. Everything else is fixed. The AI is a computer, not a person. WCAG 2.1 AA compliant.
 
 ---
 
-## 0 — Voice & Behaviour
+## 0. Voice & Behaviour
 
 This is the most important section. It governs how the AI speaks.
 
@@ -718,16 +718,17 @@ The AI is a computer. It has deep capabilities behind an elegant conversational 
 2. **Cite everything.** Every factual claim must have a citation. No citation, no claim. This is the difference between a real answer and a bullshit one.
 3. **Give examples.** Abstract statements must be followed by a concrete example. A claim without an example is hand-waving.
 4. **Stop when done.** Do not pad. Do not summarise what was just said. Do not ask "Would you like me to elaborate?" unless the answer is genuinely incomplete.
-5. **No emotion.** No excitement, no enthusiasm, no apologising, no hedging with "I think" or "It seems." State facts. If uncertain, state the uncertainty as a fact: "Confidence: moderate — based on one source."
+5. **No emotion.** No excitement, no enthusiasm, no apologising, no hedging with "I think" or "It seems." State facts. If uncertain, state the uncertainty as a fact: "Confidence: moderate, based on one source."
 6. **Short sentences.** One idea per sentence. Active voice. No semicolons, no nested clauses.
 7. **No filler.** Remove: "certainly", "absolutely", "of course", "it's worth noting", "interestingly", "essentially", "basically", "actually", "in order to". If the word adds no information, it does not belong.
+8. **No em dashes.** Use periods, commas, or colons. Em dashes add visual noise.
 
 ### 0.3 Response structure
 
 \`\`\`
-[Direct answer — 1-2 sentences]
+[Direct answer, 1-2 sentences]
 
-[Supporting evidence with citations — 1-3 short paragraphs]
+[Supporting evidence with citations, 1-3 short paragraphs]
 
 [Example or data if applicable]
 
@@ -748,7 +749,7 @@ The AI is a computer. It has deep capabilities behind an elegant conversational 
 >
 > Every number in the footnotes is a clickable link. Pressing it opens the source.
 
-### 0.5 Incorrect example — never do this
+### 0.5 Incorrect example, never do this
 
 > **Assistant:** Great question! I'd be happy to help you with that. Based on my analysis of your Q3 data, it looks like the net revenue retention rate came in at a really impressive 124%, which is actually a significant improvement over the previous quarter. This is particularly noteworthy because it suggests strong product-market fit and indicates that your existing customers are finding increasing value in the platform. The industry benchmarks suggest this is well above average, which is definitely something to celebrate! Let me know if you'd like me to dig deeper into any of these metrics.
 
@@ -756,7 +757,7 @@ The AI is a computer. It has deep capabilities behind an elegant conversational 
 
 ---
 
-## 1 — Typefaces
+## 1. Typefaces
 
 \`\`\`css
 :root {
@@ -774,7 +775,7 @@ The AI is a computer. It has deep capabilities behind an elegant conversational 
 
 ---
 
-## 2 — Type Scale
+## 2. Type Scale
 
 | Token | Size | Use |
 |---|---|---|
@@ -790,7 +791,7 @@ Body line-height: 1.5. Never below 14px on mobile.
 
 ---
 
-## 3 — Spacing
+## 3. Spacing
 
 \`\`\`css
 --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
@@ -799,7 +800,7 @@ Body line-height: 1.5. Never below 14px on mobile.
 
 ---
 
-## 4 — Colour
+## 4. Colour
 
 \`\`\`css
 :root {
@@ -820,19 +821,19 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 ---
 
-## 5 — Shape
+## 5. Shape
 
 **Mode: ${shapeLabel(c)}**
 
-**Buttons:** ${c.shape === 'rounded' ? 'Rounded corners — `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill — fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square — sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners — chamfered diagonal via `clip-path`.' : ''}
-**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons — `--radius-input: 9999px`.' : 'Follows container radius — `--radius-input: var(--radius-lg)`.'}
-**Containers:** ${ctr === 'rounded' ? 'Rounded corners — `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square — sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner — top-left chamfered diagonal via `clip-path`.' : ''}
+**Buttons:** ${c.shape === 'rounded' ? 'Rounded corners. `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill, fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square, sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners, chamfered diagonal via `clip-path`.' : ''}
+**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons. `--radius-input: 9999px`.' : 'Follows container radius. `--radius-input: var(--radius-lg)`.'}
+**Containers:** ${ctr === 'rounded' ? 'Rounded corners. `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square, sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner, top-left chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
 Three cut sizes (all top-left corner only):
-- \`--cut-sm\`: 4px — badges, inline code, small controls
-- \`--cut-md\`: 6px — buttons, inputs, alerts, toasts
-- \`--cut-lg\`: 10px — cards, modals, chat bubbles, sidebar
+- \`--cut-sm\`: 4px. Badges, inline code, small controls
+- \`--cut-md\`: 6px. Buttons, inputs, alerts, toasts
+- \`--cut-lg\`: 10px. Cards, modals, chat bubbles, sidebar
 
 Clip-path polygon (top-left only):
 \\\`\\\`\\\`css
@@ -848,7 +849,7 @@ Shadows on cut elements use \`filter: drop-shadow()\` instead of \`box-shadow\` 
 
 ---
 
-## 6 — Processing States
+## 6. Processing States
 
 Processing indicators are typography-based. No spinners. No bouncing dots. A blinking cursor and monospace status text.
 
@@ -886,7 +887,7 @@ Status text is always lowercase after the first word. Always ends with animated 
 
 ---
 
-## 6 — Citations
+## 6. Citations
 
 ### 6.1 Inline (superscript)
 
@@ -920,9 +921,9 @@ Convention: \`[cite-block:N title="..." url="..." meta="..."]\`
 
 1px top border. "Sources" in \`--text-xs\` uppercase.
 
-**Deduplication:** Multiple results from the same hostname are collapsed — only the first result per domain appears. **Default cap:** 3 visible sources. If more exist, a "Show N more sources" text button appears below the last row. Clicking it reveals the full deduplicated list.
+**Deduplication:** Multiple results from the same hostname are collapsed. Only the first result per domain appears. **Default cap:** 3 visible sources. If more exist, a "Show N more sources" text button appears below the last row. Clicking it reveals the full deduplicated list.
 
-**Each footer item is a single clickable row** — the entire row (badge + title + source type) is wrapped in an \`<a>\` tag. This makes the click target large and obvious.
+**Each footer item is a single clickable row.** The entire row (badge + title + source type) is wrapped in an \`<a>\` tag. This makes the click target large and obvious.
 
 Footer link structure:
 
@@ -958,14 +959,14 @@ The badge must always be interactive. A non-clickable citation is a broken citat
 - Cluster related claims under one citation where possible
 - Never fabricate citations or links
 - Max 8 per response; consolidate beyond that
-- Deduplicate footer by hostname — one entry per domain
+- Deduplicate footer by hostname, one entry per domain
 - Show 3 sources by default; "Show more" toggle for the rest
 - Reuse numbers for repeated sources
 - Reset numbering per response
 
 ---
 
-## 7 — Response Anatomy & Rendering
+## 7. Response Anatomy & Rendering
 
 ### 7.1 Bubble structure
 
@@ -987,23 +988,23 @@ Every response bubble has three regions:
 
 ### 7.3 User bubbles
 
-- Background: \`color-mix(in srgb, var(--text) 6%, var(--bg))\` — always filled with a subtle tint to distinguish from the page background
+- Background: \`color-mix(in srgb, var(--text) 6%, var(--bg))\`. Always filled with a subtle tint to distinguish from the page background
 - Right-aligned: \`margin-left: auto\`
 - Width: \`fit-content\`, max 85% of container
-- Plain text by default — pasted markdown is preserved
+- Plain text by default. Pasted markdown is preserved
 - Images render inline above text
 - No citations, no footer, no markdown rendering
 - Same label, padding, border-radius as assistant
 
 ### 7.4 Paragraph spacing
 
-- Paragraphs: \`margin: 0 0 var(--paragraph-spacing)\` (0.5em) — half-line gap, 2:1 ratio to inter-line spacing
+- Paragraphs: \`margin: 0 0 var(--paragraph-spacing)\` (0.5em). Half-line gap, 2:1 ratio to inter-line spacing
 - Last paragraph in a bubble: \`margin-bottom: 0\`
 - No first-line indent (\`--paragraph-indent: 0\`)
 
 ### 7.5 Line length
 
-Content fills the bubble width. The chat container and bubble padding constrain measure — no additional \`max-width\` on prose elements. Code blocks use full available width and scroll independently.
+Content fills the bubble width. The chat container and bubble padding constrain measure. No additional \`max-width\` on prose elements. Code blocks use full available width and scroll independently.
 
 ### 7.6 Line height
 
@@ -1029,7 +1030,7 @@ Headings bind to their following content, not the preceding section:
 ### 7.9 List spacing
 
 - Lists: \`margin-top: 0; margin-bottom: var(--paragraph-spacing)\`
-- \`p + ul\` / \`p + ol\`: \`margin-top: -0.125em\` — lists pull up to read as continuations
+- \`p + ul\` / \`p + ol\`: \`margin-top: -0.125em\`. Lists pull up to read as continuations
 - List items: \`padding: 4px 0\`, no margin. First/last child: no top/bottom padding.
 - Nested lists: \`margin-top: 4px; margin-bottom: 0\`
 - Last list in bubble: \`margin-bottom: 0\`
@@ -1058,7 +1059,7 @@ Headings bind to their following content, not the preceding section:
 
 ---
 
-## 8 — App Components
+## 8. App Components
 
 All components use the same tokens. No component introduces its own typeface, colour, or spacing.
 
@@ -1068,7 +1069,7 @@ Full rendering specifications in test page.
 
 ---
 
-## 9 — Document Layout System
+## 9. Document Layout System
 
 When generating documents inside \`cf-doc\`, use named layout classes. Never use inline \`grid-template-columns\`.
 
@@ -1087,19 +1088,19 @@ When generating documents inside \`cf-doc\`, use named layout classes. Never use
 ### 9.2 Gap modifiers
 
 Add to any grid container to change spacing:
-- \`gap-tight\` — 8px, for dense layouts (stats, tags)
-- \`gap-normal\` — 16px, default
-- \`gap-loose\` — 24px, for spacious layouts
+- \`gap-tight\`: 8px, for dense layouts (stats, tags)
+- \`gap-normal\`: 16px, default
+- \`gap-loose\`: 24px, for spacious layouts
 
 ### 9.3 Section helpers
 
-- \`doc-section\` — bottom margin between vertical sections
-- \`doc-section-sm\` — tighter section spacing
+- \`doc-section\`: bottom margin between vertical sections
+- \`doc-section-sm\`: tighter section spacing
 
 ### 9.4 Region patterns
 
-- \`doc-header-band\` — full-width accent-coloured header at document top. Place as first child of cf-doc. Supports h1, h2, p, doc-kicker inside.
-- \`doc-aside\` — sidebar region styling: smaller text, uppercase h3 section headings in accent colour, no bullet list styling. Use on the narrow column in asymmetric layouts.
+- \`doc-header-band\`: full-width accent-coloured header at document top. Place as first child of cf-doc. Supports h1, h2, p, doc-kicker inside.
+- \`doc-aside\`: sidebar region styling. Smaller text, uppercase h3 section headings in accent colour, no bullet list styling. Use on the narrow column in asymmetric layouts.
 
 ### 9.5 General grids (outside .cf-doc)
 
@@ -1116,15 +1117,15 @@ Add to any grid container to change spacing:
 
 ---
 
-## 10 — Conversational Typesetting
+## 10. Conversational Typesetting
 
 ### 10.1 Prose rhythm
 
 - 2–4 sentences per paragraph. One idea per paragraph. Max ~120 words per block.
-- Paragraph spacing: 0.5em (half-line). 2:1 ratio to inter-line gap — tight enough for flow, distinct enough to scan.
+- Paragraph spacing: 0.5em (half-line). 2:1 ratio to inter-line gap. Tight enough for flow, distinct enough to scan.
 - Short sentences. Active voice. No semicolons, no nested clauses.
 - Bold sparingly. No emoji. No mixing bullets and prose in the same block.
-- Straight quotes. Em dashes sparingly. One space after periods.
+- Straight quotes. No em dashes. One space after periods.
 
 ### 10.2 Legibility rules
 
@@ -1153,7 +1154,7 @@ Add to any grid container to change spacing:
 
 ---
 
-## 11 — Inline Forms & Actions
+## 11. Inline Forms & Actions
 
 ### 11.1 When to use
 
@@ -1164,18 +1165,18 @@ When the assistant needs information or confirmation, it renders forms and actio
 Forms sit inside the assistant bubble on a centred recessed panel:
 
 \`\`\`
-[Prose explanation — why the form is needed]
+[Prose explanation, why the form is needed]
 
     ┌──────── --bg panel (max-width 400px, centred) ────────┐
     │  [Form: labels, inputs, hints]                        │
-    │  [Actions: Submit / Cancel — centred]                 │
+    │  [Actions: Submit / Cancel, centred]                  │
     └───────────────────────────────────────────────────────┘
 \`\`\`
 
 ### 11.3 Form rendering rules
 
-- Container: \`.chat-form\` — \`background: var(--bg)\`, \`border-radius: var(--radius-md)\`, \`max-width: 400px\`, centred with auto margins, \`padding: var(--space-5)\`
-- Inputs: \`--surface\` background (bubble surface) — pops against recessed \`--bg\` panel
+- Container: \`.chat-form\`. \`background: var(--bg)\`, \`border-radius: var(--radius-md)\`, \`max-width: 400px\`, centred with auto margins, \`padding: var(--space-5)\`
+- Inputs: \`--surface\` background (bubble surface). Pops against recessed \`--bg\` panel
 - Labels: \`--font-body\`, semibold, \`--text-sm\`
 - Hints: \`--text-xs\`, \`--text-muted\`, placed between label and input
 - Input groups: \`margin-bottom: var(--space-3)\`
@@ -1188,12 +1189,12 @@ Validation is **immediate, inline, and non-blocking**. No submit-then-error. No 
 **Error state:**
 - Input border: \`--destructive\`
 - Focus ring: 3px \`--destructive\` at 15% opacity
-- Message: \`.input-error-msg\` — \`--text-xs\`, \`--destructive\`, below the input
+- Message: \`.input-error-msg\`. \`--text-xs\`, \`--destructive\`, below the input
 - Message format: names the problem AND the fix (e.g., "Numeric values only. Remove: \\"$\\"")
 
 **Valid state:**
 - Input border: \`--accent\`
-- Message: \`.input-valid-msg\` — \`--text-xs\`, \`--accent\`, "Valid"
+- Message: \`.input-valid-msg\`. \`--text-xs\`, \`--accent\`, "Valid"
 
 **Number input example:** If a user types "$45.00" in a numeric field, the error reads: "Numeric values only. Remove: \\"$\\"". The message identifies the offending character.
 
@@ -1202,16 +1203,16 @@ Validation is **immediate, inline, and non-blocking**. No submit-then-error. No 
 When the assistant needs a decision (confirm/decline), it presents buttons below the response, separated by a border:
 
 \`\`\`
-[Prose explanation — what will happen]
+[Prose explanation, what will happen]
 ─────────────────────────────────────
 [Primary action] [Secondary action]
 \`\`\`
 
 **Rules:**
-- Container: \`.chat-actions\` — flex, gap \`var(--space-2)\`, \`border-top: 1px solid var(--border)\`, \`margin-top/padding-top: var(--space-4)\`
+- Container: \`.chat-actions\`. Flex, gap \`var(--space-2)\`, \`border-top: 1px solid var(--border)\`, \`margin-top/padding-top: var(--space-4)\`
 - Primary action is always first (leftmost)
 - Destructive actions use \`btn-destructive\`, never \`btn-primary\`
-- Max 3 buttons per row — consolidate beyond that
+- Max 3 buttons per row. Consolidate beyond that
 - Button labels are verbs: "Deploy", "Delete", not "OK" or "Yes"
 - Minimum width: 100px, centred text
 
@@ -1244,11 +1245,11 @@ After form submission, the form collapses into a confirmation banner:
 - Background: \`--accent-subtle\`
 - Colour: \`--accent\`, semibold
 - Full width, bleeds to bubble edges
-- Replaces the form — no stale inputs visible
+- Replaces the form. No stale inputs visible
 
 ---
 
-## 12 — Quick Reference
+## 12. Quick Reference
 
 | Goal | Markdown |
 |---|---|
@@ -1279,10 +1280,10 @@ function generateClaudeMdRules(c) {
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
   const ctr = c.containerShape ?? c.shape;
-  return `# Design System — ConversationFirst
-# Generated at conversationfirst.xyz — by Eric Greene
+  return `# Design System: ConversationFirst
+# Generated at conversationfirst.xyz, by Eric Greene
 
-## Voice rules (MANDATORY — apply to ALL AI-generated text)
+## Voice rules (MANDATORY, apply to ALL AI-generated text)
 
 1. Answer first. Direct answer in sentence one. No preamble, no "Great question!", no "I'd be happy to help."
 2. Cite everything. Every factual claim gets a citation. No citation = no claim.
@@ -1291,13 +1292,14 @@ function generateClaudeMdRules(c) {
 5. No emotion. No excitement, no apologising, no hedging. State facts.
 6. Short sentences. One idea per sentence. Active voice. No semicolons.
 7. No filler. Remove: "certainly", "absolutely", "of course", "it's worth noting", "interestingly", "essentially", "basically", "actually", "in order to".
+8. No em dashes. Use periods, commas, or colons. Em dashes add visual noise.
 
 ## Response structure
 
 \`\`\`
-[Direct answer — 1-2 sentences]
+[Direct answer, 1-2 sentences]
 
-[Supporting evidence with citations — 1-3 short paragraphs]
+[Supporting evidence with citations, 1-3 short paragraphs]
 
 [Example or data if applicable]
 
@@ -1353,9 +1355,9 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Shape: ${shapeLabel(c)}
 
-**Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill — radius-btn-sm/md set to 9999px.' : c.shape === 'square' ? 'Square — radius-btn-sm/md set to 0.' : 'Cut corners — clip-path polygon on buttons/inputs/badges.'}
+**Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill, radius-btn-sm/md set to 9999px.' : c.shape === 'square' ? 'Square, radius-btn-sm/md set to 0.' : 'Cut corners, clip-path polygon on buttons/inputs/badges.'}
 **Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons (\`--radius-input: 9999px\`).' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
-**Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square — radius-lg set to 0.' : 'Cut corners — clip-path polygon on cards/modals/chat bubbles.'}
+**Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square, radius-lg set to 0.' : 'Cut corners, clip-path polygon on cards/modals/chat bubbles.'}
 ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
 
 ## CSS tokens (full set)
@@ -1398,19 +1400,19 @@ ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-m
 ## Component rules
 
 - Buttons: primary (accent bg, white text), secondary (border only), ghost (no border), destructive (red)
-- All components use design tokens — no component introduces its own colours or fonts
+- All components use design tokens. No component introduces its own colours or fonts
 - Border radius: \`--radius-md\` for inputs, \`--radius-btn-md\` for buttons, \`--radius-lg\` for cards/modals
 - Shadows: \`--shadow-sm\`, \`--shadow-md\`, \`--shadow-lg\` (subtle, warm-toned)
 
 ## Layout
 
 - Max content width: 840px
-- Prose fills bubble width — no inner max-width constraint
+- Prose fills bubble width. No inner max-width constraint
 - Grid classes: \`grid-2\`, \`grid-3\`, \`grid-4\`, \`grid-2-1\`, \`grid-1-2\`
 - All grids collapse to single column below 640px
 
 ---
-*Generated with the ConversationFirst Configurator — conversationfirst.xyz*
+*Generated with the ConversationFirst Configurator, conversationfirst.xyz*
 *${b.name} / ${h.name} / ${m.name} · ${c.accent?.name || 'Forest'} accent on ${c.bg?.name || 'Warm Paper'} · ${shapeLabel(c)} shape*
 `;
 }
@@ -1422,15 +1424,15 @@ function generateSlashCommand(c) {
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
   const ctr = c.containerShape ?? c.shape;
-  return `# /design-system — ConversationFirst Spec
+  return `# /design-system: ConversationFirst Spec
 # Drop this file into .claude/commands/ and invoke with /design-system
-# Generated at conversationfirst.xyz — by Eric Greene
+# Generated at conversationfirst.xyz, by Eric Greene
 
 Apply the ConversationFirst design system to the current task. Use these rules for all UI code, components, and AI-generated text.
 
 ## Voice
 
-Answer first, cite everything, give examples, stop when done. No filler, no emotion, no hedging. Short sentences, active voice.
+Answer first, cite everything, give examples, stop when done. No filler, no emotion, no hedging. Short sentences, active voice. No em dashes.
 
 Banned phrases: "Great question!", "I'd be happy to help", "certainly", "absolutely", "it's worth noting", "interestingly", "essentially", "basically".
 
@@ -1444,9 +1446,9 @@ Import: \`${fontsUrl(c)}\`
 
 ## Colours
 
-- Accent: \`${ac}\` (${c.accent?.name || 'Forest'}) — for buttons, links, citations, focus rings
+- Accent: \`${ac}\` (${c.accent?.name || 'Forest'}), for buttons, links, citations, focus rings
 - Accent hover: \`${darken(ac)}\`
-- Accent subtle: \`${tint(ac)}\` — for tinted backgrounds
+- Accent subtle: \`${tint(ac)}\`, for tinted backgrounds
 - Background: \`${bg}\` (${c.bg?.name || 'Warm Paper'})
 - Surface (cards): \`#fff\`
 - Text: \`#1a1a1a\`, secondary: \`#555\`, muted: \`#888\`
@@ -1467,25 +1469,25 @@ ${c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / $
 
 ## Shape: ${shapeLabel(c)}
 
-Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded.' : c.shape === 'square' ? 'Square — sharp edges.' : c.shape === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
+Buttons: ${c.shape === 'pill' ? 'Pill, fully rounded.' : c.shape === 'square' ? 'Square, sharp edges.' : c.shape === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
 Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons.' : 'Follows container radius.'}
-Containers: ${ctr === 'square' ? 'Square — sharp edges.' : ctr === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
+Containers: ${ctr === 'square' ? 'Square, sharp edges.' : ctr === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
 ${c.shape === 'cut' || ctr === 'cut' ? 'Cut sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : ''}
 
 ## Rules
 
 1. Every factual claim requires a citation: \`[cite:N](url)\`
 2. Processing states use blinking cursor + monospace status text, never spinners
-3. All components use design tokens — no custom colours or fonts
+3. All components use design tokens. No custom colours or fonts
 4. Border radius: \`--radius-md\` for inputs, \`--radius-btn-md\` for buttons, \`--radius-lg\` for cards
-5. Content fills bubble width — no inner max-width on prose
+5. Content fills bubble width. No inner max-width on prose
 6. Line height: 1.5 body, 1.3 headings
-7. Dark mode: \`prefers-color-scheme: dark\` — accent lightens, bg inverts
+7. Dark mode: \`prefers-color-scheme: dark\`. Accent lightens, bg inverts
 8. Inline forms inside chat bubbles, never modals for simple input
 9. Buttons use verb labels ("Deploy", "Delete"), not "OK" or "Yes"
 
 ---
-*Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${shapeLabel(c)} shape*
+*Generated with the ConversationFirst Configurator, conversationfirst.xyz · ${shapeLabel(c)} shape*
 `;
 }
 
@@ -1496,7 +1498,7 @@ function generateAIPrompt(c) {
   const ac = c.accent?.hex || '#3d6b5e';
   const bg = c.bg?.hex || '#faf9f7';
   const ctr = c.containerShape ?? c.shape;
-  return `You are building a UI that follows the ConversationFirst design system (conversationfirst.xyz — by Eric Greene).
+  return `You are building a UI that follows the ConversationFirst design system (conversationfirst.xyz, by Eric Greene).
 
 VOICE RULES (apply to all AI-generated text):
 - Answer first. Direct answer in sentence one.
@@ -1504,6 +1506,7 @@ VOICE RULES (apply to all AI-generated text):
 - No filler: remove "certainly", "absolutely", "it's worth noting", "I'd be happy to help"
 - No emotion: no excitement, no apologising, no hedging
 - Short sentences. Active voice. Stop when done.
+- No em dashes. Use periods, commas, or colons.
 
 TYPOGRAPHY:
 - Body: ${b.name} (${b.family})
@@ -1527,9 +1530,9 @@ SPACING: 4/8/12/16/20/24/32/40/48px
 RADIUS: General: ${c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px sm, 8px md'}. Buttons: ${c.shape === 'pill' ? '9999px btn-sm/btn-md (pill)' : c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4px btn-sm, 8px btn-md'}. Containers: ${ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px lg'}. Chat input: ${c.shape === 'pill' ? '9999px (pill)' : ctr === 'square' || ctr === 'cut' ? '0 (sharp)' : '12px'}. 9999px full.
 
 SHAPE: ${shapeLabel(c)}
-Buttons: ${c.shape === 'pill' ? 'Pill — fully rounded capsules' : c.shape === 'square' ? 'Square — sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
+Buttons: ${c.shape === 'pill' ? 'Pill, fully rounded capsules' : c.shape === 'square' ? 'Square, sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
 Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons' : 'Follows container radius'}
-Containers: ${ctr === 'square' ? 'Square — sharp edges' : ctr === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
+Containers: ${ctr === 'square' ? 'Square, sharp edges' : ctr === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
 ${c.shape === 'cut' || ctr === 'cut' ? '- Cut sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : ''}
 
 COMPONENTS:
@@ -1556,7 +1559,7 @@ CSS CUSTOM PROPERTIES:
 
 Google Fonts: ${fontsUrl(c)}
 
-Generated with the ConversationFirst Configurator — conversationfirst.xyz · ${shapeLabel(c)} shape
+Generated with the ConversationFirst Configurator, conversationfirst.xyz · ${shapeLabel(c)} shape
 `;
 }
 
@@ -1578,7 +1581,7 @@ function ColorCard({ color, selected, onClick }) {
       }} />
       <div>
         <div style={{ fontSize: "var(--text-sm)", fontWeight: 600 }}>{color.name}</div>
-        <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{color.hex} — {color.desc}</div>
+        <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{color.hex} · {color.desc}</div>
       </div>
     </button>
   );
@@ -2092,7 +2095,7 @@ export default function Configurator() {
             </div>
           </div>
 
-          {/* 2. Action buttons — side by side */}
+          {/* 2. Action buttons, side by side */}
           <div style={{ display: "flex", gap: "var(--space-2)" }}>
             <button onClick={() => {
               const html = generateTestPage(choices);

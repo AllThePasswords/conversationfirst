@@ -89,7 +89,7 @@ export default function ChatPage({
   }, [activeId, sendMessage, isAuthenticated]);
 
   // Scroll user's prompt to the top of the viewport when streaming starts.
-  // No auto-scroll during streaming — the user reads at their own pace.
+  // No auto-scroll during streaming. The user reads at their own pace.
   useEffect(() => {
     if (isStreaming && !prevStreamingRef.current && lastUserMsgRef.current) {
       lastUserMsgRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -241,7 +241,7 @@ export default function ChatPage({
               <div className="welcome-section">
                 <div className="welcome-section-label">What this chat does</div>
                 <p className="welcome-desc">
-                  This assistant knows the entire Conversation First framework. It helps you apply the method — voice rules, design tokens, citation system, processing states, and components — to your own AI products.
+                  This assistant knows the entire Conversation First framework. It helps you apply the method, including voice rules, design tokens, citation system, processing states, and components, to your own AI products.
                 </p>
               </div>
 
@@ -290,7 +290,7 @@ export default function ChatPage({
                   !messages.slice(i + 1).some(msg => msg.role === 'user');
                 return (
                   <div key={i} ref={isLastUser ? lastUserMsgRef : undefined}>
-                    <ChatMessage message={m} showPlayAction={isAuthenticated} />
+                    <ChatMessage message={m} showPlayAction />
                   </div>
                 );
               })}

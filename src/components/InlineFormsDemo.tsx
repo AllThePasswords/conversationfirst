@@ -80,9 +80,9 @@ export default function InlineFormsDemo() {
           <div className="input-group">
             <label className="input-label" htmlFor="demo-plan">Plan</label>
             <select id="demo-plan" className="input" defaultValue="pro">
-              <option value="starter">Starter — $29/mo</option>
-              <option value="pro">Pro — $79/mo</option>
-              <option value="enterprise">Enterprise — custom</option>
+              <option value="starter">Starter, $29/mo</option>
+              <option value="pro">Pro, $79/mo</option>
+              <option value="enterprise">Enterprise, custom</option>
             </select>
           </div>
           <div className="chat-form-actions">
@@ -239,15 +239,15 @@ export default function InlineFormsDemo() {
           'Forms are centred on a --bg panel inside the bubble (max-width 400px)',
           'Inputs use --surface background to pop against the recessed panel',
           'Labels use body font, semibold, text-sm',
-          'Validation is immediate — no submit-then-error',
+          'Validation is immediate. No submit-then-error',
           'Error messages name the problem and the fix',
           'Errors use destructive colour, inline below the input',
           'Primary action button is always first (leftmost)',
           'Destructive actions use btn-destructive, never btn-primary',
-          'Max 3 buttons per action row — consolidate beyond',
+          'Max 3 buttons per action row. Consolidate beyond that',
           'Button labels are verbs: "Deploy", "Delete", not "OK"',
           'After click, buttons replaced with confirmed strip (icon + label + time)',
-          'Forms collapse to a banner on submit — no stale inputs',
+          'Forms collapse to a banner on submit. No stale inputs',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',

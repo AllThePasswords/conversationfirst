@@ -50,7 +50,7 @@ export default function CitationDemo() {
           "Every factual claim needs a citation",
           "Every citation must link to its source",
           "Place badge after claim, before punctuation",
-          "Max 8 per response — consolidate beyond",
+          "Max 8 per response. Consolidate beyond that",
           "Reuse numbers for repeated sources",
           "Never fabricate citations or links",
         ].map((rule, i) => (

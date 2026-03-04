@@ -1,4 +1,4 @@
-// Vault query layer — unified connection and account access
+// Vault query layer: unified connection and account access
 // Replaces LifeAdmin-specific bank queries with platform-wide vault operations.
 
 import { supabase } from './supabase'

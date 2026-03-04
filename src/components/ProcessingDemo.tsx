@@ -1,7 +1,7 @@
 export default function ProcessingDemo() {
   return (
     <>
-      <h3 style={{ marginTop: 0 }}>Minimal — cursor only</h3>
+      <h3 style={{ marginTop: 0 }}>Minimal: cursor only</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Fast responses under 2 seconds.
       </p>
@@ -13,7 +13,7 @@ export default function ProcessingDemo() {
         </div>
       </div>
 
-      <h3>Standard — status text</h3>
+      <h3>Standard: status text</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Typical responses. Monospace status with animated dots.
       </p>
@@ -26,7 +26,7 @@ export default function ProcessingDemo() {
         </div>
       </div>
 
-      <h3>Detailed — with context</h3>
+      <h3>Detailed: with context</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Complex queries. Shows what the system is doing.
       </p>
@@ -45,7 +45,7 @@ export default function ProcessingDemo() {
         </div>
       </div>
 
-      <h3>Skeleton — content preview</h3>
+      <h3>Skeleton: content preview</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Long responses. Shows the shape of incoming content.
       </p>
@@ -68,7 +68,7 @@ export default function ProcessingDemo() {
         </div>
       </div>
 
-      <h3>Inline — mid-stream</h3>
+      <h3>Inline: mid-stream</h3>
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: 'var(--space-3)' }}>
         Text streaming in, model still generating.
       </p>

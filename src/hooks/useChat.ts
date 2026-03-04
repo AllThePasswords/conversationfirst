@@ -124,7 +124,7 @@ export function useChat(conversationId, onTitleUpdate, brain) {
         try {
           memories = await brain.recall(text.trim());
         } catch {
-          // Non-blocking — continue without memories
+          // Non-blocking. Continue without memories
         }
       }
 

@@ -40,7 +40,7 @@ export async function fetchTransactions(
   const allRows: Transaction[] = [];
   let from = 0;
 
-  // Supabase defaults to 1000 rows — paginate to get everything
+  // Supabase defaults to 1000 rows. Paginate to get everything
   while (true) {
     let query = supabase
       .from('transactions')
@@ -79,7 +79,7 @@ export async function fetchBills(
   const allRows: Bill[] = [];
   let from = 0;
 
-  // Supabase defaults to 1000 rows — paginate to get everything
+  // Supabase defaults to 1000 rows. Paginate to get everything
   while (true) {
     let query = supabase
       .from('bills')
@@ -399,7 +399,7 @@ export async function fetchUnifiedLineItems(
   const matchedBillIds = new Set<string>()
   const items: UnifiedLineItem[] = []
 
-  // Process transactions — hydrated items merge bill metadata
+  // Process transactions: hydrated items merge bill metadata
   for (const tx of transactions) {
     const matchedBill = tx.matched_bill_id ? billMap.get(tx.matched_bill_id) ?? null : null
     const isHydrated = matchedBill !== null
@@ -450,7 +450,7 @@ export async function fetchUnifiedLineItems(
     }
 
     // Map bill status to display status. Never derive overdue from due_date
-    // alone — auto-pay subscriptions are not overdue. Only show overdue if
+    // alone. Auto-pay subscriptions are not overdue. Only show overdue if
     // explicitly flagged in the DB (future: bank transaction matching).
     const s = bill.status as string
     const itemStatus = s === 'pending_review' ? 'pending_review'

@@ -1,4 +1,4 @@
-// Platform provider — wraps authenticated content
+// Platform provider: wraps authenticated content
 // Provides householdId and currentApp config via context.
 
 import { createContext, useContext } from 'react'

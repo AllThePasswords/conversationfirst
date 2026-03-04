@@ -70,7 +70,7 @@ export default function IconDemo() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
           {[
             { icon: BuildingLibraryIcon, label: 'Chase Checking', status: 'Connected', ok: true },
-            { icon: EnvelopeIcon, label: 'Gmail — work', status: 'Connected', ok: true },
+            { icon: EnvelopeIcon, label: 'Gmail, work', status: 'Connected', ok: true },
             { icon: CpuChipIcon, label: 'OpenAI API', status: 'Key expired', ok: false },
           ].map(({ icon: Icon, label, status, ok }) => (
             <div key={label} style={{
@@ -212,13 +212,13 @@ export default function IconDemo() {
       <h3 style={{ fontSize: 'var(--text-lg)' }}>Icon rules</h3>
       <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
-          'Heroicons is the only icon library — no custom SVGs',
+          'Heroicons is the only icon library. No custom SVGs',
           '24/outline for UI chrome · 20/solid for compact indicators',
-          'Set both width and height explicitly — never rely on CSS',
+          'Set both width and height explicitly. Never rely on CSS',
           '14px in buttons, 16px inline, 20–24px nav, 32px empty states',
           'Always add aria-hidden="true" on the SVG element',
           'Icon-only buttons need aria-label on the button',
-          'Icons inherit parent colour — no inline colour declarations',
+          'Icons inherit parent colour. No inline colour declarations',
           'Never use icons inline within prose text in responses',
           'Icons in responses must add information, not decoration',
           'Import from the specific variant path for tree-shaking',

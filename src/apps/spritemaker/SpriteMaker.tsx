@@ -54,7 +54,7 @@ export default function SpriteMaker({ householdId }: SpriteMakerProps) {
       const game = games.find(g => g.id === view.gameId)
       if (game) ctx.gameName = game.name
     }
-    ctx.summary = `Sprite Maker — ${view.kind}. ${games.length} games.`
+    ctx.summary = `Sprite Maker: ${view.kind}. ${games.length} games.`
     ;(window as unknown as Record<string, unknown>).__CF_SCREEN_CONTEXT = ctx
   }, [view, games])
 

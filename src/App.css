@@ -1,6 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
 
-/* Skip to content link — hidden until focused */
+/* Skip to content link: hidden until focused */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -31,16 +31,16 @@ body {
   height: 100%;
 }
 
-/* Widow/orphan control — text-wrap: pretty minimises short last lines.
+/* Widow/orphan control: text-wrap: pretty minimises short last lines.
    Note: CSS orphans/widows only apply to paged & multi-column contexts,
    not normal flow. text-wrap: pretty is the correct tool for screen. */
 p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   text-wrap: pretty;
 }
 
-/* Response prose rhythm — legibility rules for assistant responses */
+/* Response prose rhythm: legibility rules for assistant responses */
 
-/* Leading — bubble width already constrains measure */
+/* Leading: bubble width already constrains measure */
 .chat-bubble p,
 .chat-bubble li,
 .chat-bubble blockquote {
@@ -87,10 +87,10 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 .chat-bubble li > ol {
   margin-top: var(--space-1);
   margin-bottom: 0;
-  padding-left: var(--space-4); /* 16px vs 20px root — tighter nesting */
+  padding-left: var(--space-4); /* 16px vs 20px root, tighter nesting */
 }
 
-/* List marker hierarchy — typographic convention for nesting depth */
+/* List marker hierarchy: typographic convention for nesting depth */
 .chat-bubble ul { list-style-type: disc; }
 .chat-bubble ul ul { list-style-type: circle; }
 .chat-bubble ul ul ul { list-style-type: square; }
@@ -98,7 +98,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 .chat-bubble ol ol { list-style-type: lower-alpha; }
 .chat-bubble ol ol ol { list-style-type: lower-roman; }
 
-/* Nested marker muting — deeper levels recede visually */
+/* Nested marker muting: deeper levels recede visually */
 .chat-bubble li > ul li::marker,
 .chat-bubble li > ol li::marker {
   color: color-mix(in srgb, var(--text-muted) 70%, transparent);
@@ -473,7 +473,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   padding: var(--space-3) var(--space-5);
 }
 
-/* Citations — inline */
+/* Citations: inline */
 .cite-inline {
   display: inline-flex;
   align-items: center;
@@ -507,7 +507,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 }
 .cite-inline:active { transform: scale(0.95); }
 
-/* Citations — block */
+/* Citations: block */
 .cite-block {
   display: flex;
   gap: var(--space-3);
@@ -544,7 +544,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 }
 .cite-block-meta a:hover { color: var(--accent); border-color: var(--accent); }
 
-/* Citations — footer */
+/* Citations: footer */
 .cite-footer {
   margin-top: var(--space-6);
   padding-top: var(--space-4);
@@ -604,7 +604,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
 }
 .cite-footer-toggle:hover { color: var(--accent); }
 
-/* Focus — visible ring on keyboard navigation */
+/* Focus: visible ring on keyboard navigation */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -860,7 +860,7 @@ kbd {
 }
 .processing-minimal .processing-status { margin-bottom: 0; }
 
-/* Reduced motion — respect user preference (WCAG 2.3.3) */
+/* Reduced motion: respect user preference (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -869,7 +869,7 @@ kbd {
   }
 }
 
-/* Generative UI preview container — no chrome, flows inline */
+/* Generative UI preview container: no chrome, flows inline */
 .cf-preview {
   margin: var(--space-4) 0;
 }
@@ -886,7 +886,7 @@ kbd {
   display: none;
 }
 
-/* Document layout — structured content with columns, headers, asides */
+/* Document layout: structured content with columns, headers, asides */
 .cf-doc {
   color: #1a1a1a;
   font-size: var(--text-base);
@@ -962,7 +962,7 @@ kbd {
   margin: var(--space-3) 0;
 }
 
-/* Document columns — named ratio classes */
+/* Document columns: named ratio classes */
 .cf-doc .doc-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
 .cf-doc .doc-cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
 .cf-doc .doc-cols-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--space-3); }
@@ -976,7 +976,7 @@ kbd {
 .cf-doc .doc-section:last-child { margin-bottom: 0; }
 .cf-doc .doc-section-sm { margin-bottom: var(--space-3); }
 
-/* Document header band — full-width accent background at top */
+/* Document header band: full-width accent background at top */
 .cf-doc .doc-header-band {
   background: var(--accent);
   color: #fff;
@@ -990,7 +990,7 @@ kbd {
 .cf-doc .doc-header-band p { color: rgba(255, 255, 255, 0.85); }
 .cf-doc .doc-header-band .doc-kicker { color: rgba(255, 255, 255, 0.7); }
 
-/* Document aside — sidebar region styling */
+/* Document aside: sidebar region styling */
 .cf-doc .doc-aside { font-size: var(--text-sm); color: #595856; }
 .cf-doc .doc-aside h3 {
   font-size: var(--text-xs);
@@ -1180,7 +1180,7 @@ kbd {
   top: 40px;
 }
 
-/* ===== Inline chat forms — forms rendered inside assistant bubbles ===== */
+/* ===== Inline chat forms: forms rendered inside assistant bubbles ===== */
 .chat-form {
   margin-top: var(--space-4);
   padding: var(--space-5);
@@ -1265,7 +1265,7 @@ kbd {
   cursor: pointer;
 }
 
-/* ===== CTA action buttons — confirm/decline inside bubbles ===== */
+/* ===== CTA action buttons: confirm/decline inside bubbles ===== */
 .chat-actions {
   display: flex;
   gap: var(--space-2);
@@ -1276,7 +1276,7 @@ kbd {
 }
 .chat-actions .btn { min-width: 100px; justify-content: center; }
 
-/* Action confirmed state — replaces buttons after selection */
+/* Action confirmed state: replaces buttons after selection */
 .chat-action-confirmed {
   display: flex;
   align-items: center;
@@ -1420,7 +1420,7 @@ kbd {
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
-/* ===== Design system — icon catalogue ===== */
+/* ===== Design system: icon catalogue ===== */
 .ds-icon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

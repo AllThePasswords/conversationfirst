@@ -44,7 +44,7 @@ export default function App() {
     return <AuthenticatedShell user={user} session={session} />
   }
 
-  // Public landing page — ephemeral guest chat (no auth required)
+  // Public landing page: ephemeral guest chat (no auth required)
   return (
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>

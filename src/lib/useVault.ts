@@ -1,4 +1,4 @@
-// useVault hook — vault access with app permission checks
+// useVault hook: vault access with app permission checks
 // Wraps connections.ts queries with permission enforcement from AppConfig.
 
 import { useCallback } from 'react'

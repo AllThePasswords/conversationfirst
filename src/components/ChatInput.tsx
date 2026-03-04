@@ -10,7 +10,7 @@ import {
   PaperClipIcon,
 } from '@heroicons/react/24/outline';
 
-/** Live audio-reactive waveform — vertical bars that grow with amplitude. */
+/** Live audio-reactive waveform: vertical bars that grow with amplitude. */
 function LiveWaveform({ stream }: { stream: MediaStream | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
@@ -135,6 +135,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   const [listening, setListening] = useState(false);
   const [dismissing, setDismissing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [multiline, setMultiline] = useState(false);
   const [micStream, setMicStream] = useState<MediaStream | null>(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -149,9 +150,15 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = 'auto';
-    const maxH = listening ? 320 : 280;
-    el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
-  }, [listening]);
+    // Cap at 10 lines: lineHeight × 10 + vertical padding
+    const style = getComputedStyle(el);
+    const lineH = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45;
+    const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    const maxH = lineH * 10 + padY;
+    const newH = Math.min(el.scrollHeight, maxH);
+    el.style.height = newH + 'px';
+    setMultiline(el.scrollHeight > lineH + padY + 4);
+  }, []);
 
   // Re-measure textarea height after React renders new text
   useEffect(() => {
@@ -175,7 +182,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setMicStream(stream);
     } catch {
-      // Mic access denied — proceed without visualisation
+      // Mic access denied. Proceed without visualisation
     }
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -287,6 +294,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     if ((!text.trim() && stagedImages.length === 0) || disabled) return;
     onSend(text, stagedImages.map(img => img.file));
     setText('');
+    setMultiline(false);
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
     }
@@ -358,7 +366,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
+        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${multiline ? 'multiline' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
@@ -512,7 +520,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
               )}
             </div>
 
-            {/* Mic button — visible when no text to send */}
+            {/* Mic button: visible when no text to send */}
             {speechSupported && !canSend && (
               <button
                 className="chat-icon-btn chat-mic-btn"
@@ -526,7 +534,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
               </button>
             )}
 
-            {/* Send button — visible only when there's content to send */}
+            {/* Send button: visible only when there's content to send */}
             {canSend && (
               <button
                 className="chat-icon-btn chat-send-btn"

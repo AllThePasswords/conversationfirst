@@ -57,7 +57,7 @@ export async function streamResponse(messages, callbacks, accessToken, memories 
         try {
           const parsed = JSON.parse(data);
 
-          // Content block started — detect search tool use and results
+          // Content block started: detect search tool use and results
           if (parsed.type === 'content_block_start') {
             const block = parsed.content_block;
             if (block.type === 'server_tool_use' && block.name === 'web_search') {
@@ -70,7 +70,7 @@ export async function streamResponse(messages, callbacks, accessToken, memories 
             onContentBlock?.(block);
           }
 
-          // Text deltas — regular text streaming
+          // Text deltas: regular text streaming
           if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
             onChunk(parsed.delta.text);
           }

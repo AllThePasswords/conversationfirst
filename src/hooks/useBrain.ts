@@ -16,7 +16,7 @@ export function useBrain(accessToken) {
 
   /**
    * Summarize a conversation turn and store in the brain.
-   * Fire-and-forget — does not block UI.
+   * Fire-and-forget. Does not block UI.
    */
   const summarize = useCallback((conversationId, turnIndex, userMessage, assistantMessage) => {
     if (!accessToken) return;

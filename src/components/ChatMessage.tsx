@@ -40,7 +40,63 @@ function stripMarkdown(md: string): string {
     .trim();
 }
 
-/** Render user text with preserved line breaks — splits on double-newline for
+/** Convert markdown to narration-friendly text for TTS.
+ *  Describes structural elements instead of reading raw data. */
+function toNarrationText(md: string): string {
+  let text = md;
+
+  // Replace fenced code blocks with a description
+  text = text.replace(/```(\w*)\n[\s\S]*?```/g, (_match, lang) => {
+    const label = lang ? ` ${lang}` : '';
+    return `\n(A${label} code example is shown here.)\n`;
+  });
+
+  // Replace markdown tables with a description.
+  // Detect tables: lines starting with | ... | on consecutive lines
+  text = text.replace(
+    /((?:^\|.+\|[ \t]*\n){2,})/gm,
+    (_match) => {
+      // Try to extract a header row for a better description
+      const firstRow = _match.split('\n')[0];
+      const cells = firstRow
+        .split('|')
+        .map(c => c.trim())
+        .filter(Boolean)
+        .filter(c => !/^[-:]+$/.test(c)); // skip separator rows
+      if (cells.length > 0) {
+        return `\n(A table is shown with columns: ${cells.join(', ')}.)\n`;
+      }
+      return '\n(A table is shown here.)\n';
+    }
+  );
+
+  // Remove inline code backticks
+  text = text.replace(/`([^`]+)`/g, '$1');
+
+  // Strip markdown formatting
+  text = text.replace(/\*\*([^*]+)\*\*/g, '$1');
+  text = text.replace(/\*([^*]+)\*/g, '$1');
+  text = text.replace(/#{1,6}\s+/g, '');
+
+  // Convert links to just their label
+  text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+
+  // Strip bare URLs
+  text = text.replace(/https?:\/\/\S+/g, '');
+
+  // Convert bullet lists to flowing sentences
+  text = text.replace(/^\s*[-*+]\s+/gm, '');
+
+  // Convert numbered lists. Keep the numbers for flow
+  text = text.replace(/^\s*(\d+)\.\s+/gm, '$1. ');
+
+  // Collapse excessive whitespace
+  text = text.replace(/\n{3,}/g, '\n\n');
+
+  return text.trim();
+}
+
+/** Render user text with preserved line breaks. Splits on double-newline for
  *  paragraphs and single-newline for soft breaks within a paragraph. */
 function UserTextBlock({ text }: { text: string }) {
   const paragraphs = text.split(/\n{2,}/);
@@ -134,8 +190,8 @@ function ResponseActions({ content, showPlay }: { content: string; showPlay: boo
 
   const handlePlay = useCallback(() => {
     if (tts.state === 'idle') {
-      const plainText = stripMarkdown(content);
-      tts.play(plainText);
+      const narration = toNarrationText(content);
+      tts.play(narration);
     } else {
       tts.stop();
     }

@@ -269,7 +269,7 @@ export default function SpriteGenerateForm({ gameId, householdId, onBack, onCrea
                 >
                   <img
                     src={`data:image/png;base64,${pose.imageData}`}
-                    alt={`${name} — ${pose.poseName}`}
+                    alt={`${name}, ${pose.poseName}`}
                     className="sm-gen-preview-img"
                   />
                   <span className="sm-gen-preview-label">{pose.poseName}</span>

@@ -1,4 +1,4 @@
-// useChat hook — multi-threaded chat with SSE streaming
+// useChat hook: multi-threaded chat with SSE streaming
 // Manages conversation state, thread switching, and message persistence.
 
 import { useState, useRef, useCallback, useEffect } from 'react'
@@ -342,7 +342,7 @@ export function useChat(opts: UseChatOptions = {}) {
         return threadId
       }
 
-      // Build API messages — use contentBlocks for the latest user message if provided
+      // Build API messages: use contentBlocks for the latest user message if provided
       const priorMessages = messages.map(m => ({ role: m.role, content: m.content }))
       const latestUserContent = contentBlocks || text
       const apiMessages = [...priorMessages, { role: 'user', content: latestUserContent }]

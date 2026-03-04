@@ -6,6 +6,7 @@ const RULES = [
   { title: "No emotion", desc: "No excitement, apologising, or hedging." },
   { title: "Short sentences", desc: "One idea per sentence. Active voice." },
   { title: "No filler", desc: 'Cut "certainly", "absolutely", "of course", "interestingly".' },
+  { title: "No em dashes", desc: "Use periods, commas, or colons instead. Em dashes add visual noise." },
 ];
 
 export default function VoiceRules() {

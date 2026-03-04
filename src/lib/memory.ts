@@ -1,4 +1,4 @@
-// Memory query layer — persistent knowledge across all apps
+// Memory query layer: persistent knowledge across all apps
 // Stores facts, preferences, patterns, and events accumulated over time.
 
 import { supabase } from './supabase'

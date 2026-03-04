@@ -63,7 +63,7 @@
   align-items: flex-end;
   background: var(--surface);
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-input);
   padding: var(--space-1) var(--space-2);
   box-shadow: var(--shadow-md), 0 0 0 1px color-mix(in srgb, var(--border) 50%, transparent);
   min-height: 56px;
@@ -76,17 +76,19 @@
   box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-/* Expanded state — softer corners when input has attachments */
-.chat-input-inner.has-attachments {
-  border-radius: 24px;
+/* Expanded state: soften corners when input grows tall */
+.chat-input-inner.has-attachments,
+.chat-input-inner.multiline {
+  border-radius: var(--radius-lg);
 }
 
 /* Recording state */
 .chat-input-inner.recording {
   padding: var(--space-1) var(--space-1);
+  align-items: center;
 }
 
-/* Input body wrapper — holds thumbnails + textarea/waveform */
+/* Input body wrapper: holds thumbnails + textarea/waveform */
 .chat-input-body {
   flex: 1;
   display: flex;
@@ -95,17 +97,19 @@
 }
 
 .chat-input-field {
-  flex: 1;
+  flex: none;
+  width: 100%;
   font-family: var(--font-body);
   font-size: var(--text-base);
   padding: var(--space-2) var(--space-4);
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-input);
   background: transparent;
   color: var(--text);
   resize: none;
   min-height: 44px;
-  max-height: 280px;
+  /* 10 lines: (text-base × line-height-prose × 10) + vertical padding */
+  max-height: calc(var(--text-base) * var(--line-height-prose) * 10 + var(--space-2) * 2);
   line-height: var(--line-height-prose);
   overflow-y: auto;
   transition: max-height var(--duration-base) var(--ease-out);
@@ -148,7 +152,7 @@
   cursor: not-allowed;
 }
 
-/* Cancel button (recording state) — accent filled circle */
+/* Cancel button (recording state): accent filled circle */
 .chat-cancel-btn {
   background: var(--accent);
   color: #fff;
@@ -180,7 +184,7 @@
   color: var(--accent);
 }
 
-/* Attachment menu — animates up from button */
+/* Attachment menu: animates up from button */
 .chat-attach-menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));

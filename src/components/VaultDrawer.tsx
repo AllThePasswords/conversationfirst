@@ -175,7 +175,7 @@ export default function VaultDrawer({ open, onClose, householdId }: VaultDrawerP
       <div
         className={`vault-drawer ${open ? 'vault-drawer--open' : ''}`}
         role="dialog"
-        aria-label="Vault — Connected accounts"
+        aria-label="Vault: Connected accounts"
         aria-hidden={!open}
       >
         <div className="vault-drawer-header">

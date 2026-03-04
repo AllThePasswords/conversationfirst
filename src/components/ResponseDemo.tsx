@@ -6,21 +6,21 @@ export default function ResponseDemo() {
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <p>
-          Every response is a page the reader never asked to visit. They arrived with a question and want to leave with an answer — the typography should never slow them down. Legibility isn't decoration. It's the difference between a response that gets read and one that gets skimmed past.
+          Every response is a page the reader never asked to visit. They arrived with a question and want to leave with an answer, and the typography should never slow them down. Legibility isn't decoration. It's the difference between a response that gets read and one that gets skimmed past.
         </p>
         <p>
-          Spacing is the primary tool. Paragraphs need enough air between them that the eye can reset, but not so much that the content feels fragmented. The system uses a 2:1 ratio — paragraph gaps are roughly twice the inter-line gap — which gives each block its own shape without breaking the vertical flow. Headings bind downward to the content they introduce, pulling tighter below than above, so the reader always knows what belongs together.
+          Spacing is the primary tool. Paragraphs need enough air between them that the eye can reset, but not so much that the content feels fragmented. The system uses a 2:1 ratio: paragraph gaps are roughly twice the inter-line gap. This gives each block its own shape without breaking the vertical flow. Headings bind downward to the content they introduce, pulling tighter below than above, so the reader always knows what belongs together.
         </p>
         <p>
           Line length matters just as much. Prose is capped at a comfortable measure so the eye can track back to the start of the next line without losing its place. Code blocks break out of this constraint because developers expect to scan horizontally, but body text never does. Lists tighten their internal spacing so items feel like a single unit, not a scattered collection of bullets.
         </p>
         <p style={{ marginBottom: 0 }}>
-          The goal is invisible structure. When the rhythm is right, the reader doesn't notice the typography — they just understand the answer faster. Every spacing token, line-height value, and wrapping rule in this system exists to protect that experience.
+          The goal is invisible structure. When the rhythm is right, the reader doesn't notice the typography. They just understand the answer faster. Every spacing token, line-height value, and wrapping rule in this system exists to protect that experience.
         </p>
       </div>
 
       {/* --- Rich content --- */}
-      <h3 style={{ fontSize: 'var(--text-lg)' }}>Rich response — headings, code, lists</h3>
+      <h3 style={{ fontSize: 'var(--text-lg)' }}>Rich response: headings, code, lists</h3>
 
       <div className="chat-bubble" style={{ marginBottom: 'var(--space-10)' }}>
         <h3 style={{ marginTop: 0 }}>Database connection pooling</h3>
@@ -51,9 +51,9 @@ export default function ResponseDemo() {
           Key parameters:
         </p>
         <ul>
-          <li><strong>max</strong> — maximum connections. Start with <code>2× CPU cores</code>.</li>
-          <li><strong>idleTimeoutMillis</strong> — close idle connections after this duration.</li>
-          <li><strong>connectionTimeoutMillis</strong> — fail fast if a connection cannot be acquired.</li>
+          <li><strong>max</strong>: maximum connections. Start with <code>2× CPU cores</code>.</li>
+          <li><strong>idleTimeoutMillis</strong>: close idle connections after this duration.</li>
+          <li><strong>connectionTimeoutMillis</strong>: fail fast if a connection cannot be acquired.</li>
         </ul>
         <p style={{ marginBottom: 0 }}>
           Monitor pool utilisation in production. If wait times exceed 50ms, increase the pool size or optimise slow queries.
@@ -65,12 +65,12 @@ export default function ResponseDemo() {
 
       <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
-          'Body font-size: var(--text-base) (1rem / 16px) — minimum for serif legibility',
+          'Body font-size: var(--text-base) (1rem / 16px), minimum for serif legibility',
           'Body line-height: 1.5 · Headings: 1.3 · UI labels: 1.4',
           'text-wrap: pretty on prose, balance on headings',
-          'Paragraph spacing: var(--paragraph-spacing) (0.5em) — 2:1 ratio to inter-line gap',
-          'Headings bind to following content — tighter below than above',
-          'List items use 4px padding, not margin — pull up 0.125em after paragraphs',
+          'Paragraph spacing: var(--paragraph-spacing) (0.5em). 2:1 ratio to inter-line gap',
+          'Headings bind to following content, tighter below than above',
+          'List items use 4px padding, not margin. Pull up 0.125em after paragraphs',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',
@@ -146,8 +146,8 @@ export default function ResponseDemo() {
       <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
         {[
           'Right-aligned, max-width 85%',
-          'Background: color-mix(in srgb, var(--text) 6%, var(--bg)) — always filled to distinguish from page',
-          'Plain text default — pasted markdown preserved',
+          'Background: color-mix(in srgb, var(--text) 6%, var(--bg)). Always filled to distinguish from page',
+          'Plain text default. Pasted markdown preserved',
           'Same padding and border-radius as response bubbles',
           'Images render inline above text',
           'No citations or footers',
@@ -173,9 +173,9 @@ export default function ResponseDemo() {
       <h3 style={{ fontSize: 'var(--text-lg)' }}>Response rules</h3>
       <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
         {[
-          'Font size: var(--text-base) (1rem) — explicit on .chat-bubble',
+          'Font size: var(--text-base) (1rem), explicit on .chat-bubble',
           'Line height: 1.5 for body, 1.3 for headings',
-          'Paragraph spacing: var(--paragraph-spacing) (0.5em) — 2:1 vs inter-line gap',
+          'Paragraph spacing: var(--paragraph-spacing) (0.5em). 2:1 vs inter-line gap',
           'text-wrap: pretty on prose, balance on headings',
           'Last paragraph in bubble has no bottom margin',
           'Code blocks use full available width',
@@ -184,7 +184,7 @@ export default function ResponseDemo() {
           'List items use 4px padding, not margin',
           'Last list/blockquote in bubble drops bottom margin',
           'Code blocks tighten to 0 top margin after paragraphs',
-          'No horizontal scrolling — code blocks scroll independently',
+          'No horizontal scrolling. Code blocks scroll independently',
         ].map((rule, i) => (
           <div key={i} style={{
             fontSize: 'var(--text-sm)',

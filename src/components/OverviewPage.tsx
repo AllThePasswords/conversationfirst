@@ -81,7 +81,7 @@ export default function OverviewPage() {
             id="ds-panel-spec"
             aria-labelledby="ds-tab-spec"
           >
-            <SectionAccordion id="voice" title="Voice & behaviour" explainer="7 mandatory rules that govern every response." icon={ChatBubbleBottomCenterTextIcon}>
+            <SectionAccordion id="voice" title="Voice & behaviour" explainer="8 mandatory rules that govern every response." icon={ChatBubbleBottomCenterTextIcon}>
               <VoiceRules />
             </SectionAccordion>
 
@@ -113,11 +113,11 @@ export default function OverviewPage() {
               <InlineFormsDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2 — outline for UI chrome, solid for compact indicators. One library, one size." icon={SwatchIcon}>
+            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2. Outline for UI chrome, solid for compact indicators. One library, one size." icon={SwatchIcon}>
               <IconDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="components" title="App components" explainer="Buttons, badges, alerts, cards, forms and navigation — all tokens, no custom values." icon={CubeIcon}>
+            <SectionAccordion id="components" title="App components" explainer="Buttons, badges, alerts, cards, forms and navigation. All tokens, no custom values." icon={CubeIcon}>
               <ComponentShowcase />
             </SectionAccordion>
           </div>

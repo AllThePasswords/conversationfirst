@@ -103,10 +103,55 @@ function DemoWaveform() {
 }
 
 /**
- * ChatInputDemo — a self-contained, non-functional replica of the
+ * ChatInputDemo: a self-contained, non-functional replica of the
  * ChatInput component for the Design Spec tab.  Shows all visual
  * states without connecting to real chat logic.
  */
+/** Auto-growing textarea demo. Mirrors the resize logic from ChatInput. */
+function MultilineDemo() {
+  const [text, setText] = useState('')
+  const [multiline, setMultiline] = useState(false)
+  const ref = useRef<HTMLTextAreaElement>(null)
+
+  const resize = useCallback(() => {
+    const el = ref.current
+    if (!el) return
+    el.style.height = 'auto'
+    const style = getComputedStyle(el)
+    const lineH = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45
+    const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
+    const maxH = lineH * 10 + padY
+    el.style.height = Math.min(el.scrollHeight, maxH) + 'px'
+    setMultiline(el.scrollHeight > lineH + padY + 4)
+  }, [])
+
+  useEffect(() => { resize() }, [text, resize])
+
+  return (
+    <div className="chat-input-bar" style={{ position: 'relative' }}>
+      <div className={`chat-input-inner ${multiline ? 'multiline' : ''}`}>
+        <div className="chat-input-body">
+          <textarea
+            ref={ref}
+            className="chat-input-field"
+            placeholder="Type multiple lines. Grows up to 10, then scrolls..."
+            aria-label="Multiline demo input"
+            value={text}
+            onChange={(e) => { setText(e.target.value); resize() }}
+            rows={1}
+          />
+        </div>
+        <button className="chat-icon-btn chat-attach-btn" type="button" disabled>
+          <PlusIcon width={20} height={20} aria-hidden="true" />
+        </button>
+        <button className="chat-icon-btn chat-send-btn" type="button" disabled={!text.trim()}>
+          <ArrowUpIcon width={20} height={20} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function ChatInputDemo() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [showWaveform, setShowWaveform] = useState(false)
@@ -136,7 +181,7 @@ export default function ChatInputDemo() {
     <div>
       {/* ── Section intro ── */}
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-6)' }}>
-        The chat input is the primary interaction surface. Pill-shaped container with two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Every element uses design system tokens. No inline SVGs — Heroicons only.
+        The chat input is the primary interaction surface. Pill-shaped container with two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Every element uses design system tokens. No inline SVGs. Heroicons only.
       </p>
 
       {/* ── Interactive controls ── */}
@@ -267,6 +312,16 @@ export default function ChatInputDemo() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* ── Multiline auto-grow demo ── */}
+      <h4 style={{ fontSize: 'var(--text-base)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>Multiline auto-grow</h4>
+      <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-4)' }}>
+        The textarea expands as you type, up to 10 lines. After 10 lines it scrolls internally.
+        The pill radius softens once content wraps to a second line.
+      </p>
+      <div style={{ marginBottom: 'var(--space-10)' }}>
+        <MultilineDemo />
       </div>
 
     </div>
