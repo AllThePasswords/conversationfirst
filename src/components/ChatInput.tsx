@@ -131,6 +131,7 @@ function LiveWaveform({ stream }: { stream: MediaStream | null }) {
 
 export default function ChatInput({ onSend, disabled, stagedImages = [], onAddImages, onRemoveImage, variant = 'bar' }) {
   const [text, setText] = useState('');
+  const [multiline, setMultiline] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [listening, setListening] = useState(false);
   const [dismissing, setDismissing] = useState(false);
@@ -154,7 +155,9 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const lineH = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45;
     const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
     const maxH = lineH * 10 + padY;
-    el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
+    const newH = Math.min(el.scrollHeight, maxH);
+    el.style.height = newH + 'px';
+    setMultiline(el.scrollHeight > lineH + padY + 1);
   }, []);
 
   // Re-measure textarea height after React renders new text
@@ -231,6 +234,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
           onSend(fullText, []);
         }
         setText('');
+        setMultiline(false);
         if (textareaRef.current) textareaRef.current.style.height = 'auto';
       }, 320);
     };
@@ -291,6 +295,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     if ((!text.trim() && stagedImages.length === 0) || disabled) return;
     onSend(text, stagedImages.map(img => img.file));
     setText('');
+    setMultiline(false);
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
     }
@@ -362,7 +367,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
   return (
     <div className={variant === 'floating' ? 'chat-input-floating' : 'chat-input-bar'}>
       <div
-        className={`chat-input-inner ${stagedImages.length > 0 ? 'has-attachments' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
+        className={`chat-input-inner ${multiline ? 'multiline' : ''} ${stagedImages.length > 0 ? 'has-attachments' : ''} ${dragging ? 'dragging' : ''} ${(listening || dismissing) ? 'recording' : ''} ${dismissing ? 'dismissing' : ''}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}

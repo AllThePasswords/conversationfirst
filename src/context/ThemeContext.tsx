@@ -70,7 +70,7 @@ const ALL_VARS = [
   '--warning', '--warning-subtle',
   '--code-bg', '--cite-bg', '--cite-border',
   '--shadow-sm', '--shadow-md', '--shadow-lg',
-  '--radius-sm', '--radius-md', '--radius-lg', '--radius-input',
+  '--radius-sm', '--radius-md', '--radius-lg', '--radius-input', '--radius-icon-btn',
 ];
 
 /* ── Apply a theme to the document ── */
@@ -126,16 +126,25 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
       el.style.setProperty('--radius-btn-sm', '9999px');
       el.style.setProperty('--radius-btn-md', '9999px');
       el.style.setProperty('--radius-input', '9999px');
+      el.style.setProperty('--radius-icon-btn', '50%');
       // Keep base tokens at defaults (clear any previous override)
       el.style.removeProperty('--radius-sm');
       el.style.removeProperty('--radius-md');
       break;
     case 'square':
+      el.style.setProperty('--radius-sm', '0');
+      el.style.setProperty('--radius-md', '0');
+      el.style.setProperty('--radius-input', '0');
+      el.style.setProperty('--radius-icon-btn', '0');
+      // btn tokens inherit via var(--radius-sm/md) → 0
+      el.style.removeProperty('--radius-btn-sm');
+      el.style.removeProperty('--radius-btn-md');
+      break;
     case 'cut':
       el.style.setProperty('--radius-sm', '0');
       el.style.setProperty('--radius-md', '0');
       el.style.setProperty('--radius-input', '0');
-      // btn tokens inherit via var(--radius-sm/md) → 0
+      el.style.setProperty('--radius-icon-btn', '0');
       el.style.removeProperty('--radius-btn-sm');
       el.style.removeProperty('--radius-btn-md');
       break;
@@ -146,6 +155,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
       el.style.removeProperty('--radius-btn-sm');
       el.style.removeProperty('--radius-btn-md');
       el.style.setProperty('--radius-input', '12px');
+      el.style.setProperty('--radius-icon-btn', '50%');
       break;
   }
   // Containers
@@ -162,6 +172,8 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
   // Cut corners need data attribute
   if (btnShape === 'cut' || ctrShape === 'cut') {
     el.setAttribute('data-shape', 'cut');
+  } else {
+    el.removeAttribute('data-shape');
   }
 }
 

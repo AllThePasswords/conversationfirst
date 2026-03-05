@@ -181,7 +181,7 @@ export default function ChatInputDemo() {
     <div>
       {/* ── Section intro ── */}
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-6)' }}>
-        The chat input is the primary interaction surface. Pill-shaped container with two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Every element uses design system tokens. No inline SVGs. Heroicons only.
+        The chat input is the primary interaction surface. Shape follows the active design token (<code>--radius-input</code>). Two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Icon buttons (send, cancel) follow <code>--radius-icon-btn</code>: circular for rounded/pill, square for square, cut-corner for cut. Every element uses design system tokens.
       </p>
 
       {/* ── Interactive controls ── */}
@@ -318,7 +318,7 @@ export default function ChatInputDemo() {
       <h4 style={{ fontSize: 'var(--text-base)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>Multiline auto-grow</h4>
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-4)' }}>
         The textarea expands as you type, up to 10 lines. After 10 lines it scrolls internally.
-        The pill shape is kept so the container corner cups the circular send button.
+        In pill mode, corners soften to <code>--radius-lg</code> when multiline to prevent text clipping.
       </p>
       <div style={{ marginBottom: 'var(--space-10)' }}>
         <MultilineDemo />

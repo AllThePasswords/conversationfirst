@@ -38,6 +38,7 @@
   --radius-btn-md: var(--radius-md);
   --radius-input: var(--radius-full);
   --radius-full: 9999px;
+  --radius-icon-btn: 50%;  /* circular by default; square/cut override to 0 */
 
   /* Cut-corner sizes (used when data-shape="cut") */
   --cut-sm: 4px;
