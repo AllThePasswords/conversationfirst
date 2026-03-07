@@ -19,7 +19,7 @@
 }
 
 .chat-messages-inner {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
   /* Breathing room below the last message so the user's prompt
      can sit at the top of the viewport with space to read. */
@@ -56,7 +56,7 @@
 }
 
 .chat-input-inner {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
   display: flex;
   gap: var(--space-1);
