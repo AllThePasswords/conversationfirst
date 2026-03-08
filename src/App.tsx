@@ -49,12 +49,20 @@ export default function App() {
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>
 
-      {/* Hidden SVG filter for hand-drawn icon effect (Sagmeister theme) */}
+      {/* Hidden SVG filters for hand-drawn effects (Sagmeister theme) */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
         <defs>
+          {/* Strong displacement for icons — sketchy, wobbly outlines */}
           <filter id="handmade-icon" x="-10%" y="-10%" width="120%" height="120%">
             <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          {/* Subtle displacement for body text — each character is slightly
+              unique based on screen position (spatially-varying noise).
+              This is key to principle 5: no two characters look identical. */}
+          <filter id="handmade-text" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.7" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>

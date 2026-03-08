@@ -1544,18 +1544,24 @@ kbd {
 
 /* ===== Handmade effect (Sagmeister) ===== */
 /* Guiding principles:
-   1. Every font is handmade
+   1. Every font is handmade — adapt to feel hand-drawn
    2. Every line is handmade — no clean lines
    3. Every white surface is paper
-   4. Every background colour is painted with a watercolour brush */
+   4. Every background colour is painted with a thin watercolour brush
+   5. Fonts must look handmade, not machine-made —
+      the giveaway of machine-made is characters repeat identically */
 
 /* ── Per-character spans in HandmadeText component ── */
+/* Uses irrational multipliers (φ, √5, √3, √7) so transforms
+   never visibly repeat — each character is uniquely positioned.
+   Combined with per-char fontWeight from the component (pen pressure). */
 .hm-ch {
   display: inline-block;
   transform:
-    rotate(calc(sin(var(--hm-i) * 2.39) * 2.5deg))
-    translateY(calc(sin(var(--hm-i) * 3.14) * 1px))
-    scale(calc(1 + sin(var(--hm-i) * 1.73) * 0.04));
+    rotate(calc(sin(var(--hm-i) * 1.618) * 2.5deg))
+    translateY(calc(sin(var(--hm-i) * 2.236) * 1.2px))
+    skewX(calc(sin(var(--hm-i) * 2.646) * 1.5deg))
+    scale(calc(1 + sin(var(--hm-i) * 0.618) * 0.04));
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
@@ -1692,31 +1698,45 @@ kbd {
   background-color: rgba(245, 240, 232, 0.7);
 }
 
-/* ── 4. BACKGROUNDS PAINTED WITH WATERCOLOUR BRUSH ── */
-/* Light grey backgrounds → uneven watercolour wash */
+/* ── 4. BACKGROUNDS PAINTED WITH THIN WATERCOLOUR BRUSH ── */
+/* Imagine a thin watercolour brush — paint pools unevenly, bleeds at
+   edges, leaves wet-on-wet marks. Multiple overlapping gradient layers
+   simulate a single brush stroke's uneven pigment distribution. */
 [data-heading-effect="handmade"] .cf-doc .doc-example.good {
-  background: linear-gradient(135deg, rgba(200, 220, 200, 0.15) 0%, rgba(180, 210, 190, 0.25) 35%, rgba(200, 220, 200, 0.12) 70%, rgba(190, 215, 195, 0.20) 100%) !important;
+  background:
+    radial-gradient(ellipse 80% 60% at 25% 40%, rgba(180, 210, 190, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 75% 60%, rgba(200, 225, 200, 0.12) 0%, transparent 60%),
+    linear-gradient(142deg, rgba(200, 220, 200, 0.08) 0%, rgba(180, 210, 190, 0.22) 30%, rgba(195, 218, 198, 0.06) 55%, rgba(200, 220, 200, 0.16) 80%, rgba(190, 215, 195, 0.10) 100%) !important;
   border: 1.5px solid rgba(0, 0, 0, 0.10) !important;
   border-radius: 1px 2px 1.5px 0.5px !important;
 }
 [data-heading-effect="handmade"] .cf-doc .doc-example.bad {
-  background: linear-gradient(135deg, rgba(220, 180, 170, 0.15) 0%, rgba(210, 165, 155, 0.25) 40%, rgba(220, 180, 170, 0.10) 65%, rgba(215, 170, 160, 0.20) 100%) !important;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 50%, rgba(210, 165, 155, 0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 70% at 70% 40%, rgba(220, 180, 170, 0.10) 0%, transparent 55%),
+    linear-gradient(138deg, rgba(220, 180, 170, 0.08) 0%, rgba(210, 165, 155, 0.22) 35%, rgba(218, 175, 165, 0.05) 60%, rgba(215, 170, 160, 0.16) 85%, rgba(220, 180, 170, 0.08) 100%) !important;
   border: 1.5px solid rgba(0, 0, 0, 0.10) !important;
   border-radius: 1px 2px 1.5px 0.5px !important;
 }
-/* Code backgrounds: wash of warm grey */
+/* Code backgrounds: thin brush wash of warm grey, pooling slightly left */
 [data-heading-effect="handmade"] code {
-  background: linear-gradient(120deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.07) 40%, rgba(0, 0, 0, 0.03) 100%) !important;
+  background:
+    radial-gradient(ellipse 90% 100% at 20% 50%, rgba(0, 0, 0, 0.06) 0%, transparent 60%),
+    linear-gradient(118deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.065) 35%, rgba(0, 0, 0, 0.04) 65%, rgba(0, 0, 0, 0.02) 100%) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 1px !important;
 }
-/* Muted/grey panel areas: watercolour treatment */
+/* Muted panels: uneven wash with pigment pooling */
 [data-heading-effect="handmade"] .badge-muted {
-  background: linear-gradient(130deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.02) 100%) !important;
+  background:
+    radial-gradient(ellipse 60% 80% at 40% 50%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+    linear-gradient(126deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.055) 45%, rgba(0, 0, 0, 0.015) 100%) !important;
 }
-/* Icon demo tiles: soft wash */
+/* Icon demo tiles: soft wash with slight pooling */
 [data-heading-effect="handmade"] .icon-tile {
-  background: linear-gradient(125deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 45%, rgba(0, 0, 0, 0.01) 100%) !important;
+  background:
+    radial-gradient(ellipse 70% 60% at 35% 55%, rgba(0, 0, 0, 0.03) 0%, transparent 55%),
+    linear-gradient(122deg, rgba(0, 0, 0, 0.015) 0%, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, 0.008) 100%) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 1px 2px 1.5px 0.5px !important;
 }
@@ -1747,4 +1767,56 @@ kbd {
 }
 [data-heading-effect="handmade"] .side-nav svg {
   transform: rotate(-1deg);
+}
+
+/* ── 5. NO TWO CHARACTERS REPEAT ── */
+/* Subtle SVG turbulence displacement on body text — each character is
+   uniquely distorted by its screen position, breaking machine regularity.
+   This complements HandmadeText's per-character transforms for headings. */
+[data-heading-effect="handmade"] p,
+[data-heading-effect="handmade"] li,
+[data-heading-effect="handmade"] td,
+[data-heading-effect="handmade"] th,
+[data-heading-effect="handmade"] label,
+[data-heading-effect="handmade"] .btn,
+[data-heading-effect="handmade"] .badge,
+[data-heading-effect="handmade"] .chat-bubble p {
+  filter: url(#handmade-text);
+}
+
+/* Per-paragraph wobble — as if each block of text was set by hand */
+[data-heading-effect="handmade"] p:nth-child(odd) {
+  transform: rotate(-0.15deg);
+  letter-spacing: 0.005em;
+}
+[data-heading-effect="handmade"] p:nth-child(even) {
+  transform: rotate(0.1deg);
+  word-spacing: 0.02em;
+}
+/* List item variation — each bullet was placed individually */
+[data-heading-effect="handmade"] li:nth-child(3n) {
+  transform: rotate(-0.12deg);
+  letter-spacing: 0.003em;
+}
+[data-heading-effect="handmade"] li:nth-child(3n+1) {
+  transform: rotate(0.08deg);
+  word-spacing: 0.015em;
+}
+[data-heading-effect="handmade"] li:nth-child(3n+2) {
+  transform: rotate(-0.06deg);
+  letter-spacing: -0.002em;
+}
+
+/* Variable font weight variation on body text lines —
+   simulates inconsistent ink density from a hand press */
+[data-heading-effect="handmade"] p:nth-child(3n) { font-weight: 395; }
+[data-heading-effect="handmade"] p:nth-child(3n+1) { font-weight: 405; }
+[data-heading-effect="handmade"] p:nth-child(3n+2) { font-weight: 400; }
+
+/* Buttons in handmade mode: slight tilt like hand-stamped labels */
+[data-heading-effect="handmade"] .btn:nth-child(odd) {
+  transform: rotate(-0.4deg);
+}
+[data-heading-effect="handmade"] .btn:nth-child(even) {
+  transform: rotate(0.3deg);
 }
