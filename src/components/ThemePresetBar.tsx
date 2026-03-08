@@ -74,18 +74,20 @@ export default function ThemePresetBar() {
               onClick={() => { applyTheme(t); setMenuOpen(false); }}
             >
               <span className="theme-bar-menu-item-label">{t.name}</span>
-              <button
-                className="theme-bar-menu-delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteTheme(t.id);
-                }}
-                title={`Delete "${t.name}"`}
-                aria-label={`Delete theme "${t.name}"`}
-                type="button"
-              >
-                <TrashIcon width={14} height={14} aria-hidden="true" />
-              </button>
+              {!t.isPreset && (
+                <button
+                  className="theme-bar-menu-delete"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteTheme(t.id);
+                  }}
+                  title={`Delete "${t.name}"`}
+                  aria-label={`Delete theme "${t.name}"`}
+                  type="button"
+                >
+                  <TrashIcon width={14} height={14} aria-hidden="true" />
+                </button>
+              )}
             </div>
           ))}
         </div>

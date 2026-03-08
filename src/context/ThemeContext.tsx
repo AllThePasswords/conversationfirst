@@ -42,6 +42,8 @@ export interface SavedTheme {
   bg: { name: string; hex: string };
   shape: ShapeMode;
   containerShape?: ContainerShapeMode;
+  headingEffect?: 'handmade' | null;
+  isPreset?: boolean;
   createdAt: number;
 }
 
@@ -81,6 +83,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
   // Reset everything
   ALL_VARS.forEach(v => el.style.removeProperty(v));
   el.removeAttribute('data-shape');
+  el.removeAttribute('data-heading-effect');
 
   if (!theme) return;
 
@@ -174,6 +177,11 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     el.setAttribute('data-shape', 'cut');
   } else {
     el.removeAttribute('data-shape');
+  }
+
+  // Heading effect
+  if (theme.headingEffect === 'handmade') {
+    el.setAttribute('data-heading-effect', 'handmade');
   }
 }
 

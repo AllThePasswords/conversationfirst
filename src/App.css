@@ -44,17 +44,17 @@ body {
   z-index: 1;
   background-image:
     repeating-linear-gradient(to bottom,
-      color-mix(in srgb, var(--border) 35%, transparent) 0 6px,
-      transparent 6px 14px),
+      color-mix(in srgb, var(--text) 16%, transparent) 0 4px,
+      transparent 4px 8px),
     repeating-linear-gradient(to bottom,
-      color-mix(in srgb, var(--border) 35%, transparent) 0 6px,
-      transparent 6px 14px),
+      color-mix(in srgb, var(--text) 16%, transparent) 0 4px,
+      transparent 4px 8px),
     repeating-linear-gradient(to bottom,
-      color-mix(in srgb, var(--border) 20%, transparent) 0 4px,
-      transparent 4px 18px),
+      color-mix(in srgb, var(--text) 16%, transparent) 0 4px,
+      transparent 4px 8px),
     repeating-linear-gradient(to bottom,
-      color-mix(in srgb, var(--border) 20%, transparent) 0 4px,
-      transparent 4px 18px);
+      color-mix(in srgb, var(--text) 16%, transparent) 0 4px,
+      transparent 4px 8px);
   background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%;
   background-position:
     calc(50% - 340px) 0,
@@ -66,6 +66,35 @@ body {
 @media (max-width: 780px) {
   .cf-main::before,
   .home-page #main-content::before { background-image: none; }
+}
+
+/* ── Horizontal typographic guide lines ──
+   Reveal cap height, x-height, and baseline of the hero title.
+   Rendered by Hero.tsx with canvas-measured font metrics. */
+.typo-guide {
+  position: absolute;
+  left: -100vw;
+  right: -100vw;
+  height: 1px;
+  pointer-events: none;
+  background: repeating-linear-gradient(to right,
+    color-mix(in srgb, var(--text) 16%, transparent) 0 4px,
+    transparent 4px 8px);
+}
+.typo-guide-label {
+  position: absolute;
+  left: calc(100% + var(--space-8));
+  top: -7px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: color-mix(in srgb, var(--text) 25%, transparent);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
+}
+@media (max-width: 780px) {
+  .typo-guide, .typo-guide-label { display: none; }
 }
 
 /* Widow/orphan control: text-wrap: pretty minimises short last lines.
@@ -1510,4 +1539,212 @@ kbd {
   font-size: 10px;
   color: var(--text-muted);
   font-family: var(--font-mono);
+}
+
+
+/* ===== Handmade effect (Sagmeister) ===== */
+/* Guiding principles:
+   1. Every font is handmade
+   2. Every line is handmade — no clean lines
+   3. Every white surface is paper
+   4. Every background colour is painted with a watercolour brush */
+
+/* ── Per-character spans in HandmadeText component ── */
+.hm-ch {
+  display: inline-block;
+  transform:
+    rotate(calc(sin(var(--hm-i) * 2.39) * 2.5deg))
+    translateY(calc(sin(var(--hm-i) * 3.14) * 1px))
+    scale(calc(1 + sin(var(--hm-i) * 1.73) * 0.04));
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+/* ── 1. EVERY FONT IS HANDMADE ── */
+[data-heading-effect="handmade"] h1,
+[data-heading-effect="handmade"] h2,
+[data-heading-effect="handmade"] h3,
+[data-heading-effect="handmade"] h4 {
+  font-feature-settings: 'calt' 1;
+  letter-spacing: 0.02em;
+}
+/* Per-heading rotation — like each was drawn at a different angle */
+[data-heading-effect="handmade"] h2 { transform: rotate(-0.5deg); }
+[data-heading-effect="handmade"] h3 { transform: rotate(0.3deg); }
+/* Mono/code in handmade mode — subtle variation */
+[data-heading-effect="handmade"] code,
+[data-heading-effect="handmade"] pre {
+  font-family: 'Kalam', cursive !important;
+  letter-spacing: 0.01em;
+}
+
+/* ── 2. EVERY LINE IS HANDMADE ── */
+/* Global: all borders become sketchy */
+[data-heading-effect="handmade"] .section-accordion-trigger,
+[data-heading-effect="handmade"] .card,
+[data-heading-effect="handmade"] .chat-bubble,
+[data-heading-effect="handmade"] .badge,
+[data-heading-effect="handmade"] .btn,
+[data-heading-effect="handmade"] table,
+[data-heading-effect="handmade"] input,
+[data-heading-effect="handmade"] textarea,
+[data-heading-effect="handmade"] select {
+  border-radius: 1px 2px 1.5px 0.5px !important;
+}
+
+/* Containers: rough hand-drawn borders */
+[data-heading-effect="handmade"] .section-accordion-trigger {
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 1.5px 2px 0 rgba(0, 0, 0, 0.04);
+  background: transparent;
+}
+[data-heading-effect="handmade"] .section-accordion-trigger:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+[data-heading-effect="handmade"] .card {
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
+}
+[data-heading-effect="handmade"] .chat-bubble {
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+[data-heading-effect="handmade"] .chat-bubble.user {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+[data-heading-effect="handmade"] .section-accordion-icon {
+  border-radius: 2px;
+}
+
+/* HR/dividers: hand-drawn wavy line */
+[data-heading-effect="handmade"] hr {
+  border: none !important;
+  height: 2px;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2 Q15 0.5 30 2 Q50 3.5 70 1.5 Q90 0 110 2.5 Q130 4 150 1.5 Q170 0 190 2.5 L200 2' stroke='rgba(0,0,0,0.15)' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 100% 4px;
+  background-repeat: no-repeat;
+  opacity: 1;
+}
+
+/* Tab underlines: thick marker strokes */
+[data-heading-effect="handmade"] .spec-tab[aria-selected="true"] {
+  border-bottom: 2.5px solid var(--text) !important;
+  border-bottom-style: solid !important;
+  transform: rotate(-0.3deg);
+}
+[data-heading-effect="handmade"] .spec-tab {
+  border-bottom-color: transparent !important;
+}
+
+/* Table borders: sketchy */
+[data-heading-effect="handmade"] th,
+[data-heading-effect="handmade"] td {
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  border-width: 1.5px !important;
+}
+
+/* Input borders: wobbly */
+[data-heading-effect="handmade"] .chat-input-bar {
+  border: 1.5px solid rgba(0, 0, 0, 0.18) !important;
+  border-radius: 2px 1px 1.5px 2.5px !important;
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Blockquote left border: thick brushstroke */
+[data-heading-effect="handmade"] blockquote {
+  border-left: 3px solid rgba(0, 0, 0, 0.25) !important;
+  border-left-style: solid !important;
+  transform: rotate(-0.2deg);
+}
+
+/* Citation border: hand-drawn */
+[data-heading-effect="handmade"] .cite-inline {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  border-radius: 1px 2px 1.5px 0.5px !important;
+}
+
+/* Badge borders: irregular */
+[data-heading-effect="handmade"] .badge {
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0.5px 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* ── 3. EVERY WHITE SURFACE IS PAPER ── */
+/* Paper grain texture overlay on the whole page */
+[data-heading-effect="handmade"]::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.05;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  mix-blend-mode: multiply;
+}
+
+/* Card/bubble surfaces: warm paper, not clinical white */
+[data-heading-effect="handmade"] .chat-bubble,
+[data-heading-effect="handmade"] .card,
+[data-heading-effect="handmade"] .section-accordion-trigger {
+  background-color: rgba(250, 247, 243, 0.6);
+}
+[data-heading-effect="handmade"] .chat-bubble.user {
+  background-color: rgba(245, 240, 232, 0.7);
+}
+
+/* ── 4. BACKGROUNDS PAINTED WITH WATERCOLOUR BRUSH ── */
+/* Light grey backgrounds → uneven watercolour wash */
+[data-heading-effect="handmade"] .cf-doc .doc-example.good {
+  background: linear-gradient(135deg, rgba(200, 220, 200, 0.15) 0%, rgba(180, 210, 190, 0.25) 35%, rgba(200, 220, 200, 0.12) 70%, rgba(190, 215, 195, 0.20) 100%) !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.10) !important;
+  border-radius: 1px 2px 1.5px 0.5px !important;
+}
+[data-heading-effect="handmade"] .cf-doc .doc-example.bad {
+  background: linear-gradient(135deg, rgba(220, 180, 170, 0.15) 0%, rgba(210, 165, 155, 0.25) 40%, rgba(220, 180, 170, 0.10) 65%, rgba(215, 170, 160, 0.20) 100%) !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.10) !important;
+  border-radius: 1px 2px 1.5px 0.5px !important;
+}
+/* Code backgrounds: wash of warm grey */
+[data-heading-effect="handmade"] code {
+  background: linear-gradient(120deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.07) 40%, rgba(0, 0, 0, 0.03) 100%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 1px !important;
+}
+/* Muted/grey panel areas: watercolour treatment */
+[data-heading-effect="handmade"] .badge-muted {
+  background: linear-gradient(130deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.02) 100%) !important;
+}
+/* Icon demo tiles: soft wash */
+[data-heading-effect="handmade"] .icon-tile {
+  background: linear-gradient(125deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 45%, rgba(0, 0, 0, 0.01) 100%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 1px 2px 1.5px 0.5px !important;
+}
+
+/* ── Pencil-grey guideline styling ── */
+[data-heading-effect="handmade"] .typo-guide {
+  background: rgba(0, 0, 0, 0.08);
+}
+[data-heading-effect="handmade"] .typo-guide-label {
+  color: rgba(0, 0, 0, 0.20);
+  font-family: 'Permanent Marker', cursive;
+  font-size: 8px;
+  letter-spacing: 0;
+}
+
+/* ── Hand-drawn icon effect ── */
+[data-heading-effect="handmade"] svg {
+  filter: url(#handmade-icon);
+}
+[data-heading-effect="handmade"] svg[aria-hidden="true"]:has(defs) {
+  filter: none;
+}
+[data-heading-effect="handmade"] .section-accordion-trigger svg {
+  transform: rotate(-1.5deg);
+}
+[data-heading-effect="handmade"] .chat-icon-btn svg {
+  transform: rotate(1deg);
+}
+[data-heading-effect="handmade"] .side-nav svg {
+  transform: rotate(-1deg);
 }

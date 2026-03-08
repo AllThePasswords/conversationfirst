@@ -49,6 +49,16 @@ export default function App() {
     <div className="home-page">
       <a href="#main-content" className="skip-link">Skip to content</a>
 
+      {/* Hidden SVG filter for hand-drawn icon effect (Sagmeister theme) */}
+      <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
+        <defs>
+          <filter id="handmade-icon" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="4" seed="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
+
       <main id="main-content">
         <OverviewChat />
       </main>
