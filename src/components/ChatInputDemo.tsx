@@ -177,7 +177,7 @@ export default function ChatInputDemo() {
     <div>
       {/* ── Section intro ── */}
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-6)' }}>
-        The chat input is the primary interaction surface. Shape follows the active design token (<code>--radius-input</code>). Two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Icon buttons (send, cancel) follow <code>--radius-icon-btn</code>: circular for rounded/pill, square for square, cut-corner for cut. Every element uses design system tokens.
+        The chat input is the primary interaction surface. Shape follows the active design token (<code>--radius-input</code>). Two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Icon buttons (send, cancel) follow <code>--radius-icon-btn</code>: soft rounded for rounded/pill, square for square, cut-corner for cut. Every element uses design system tokens.
       </p>
 
       {/* ── Live demo input ── */}

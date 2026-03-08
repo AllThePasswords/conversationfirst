@@ -157,7 +157,7 @@ export default function ChatInput({ onSend, disabled, stagedImages = [], onAddIm
     const maxH = lineH * 10 + padY;
     const newH = Math.min(el.scrollHeight, maxH);
     el.style.height = newH + 'px';
-    setMultiline(el.scrollHeight > lineH + padY + 1);
+    setMultiline(el.scrollHeight > lineH * 1.5 + padY);
   }, []);
 
   // Re-measure textarea height after React renders new text

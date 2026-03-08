@@ -36,9 +36,9 @@
   --radius-lg: 12px;
   --radius-btn-sm: var(--radius-sm);
   --radius-btn-md: var(--radius-md);
-  --radius-input: 30px;
+  --radius-input: var(--radius-lg);
   --radius-full: 9999px;
-  --radius-icon-btn: 50%;  /* circular by default; square/cut override to 0 */
+  --radius-icon-btn: var(--radius-md);  /* soft rounded; square/cut override to 0 */
 
   /* Cut-corner sizes (used when data-shape="cut") */
   --cut-sm: 4px;

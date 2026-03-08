@@ -632,9 +632,10 @@
 /* ===== Mic Button ===== */
 .chat-mic-btn {
   position: relative;
+  margin-right: -2px;
 }
 .chat-mic-btn:hover {
-  color: var(--text);
+  color: var(--accent);
   transform: scale(1.08);
 }
 

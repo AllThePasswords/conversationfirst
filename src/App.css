@@ -31,6 +31,43 @@ body {
   height: 100%;
 }
 
+/* ── Layout guide lines ──
+   Broken vertical lines revealing the 680px content column
+   and 32px padding architecture. Applied to both the
+   authenticated shell (.cf-main) and public page. */
+.cf-main::before,
+.home-page #main-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--border) 35%, transparent) 0 6px,
+      transparent 6px 14px),
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--border) 35%, transparent) 0 6px,
+      transparent 6px 14px),
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--border) 20%, transparent) 0 4px,
+      transparent 4px 18px),
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--border) 20%, transparent) 0 4px,
+      transparent 4px 18px);
+  background-size: 1px 100%, 1px 100%, 1px 100%, 1px 100%;
+  background-position:
+    calc(50% - 340px) 0,
+    calc(50% + 339px) 0,
+    calc(50% - 308px) 0,
+    calc(50% + 307px) 0;
+  background-repeat: repeat-y;
+}
+@media (max-width: 780px) {
+  .cf-main::before,
+  .home-page #main-content::before { background-image: none; }
+}
+
 /* Widow/orphan control: text-wrap: pretty minimises short last lines.
    Note: CSS orphans/widows only apply to paged & multi-column contexts,
    not normal flow. text-wrap: pretty is the correct tool for screen. */
@@ -1178,6 +1215,8 @@ kbd {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 .home-page .home-header {
   top: 40px;

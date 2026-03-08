@@ -126,7 +126,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
       el.style.setProperty('--radius-btn-sm', '9999px');
       el.style.setProperty('--radius-btn-md', '9999px');
       el.style.setProperty('--radius-input', '30px');
-      el.style.setProperty('--radius-icon-btn', '50%');
+      el.style.removeProperty('--radius-icon-btn');
       // Keep base tokens at defaults (clear any previous override)
       el.style.removeProperty('--radius-sm');
       el.style.removeProperty('--radius-md');
@@ -155,7 +155,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
       el.style.removeProperty('--radius-btn-sm');
       el.style.removeProperty('--radius-btn-md');
       el.style.setProperty('--radius-input', '12px');
-      el.style.setProperty('--radius-icon-btn', '50%');
+      el.style.removeProperty('--radius-icon-btn');
       break;
   }
   // Containers

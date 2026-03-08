@@ -149,7 +149,7 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-btn-sm:${c.shape === 'pill' ? '9999px' : 'var(--radius-sm)'};--radius-btn-md:${c.shape === 'pill' ? '9999px' : 'var(--radius-md)'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '30px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-icon-btn:${c.shape === 'square' || c.shape === 'cut' ? '0' : '50%'};--radius-full:9999px;
+  --radius-sm:${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-btn-sm:${c.shape === 'pill' ? '9999px' : 'var(--radius-sm)'};--radius-btn-md:${c.shape === 'pill' ? '9999px' : 'var(--radius-md)'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '30px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-icon-btn:${c.shape === 'square' || c.shape === 'cut' ? '0' : 'var(--radius-lg)'};--radius-full:9999px;
   --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
@@ -827,7 +827,7 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 
 **Buttons:** ${c.shape === 'rounded' ? 'Rounded corners. `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill, fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square, sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners, chamfered diagonal via `clip-path`.' : ''}
 **Chat input:** ${c.shape === 'pill' ? 'Rounded to match pill buttons. `--radius-input: 30px`.' : 'Follows container radius. `--radius-input: var(--radius-lg)`.'}
-**Chat icon buttons (send/cancel):** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular. `--radius-icon-btn: 50%`.' : c.shape === 'square' ? 'Square. `--radius-icon-btn: 0`.' : 'Cut corner via `clip-path`. `--radius-icon-btn: 0`.'}
+**Chat icon buttons (send/cancel):** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Soft rounded. `--radius-icon-btn: var(--radius-lg)`.' : c.shape === 'square' ? 'Square. `--radius-icon-btn: 0`.' : 'Cut corner via `clip-path`. `--radius-icon-btn: 0`.'}
 **Containers:** ${ctr === 'rounded' ? 'Rounded corners. `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square, sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner, top-left chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
 
@@ -1358,7 +1358,7 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 **Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill, radius-btn-sm/md set to 9999px.' : c.shape === 'square' ? 'Square, radius-btn-sm/md set to 0.' : 'Cut corners, clip-path polygon on buttons/inputs/badges.'}
 **Chat input:** ${c.shape === 'pill' ? 'Rounded to match pill buttons (\`--radius-input: 30px\`).' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
-**Chat icon buttons:** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular (\`--radius-icon-btn: 50%\`).' : c.shape === 'square' ? 'Square (\`--radius-icon-btn: 0\`).' : 'Cut corner via clip-path (\`--radius-icon-btn: 0\`).'}
+**Chat icon buttons:** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Soft rounded (\`--radius-icon-btn: var(--radius-lg)\`).' : c.shape === 'square' ? 'Square (\`--radius-icon-btn: 0\`).' : 'Cut corner via clip-path (\`--radius-icon-btn: 0\`).'}
 **Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square, radius-lg set to 0.' : 'Cut corners, clip-path polygon on cards/modals/chat bubbles.'}
 ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
 
@@ -1473,7 +1473,7 @@ ${c.shape === 'square' || c.shape === 'cut' ? '0 sm/md' : '4px sm / 8px md'} / $
 
 Buttons: ${c.shape === 'pill' ? 'Pill, fully rounded.' : c.shape === 'square' ? 'Square, sharp edges.' : c.shape === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
 Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons. Softens when multiline.' : 'Follows container radius.'}
-Chat icon buttons (send/cancel): ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular (--radius-icon-btn: 50%).' : c.shape === 'square' ? 'Square (--radius-icon-btn: 0).' : 'Cut corner via clip-path.'}
+Chat icon buttons (send/cancel): ${c.shape === 'pill' || c.shape === 'rounded' ? 'Soft rounded (--radius-icon-btn: var(--radius-lg)).' : c.shape === 'square' ? 'Square (--radius-icon-btn: 0).' : 'Cut corner via clip-path.'}
 Containers: ${ctr === 'square' ? 'Square, sharp edges.' : ctr === 'cut' ? 'Cut corners via clip-path.' : 'Standard rounded.'}
 ${c.shape === 'cut' || ctr === 'cut' ? 'Cut sizes: `--cut-sm` 4px, `--cut-md` 6px, `--cut-lg` 10px. Use `filter: drop-shadow()` not `box-shadow`.' : ''}
 
@@ -1535,7 +1535,7 @@ RADIUS: General: ${c.shape === 'square' || c.shape === 'cut' ? '0 (sharp)' : '4p
 SHAPE: ${shapeLabel(c)}
 Buttons: ${c.shape === 'pill' ? 'Pill, fully rounded capsules' : c.shape === 'square' ? 'Square, sharp edges' : c.shape === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
 Chat input: ${c.shape === 'pill' ? 'Fully rounded to match pill buttons. Softens when multiline' : 'Follows container radius'}
-Chat icon buttons: ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular (--radius-icon-btn: 50%)' : c.shape === 'square' ? 'Square (--radius-icon-btn: 0)' : 'Cut corner via clip-path'}
+Chat icon buttons: ${c.shape === 'pill' || c.shape === 'rounded' ? 'Soft rounded (--radius-icon-btn: var(--radius-lg))' : c.shape === 'square' ? 'Square (--radius-icon-btn: 0)' : 'Cut corner via clip-path'}
 Containers: ${ctr === 'square' ? 'Square, sharp edges' : ctr === 'cut' ? 'Cut corners via clip-path' : 'Standard rounded corners'}
 ${c.shape === 'cut' || ctr === 'cut' ? '- Cut sizes: --cut-sm (4px), --cut-md (6px), --cut-lg (10px)\n- Use filter: drop-shadow() instead of box-shadow on clipped elements\n- Set data-shape="cut" on <html>' : ''}
 
