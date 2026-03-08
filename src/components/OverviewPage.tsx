@@ -81,7 +81,7 @@ export default function OverviewPage() {
             id="ds-panel-spec"
             aria-labelledby="ds-tab-spec"
           >
-            <SectionAccordion id="voice" title="Voice & behaviour" explainer="8 mandatory rules that govern every response." icon={ChatBubbleBottomCenterTextIcon}>
+            <SectionAccordion id="voice" title="Voice & behaviour" explainer="8 rules that govern every response." icon={ChatBubbleBottomCenterTextIcon}>
               <VoiceRules />
             </SectionAccordion>
 
@@ -89,35 +89,35 @@ export default function OverviewPage() {
               <ProcessingDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="citations" title="Citation system" explainer="Three citation formats. Every claim has a clickable source." icon={BookmarkIcon}>
+            <SectionAccordion id="citations" title="Citation system" explainer="Three formats. Every claim links to its source." icon={BookmarkIcon}>
               <CitationDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="chat-input" title="Chat input" explainer="The primary interaction surface. Attach menu, voice waveform, auto-send." icon={ChatBubbleOvalLeftIcon}>
+            <SectionAccordion id="chat-input" title="Chat input" explainer="Compose, attach, dictate and send." icon={ChatBubbleOvalLeftIcon}>
               <ChatInputDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="responses" title="Responses" explainer="Anatomy, rhythm and legibility rules for every response message." icon={DocumentTextIcon}>
+            <SectionAccordion id="responses" title="Responses" explainer="Anatomy and legibility rules for response text." icon={DocumentTextIcon}>
               <ResponseDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="lists" title="Lists" explainer="Bullets, numbers and nesting with tight rhythm and distinct markers." icon={ListBulletIcon}>
+            <SectionAccordion id="lists" title="Lists" explainer="Bullets, numbers and nesting with tight rhythm." icon={ListBulletIcon}>
               <ListDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="tables" title="Tables" explainer="Structured data inside chat bubbles. Auto-styled from GFM markdown." icon={TableCellsIcon}>
+            <SectionAccordion id="tables" title="Tables" explainer="Structured data in bubbles. Auto-styled from markdown." icon={TableCellsIcon}>
               <TableDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="inline-forms" title="Inline forms & actions" explainer="Collecting input and confirmation inside chat response bubbles." icon={PencilSquareIcon}>
+            <SectionAccordion id="inline-forms" title="Inline forms & actions" explainer="Input and confirmation inside response bubbles." icon={PencilSquareIcon}>
               <InlineFormsDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2. Outline for UI chrome, solid for compact indicators. One library, one size." icon={SwatchIcon}>
+            <SectionAccordion id="icons" title="Icons" explainer="Heroicons v2 outline and solid. One library, one size." icon={SwatchIcon}>
               <IconDemo />
             </SectionAccordion>
 
-            <SectionAccordion id="components" title="App components" explainer="Buttons, badges, alerts, cards, forms and navigation. All tokens, no custom values." icon={CubeIcon}>
+            <SectionAccordion id="components" title="App components" explainer="Buttons, badges, alerts, cards and forms. All tokens." icon={CubeIcon}>
               <ComponentShowcase />
             </SectionAccordion>
           </div>

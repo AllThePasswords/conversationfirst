@@ -125,7 +125,7 @@ function applyThemeToDOM(theme: SavedTheme | null, isDark: boolean) {
     case 'pill':
       el.style.setProperty('--radius-btn-sm', '9999px');
       el.style.setProperty('--radius-btn-md', '9999px');
-      el.style.setProperty('--radius-input', '9999px');
+      el.style.setProperty('--radius-input', '30px');
       el.style.setProperty('--radius-icon-btn', '50%');
       // Keep base tokens at defaults (clear any previous override)
       el.style.removeProperty('--radius-sm');

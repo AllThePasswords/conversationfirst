@@ -107,44 +107,40 @@ function DemoWaveform() {
  * ChatInput component for the Design Spec tab.  Shows all visual
  * states without connecting to real chat logic.
  */
-/** Auto-growing textarea demo. Mirrors the resize logic from ChatInput. */
+const MULTILINE_SAMPLE = `Compare quarterly revenue trends across our three product lines.
+
+Include year-over-year growth rates, highlight any segments where growth decelerated, and flag products with margins below 40%.
+
+Format as a table with sparklines if possible.`
+
+/** Static multiline demo showing 6 lines of sample content. */
 function MultilineDemo() {
-  const [text, setText] = useState('')
-  const [multiline, setMultiline] = useState(false)
   const ref = useRef<HTMLTextAreaElement>(null)
 
-  const resize = useCallback(() => {
+  useEffect(() => {
     const el = ref.current
     if (!el) return
     el.style.height = 'auto'
-    const style = getComputedStyle(el)
-    const lineH = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.45
-    const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
-    const maxH = lineH * 10 + padY
-    el.style.height = Math.min(el.scrollHeight, maxH) + 'px'
-    setMultiline(el.scrollHeight > lineH + padY + 4)
+    el.style.height = el.scrollHeight + 'px'
   }, [])
-
-  useEffect(() => { resize() }, [text, resize])
 
   return (
     <div className="chat-input-bar" style={{ position: 'relative' }}>
-      <div className={`chat-input-inner ${multiline ? 'multiline' : ''}`}>
+      <div className="chat-input-inner">
         <div className="chat-input-body">
           <textarea
             ref={ref}
             className="chat-input-field"
-            placeholder="Type multiple lines. Grows up to 10, then scrolls..."
             aria-label="Multiline demo input"
-            value={text}
-            onChange={(e) => { setText(e.target.value); resize() }}
+            value={MULTILINE_SAMPLE}
+            readOnly
             rows={1}
           />
         </div>
         <button className="chat-icon-btn chat-attach-btn" type="button" disabled>
           <PlusIcon width={20} height={20} aria-hidden="true" />
         </button>
-        <button className="chat-icon-btn chat-send-btn" type="button" disabled={!text.trim()}>
+        <button className="chat-icon-btn chat-send-btn" type="button">
           <ArrowUpIcon width={20} height={20} aria-hidden="true" />
         </button>
       </div>
@@ -183,19 +179,6 @@ export default function ChatInputDemo() {
       <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', lineHeight: 'var(--line-height-prose)', marginBottom: 'var(--space-6)' }}>
         The chat input is the primary interaction surface. Shape follows the active design token (<code>--radius-input</code>). Two distinct states: inactive (textarea + attach + mic) and recording (cancel + full-width waveform + send). Icon buttons (send, cancel) follow <code>--radius-icon-btn</code>: circular for rounded/pill, square for square, cut-corner for cut. Every element uses design system tokens.
       </p>
-
-      {/* ── Interactive controls ── */}
-      <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', marginBottom: 'var(--space-6)' }}>
-        <button className="btn btn-ghost" onClick={toggleMenu} style={{ fontSize: 'var(--text-sm)' }}>
-          {menuOpen ? 'Close menu' : 'Open attach menu'}
-        </button>
-        <button className="btn btn-ghost" onClick={showWaveform ? stopWaveform : startWaveform} style={{ fontSize: 'var(--text-sm)' }}>
-          {showWaveform ? 'Stop recording' : 'Show waveform'}
-        </button>
-        <button className="btn btn-ghost" onClick={toggleThumbs} style={{ fontSize: 'var(--text-sm)' }}>
-          {showThumbs ? 'Remove thumbnails' : 'Show thumbnails'}
-        </button>
-      </div>
 
       {/* ── Live demo input ── */}
       <div style={{ marginBottom: 'var(--space-10)' }}>

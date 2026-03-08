@@ -60,7 +60,7 @@
   margin: 0 auto;
   display: flex;
   gap: var(--space-1);
-  align-items: flex-end;
+  align-items: center;
   background: var(--surface);
   border: 1px solid transparent;
   border-radius: var(--radius-input);
@@ -79,6 +79,7 @@
 /* Expanded state: soften corners when input grows tall */
 .chat-input-inner.has-attachments,
 .chat-input-inner.multiline {
+  align-items: flex-end;
   border-radius: var(--radius-lg);
 }
 
@@ -143,6 +144,10 @@
 }
 .chat-icon-btn:hover {
   color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.chat-icon-btn:active {
+  transform: scale(0.92);
 }
 .chat-icon-btn:focus-visible {
   outline: 2px solid var(--accent);
@@ -183,13 +188,14 @@
 }
 .chat-attach-btn:hover {
   color: var(--accent);
+  transform: scale(1.08);
 }
 
 /* Attachment menu: animates up from button */
 .chat-attach-menu {
   position: absolute;
   bottom: calc(100% + var(--space-2));
-  right: 0;
+  right: -4px;
   min-width: 180px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -736,6 +742,11 @@
   background: var(--accent);
   color: #fff;
 }
+/* Optical centering: the arrow tip is narrow, creating a visual
+   imbalance — nudge the icon up 1px so it *appears* centred. */
+.chat-send-btn svg {
+  transform: translateY(-1px);
+}
 .chat-send-btn:hover {
   background: var(--accent-hover);
   color: #fff;
@@ -947,7 +958,7 @@
 .chat-welcome {
   display: flex;
   flex-direction: column;
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto;
   padding: var(--space-10) var(--space-4) var(--space-8);
 }

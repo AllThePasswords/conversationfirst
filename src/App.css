@@ -184,7 +184,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
 
 .chat-bubble td code { font-size: 0.85em; }
 
-.page { max-width: 840px; margin: 0 auto; padding: var(--space-12) var(--space-8) 96px; }
+.page { max-width: 680px; margin: 0 auto; padding: var(--space-12) var(--space-8) 96px; }
 .section { margin-bottom: var(--space-12); }
 .section-label {
   font-family: var(--font-body);
@@ -275,7 +275,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   align-items: center;
   width: 100%;
   padding: var(--space-5) var(--space-5);
-  background: transparent;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -287,8 +287,10 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
     border-color var(--duration-base) var(--ease-out);
 }
 .section-accordion-trigger:hover {
-  background: var(--surface-raised);
-  border-color: var(--border-strong);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.section-accordion-trigger:active {
+  transform: scale(0.99);
 }
 .section-accordion-trigger:focus-visible {
   outline: 2px solid var(--accent);
@@ -324,6 +326,7 @@ p, li, dd, blockquote, .chat-bubble p, .cf-doc p, .cf-doc li {
   color: var(--text-muted);
   font-weight: 400;
   line-height: 1.5;
+  text-wrap: balance;
 }
 .section-accordion-chevron {
   margin-left: auto;
@@ -558,7 +561,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
   font-weight: 600;
   margin-bottom: var(--space-3);
 }
-.cite-footer-list { list-style: none; padding: 0; margin: 0; }
+.cite-footer .cite-footer-list { list-style: none; padding: 0; margin: 0; }
 .cite-footer-item {
   display: flex;
   gap: var(--space-2);

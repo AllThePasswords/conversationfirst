@@ -149,7 +149,7 @@ function generateTestPage(c) {
   --font-mono: ${m.family};
   --text-xs:0.75rem;--text-sm:0.8125rem;--text-base:0.9375rem;--text-lg:1.125rem;--text-xl:1.375rem;--text-2xl:1.75rem;--text-3xl:2.25rem;
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;
-  --radius-sm:${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-btn-sm:${c.shape === 'pill' ? '9999px' : 'var(--radius-sm)'};--radius-btn-md:${c.shape === 'pill' ? '9999px' : 'var(--radius-md)'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-icon-btn:${c.shape === 'square' || c.shape === 'cut' ? '0' : '50%'};--radius-full:9999px;
+  --radius-sm:${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'};--radius-md:${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'};--radius-btn-sm:${c.shape === 'pill' ? '9999px' : 'var(--radius-sm)'};--radius-btn-md:${c.shape === 'pill' ? '9999px' : 'var(--radius-md)'};--radius-lg:${ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-input:${c.shape === 'pill' ? '30px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'};--radius-icon-btn:${c.shape === 'square' || c.shape === 'cut' ? '0' : '50%'};--radius-full:9999px;
   --cut-sm:4px;--cut-md:6px;--cut-lg:10px;
   --bg:${bg};--surface:#fff;--surface-raised:#fff;--border:#e4e2dd;--border-strong:#ccc9c3;
   --text:#1a1a1a;--text-secondary:#595856;--text-muted:#6b6966;
@@ -169,7 +169,7 @@ function generateTestPage(c) {
 *,*::before,*::after{box-sizing:border-box;margin:0}
 html{font-size:16px}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
-.page{max-width:840px;margin:0 auto;padding:var(--space-12) var(--space-8) 96px}
+.page{max-width:680px;margin:0 auto;padding:var(--space-12) var(--space-8) 96px}
 .section{margin-bottom:var(--space-12)}
 .skip-link{position:absolute;top:-100%;left:var(--space-4);z-index:100;padding:var(--space-2) var(--space-4);background:var(--accent);color:#fff;font-weight:600;font-size:var(--text-sm);border-radius:var(--radius-btn-md);text-decoration:none}
 .skip-link:focus{top:var(--space-4)}
@@ -826,7 +826,7 @@ Dark mode: override via \`prefers-color-scheme: dark\`.
 **Mode: ${shapeLabel(c)}**
 
 **Buttons:** ${c.shape === 'rounded' ? 'Rounded corners. `--radius-btn-sm` (4px), `--radius-btn-md` (8px).' : ''}${c.shape === 'pill' ? 'Pill, fully rounded capsule shapes. `--radius-btn-sm` and `--radius-btn-md` set to `9999px`.' : ''}${c.shape === 'square' ? 'Square, sharp edges. `--radius-btn-sm` and `--radius-btn-md` set to `0`.' : ''}${c.shape === 'cut' ? 'Cut corners, chamfered diagonal via `clip-path`.' : ''}
-**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons. `--radius-input: 9999px`. Corners soften to `--radius-lg` when multiline.' : 'Follows container radius. `--radius-input: var(--radius-lg)`.'}
+**Chat input:** ${c.shape === 'pill' ? 'Rounded to match pill buttons. `--radius-input: 30px`.' : 'Follows container radius. `--radius-input: var(--radius-lg)`.'}
 **Chat icon buttons (send/cancel):** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular. `--radius-icon-btn: 50%`.' : c.shape === 'square' ? 'Square. `--radius-icon-btn: 0`.' : 'Cut corner via `clip-path`. `--radius-icon-btn: 0`.'}
 **Containers:** ${ctr === 'rounded' ? 'Rounded corners. `--radius-lg` (12px).' : ''}${ctr === 'square' ? 'Square, sharp edges. `--radius-lg` set to `0`.' : ''}${ctr === 'cut' ? 'Cut corner, top-left chamfered diagonal via `clip-path`.' : ''}
 ${c.shape === 'cut' || ctr === 'cut' ? `The \`<html>\` element has \`data-shape="cut"\`.
@@ -985,7 +985,7 @@ Every response bubble has three regions:
 - Border: 1px \`--border\`
 - Border radius: \`--radius-lg\` (12px)
 - Padding: \`--space-6\` vertical, \`--space-8\` horizontal (24px / 32px)
-- Full width of container (max 840px)
+- Full width of container (max 680px)
 
 ### 7.3 User bubbles
 
@@ -1352,12 +1352,12 @@ Dark mode: derive from \`prefers-color-scheme: dark\`. Accent lightens, bg inver
 
 ## Radius
 
-\`--radius-sm\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-btn-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-btn-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-input\`: ${c.shape === 'pill' ? '9999px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
+\`--radius-sm\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-md\`: ${c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-btn-sm\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '4px'}, \`--radius-btn-md\`: ${c.shape === 'pill' ? '9999px' : c.shape === 'square' || c.shape === 'cut' ? '0' : '8px'}, \`--radius-lg\`: ${ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-input\`: ${c.shape === 'pill' ? '30px' : ctr === 'square' || ctr === 'cut' ? '0' : '12px'}, \`--radius-full\`: 9999px
 
 ## Shape: ${shapeLabel(c)}
 
 **Buttons:** ${c.shape === 'rounded' ? 'Standard rounded corners.' : c.shape === 'pill' ? 'Pill, radius-btn-sm/md set to 9999px.' : c.shape === 'square' ? 'Square, radius-btn-sm/md set to 0.' : 'Cut corners, clip-path polygon on buttons/inputs/badges.'}
-**Chat input:** ${c.shape === 'pill' ? 'Fully rounded to match pill buttons (\`--radius-input: 9999px\`). Softens to \`--radius-lg\` when multiline.' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
+**Chat input:** ${c.shape === 'pill' ? 'Rounded to match pill buttons (\`--radius-input: 30px\`).' : 'Follows container radius (\`--radius-input: --radius-lg\`).'}
 **Chat icon buttons:** ${c.shape === 'pill' || c.shape === 'rounded' ? 'Circular (\`--radius-icon-btn: 50%\`).' : c.shape === 'square' ? 'Square (\`--radius-icon-btn: 0\`).' : 'Cut corner via clip-path (\`--radius-icon-btn: 0\`).'}
 **Containers:** ${ctr === 'rounded' ? 'Standard rounded corners.' : ctr === 'square' ? 'Square, radius-lg set to 0.' : 'Cut corners, clip-path polygon on cards/modals/chat bubbles.'}
 ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-md\` (6px), \`--cut-lg\` (10px). Use \`filter: drop-shadow()\` instead of \`box-shadow\` on clipped elements.` : ''}
@@ -1408,7 +1408,7 @@ ${c.shape === 'cut' || ctr === 'cut' ? `Cut sizes: \`--cut-sm\` (4px), \`--cut-m
 
 ## Layout
 
-- Max content width: 840px
+- Max content width: 680px
 - Prose fills bubble width. No inner max-width constraint
 - Grid classes: \`grid-2\`, \`grid-3\`, \`grid-4\`, \`grid-2-1\`, \`grid-1-2\`
 - All grids collapse to single column below 640px
@@ -1572,7 +1572,7 @@ Generated with the ConversationFirst Configurator, conversationfirst.xyz · ${sh
 function ColorCard({ color, selected, onClick }) {
   const on = selected?.hex === color.hex;
   return (
-    <button onClick={onClick} style={{
+    <button className="cfg-font-card" onClick={onClick} style={{
       display: "flex", alignItems: "center", gap: "var(--space-3)", width: "100%", textAlign: "left",
       padding: "var(--space-3) var(--space-4)",
       border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
@@ -1594,7 +1594,7 @@ function ColorCard({ color, selected, onClick }) {
 function FontCard({ font, selected, onClick, previewText, previewStyle }) {
   const on = selected?.name === font.name;
   return (
-    <button onClick={onClick} style={{
+    <button className="cfg-font-card" onClick={onClick} style={{
       display: "block", width: "100%", textAlign: "left", padding: "var(--space-3) var(--space-4)",
       border: on ? "2px solid var(--text)" : "1px solid var(--border)", borderRadius: "var(--radius-lg)",
       background: on ? "var(--bg)" : "var(--surface)", cursor: "pointer", transition: "all 0.12s",
@@ -1850,6 +1850,8 @@ export default function Configurator() {
         @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes dot-cascade { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
         .cfg-fin { animation: fadeIn 0.2s ease-out; }
+        .cfg-font-card:hover { background: color-mix(in srgb, var(--accent) 10%, transparent) !important; }
+        .cfg-font-card:active { transform: scale(0.98); }
       `}</style>
 
       {toast && (

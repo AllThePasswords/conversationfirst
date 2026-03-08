@@ -12,16 +12,14 @@ const RULES = [
 export default function VoiceRules() {
   return (
     <>
-      <div style={{ display: 'grid', gap: 'var(--space-2)', marginBottom: 'var(--space-10)' }}>
+      <div style={{ marginBottom: 'var(--space-10)' }}>
         {RULES.map((r, i) => (
           <div key={i} style={{
             display: 'flex',
             gap: 'var(--space-3)',
             alignItems: 'baseline',
-            padding: 'var(--space-3) var(--space-4)',
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius-md)',
+            padding: 'var(--space-3) 0',
+            borderBottom: i < RULES.length - 1 ? '1px solid var(--border)' : 'none',
           }}>
             <span style={{
               fontFamily: 'var(--font-mono)',

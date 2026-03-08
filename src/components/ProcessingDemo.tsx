@@ -1,4 +1,14 @@
+import { useState, useEffect } from 'react';
+
+const STATUS_LABELS = ['Processing', 'Reading sources', 'Thinking', 'Composing'];
+
 export default function ProcessingDemo() {
+  const [statusIdx, setStatusIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setStatusIdx(i => (i + 1) % STATUS_LABELS.length), 2400);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <>
       <h3 style={{ marginTop: 0 }}>Minimal: cursor only</h3>
@@ -21,7 +31,7 @@ export default function ProcessingDemo() {
         <div className="processing">
           <div className="processing-status">
             <div className="processing-cursor"></div>
-            <div className="processing-text">Processing<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span></div>
+            <div className="processing-text">{STATUS_LABELS[statusIdx]}<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span></div>
           </div>
         </div>
       </div>
